@@ -171,7 +171,12 @@ $(document).ready( function() {
     	});
     	
 		requestSession();
+		
+		
+		
 	});
+
+
 
 // Global variables
 var mathLanguageCode;				// Default math language of the user
@@ -211,6 +216,11 @@ function requestSession() {
         	$( "#interactive_math" ).height(he-70);
         	mathLanguageCode = host['mathLanguage']['consoleCode'];
     		getUserMathFunctions();
+    		$('iframe#interactive_math').load(function() {
+    			var env_var = "/iMathCloud/" + userName;
+    			setEnvironmentVariable(env_var);
+    		});
+    		
         },
         error: function(error) {
             console.log("error updating table -" + error.status);
