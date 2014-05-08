@@ -1,6 +1,6 @@
 
     create table File (
-        id int8 not null,
+        id int8 not null ,
         imr_type varchar(255),
         name varchar(255),
         url varchar(255),
