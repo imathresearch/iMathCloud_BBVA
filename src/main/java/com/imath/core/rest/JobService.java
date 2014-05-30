@@ -70,6 +70,7 @@ public class JobService {
 		//TODO: Test needed!!
 		//TODO: Authenticate the call. Make sure that it is done from index.html
 		// and that the user is authenticated
+		//System.out.println("GETTING JOBS");
 		try {
 			List<Job> jobs =  db.getJobDB().getJobsByUser(userName);
 			return prepareJobsToSubmit(jobs);
@@ -127,6 +128,11 @@ public class JobService {
 			fileDTO.id = file.getId();
 			fileDTO.name=file.getName();
 			fileDTO.type=file.getIMR_Type();
+			fileDTO.dir = file.getDir().getId();
+			fileDTO.sharingState = file.getSharingState();
+			
+			fileDTO.userNameOwner = file.getOwner().getUserName();
+			
 			ret.add(fileDTO);
 		}
 		return ret;

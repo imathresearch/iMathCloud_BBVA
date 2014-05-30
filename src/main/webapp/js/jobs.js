@@ -2,9 +2,10 @@ function runJob(idFile){
 	
 //	Console.log("Inside runJob");
 	
+	/*
 	if (typeof ParamDTO === "undefined") {
 		ParamDTO = generateEmptyDTO();
-	}
+	}*/
 	
 	//ParamDTOS = JSON.stringify(ParamDTO);//(typeof ParamDTO == 'undefined'  || ParamDTO == '') ?  '' : JSON.stringify(ParamDTO);
 	//console.log("ParamDTO: " + ParamDTOS);
@@ -12,9 +13,9 @@ function runJob(idFile){
 	$.ajax({
         url: "rest/jobpython_service/submitJob/" + userName + "/" + idFile ,// + "/" + ParamDTO,// +"/5",
         cache: false,
-        dataType: "json",
-		contentType: "application/json; charset=utf-8",
-		data : ParamDTO,
+        //dataType: "json",
+		//contentType: "application/json; charset=utf-8",
+		//data : ParamDTO,
         type: "POST",
         success: function(host) {
         	refreshJobsTable();

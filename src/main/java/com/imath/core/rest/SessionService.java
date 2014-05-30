@@ -43,6 +43,7 @@ public class SessionService {
     public HostDTO REST_requestWebSession(@PathParam("id") String userName) {
 		//TODO: Authenticate the call. Make sure that it is done from index.html
 		// and that the user is authenticated
+		//System.out.println("Creating new session");
 		Session session;
 		try {
 			session = sc.requestWebSession(userName);

@@ -36,6 +36,7 @@ import com.imath.core.data.MainServiceDB;
 //import com.imath.core.rest.pub.Exec.Param;
 //import com.imath.core.rest.PluginService.ParamDTO;
 
+
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
@@ -58,6 +59,7 @@ import com.imath.core.service.JobController;
 import com.imath.core.service.JobController.Pair;
 import com.imath.core.service.JobPythonController;
 import com.imath.core.util.Constants;
+import com.imath.core.util.PublicResponse;
 
 import java.util.logging.Logger;
 
@@ -103,9 +105,9 @@ public class JobPythonService {
 	
 	@POST
     @Path("/submitJob/{userName}/{idFile}")
-	@Consumes(MediaType.APPLICATION_JSON)
+	//@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-    public void REST_submitJob(@PathParam("userName") String userName, @PathParam("idFile") Long idFile) {		
+    public PublicResponse.StateDTO REST_submitJob(@PathParam("userName") String userName, @PathParam("idFile") Long idFile) {		
 		
 		Set<File> files = new HashSet<File>(); 
 		
@@ -132,10 +134,15 @@ public class JobPythonService {
             Pair pair = jpc.callPythonExec(session, paramsString, files);
            
             jc.makeAJAXCall(pair);
+            PublicResponse.StateDTO out = PublicResponse.generateStatus(Response.Status.ACCEPTED.getStatusCode(), "exec/" + pair.job.getId(), pair.job.getDescription(), PublicResponse.Status.INPROGRESS); 
+            return out;
+           
 		}
 		catch (Exception e) {
 			LOG.severe("Error submitting job for userName: " + userName + " - " + e.getMessage());
-			throw new WebApplicationException(Response.Status.NOT_FOUND);
+            PublicResponse.StateDTO out = PublicResponse.generateStatus(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(), "", "", PublicResponse.Status.FAIL); 
+            return out;
+			//throw new WebApplicationException(Response.Status.NOT_FOUND);
 		}
     }
 	
