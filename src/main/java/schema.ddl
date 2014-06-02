@@ -1,19 +1,28 @@
 
     create table File (
-        id int8 not null ,
+        id int8 not null,
         imr_type varchar(255),
         name varchar(255),
+        sharingState int4,
         url varchar(255),
         id_dir int8,
         idUserOwner varchar(255) not null,
         primary key (id)
     );
 
+    create table FileShared (
+        id int8 not null,
+        permission int4,
+        idFile int8 not null,
+        idUser varchar(255) not null,
+        primary key (id)
+    );
+
     create table Host (
         id int8 not null,
-        active boolean,
+        active bool,
         alias varchar(255),
-        console boolean,
+        console bool,
         url varchar(255),
         primary key (id)
     );
@@ -26,6 +35,7 @@
         organization varchar(255),
         phone1 varchar(255),
         phone2 varchar(255),
+        idMathLanguage int8 not null,
         idRole int8 not null,
         primary key (userName),
         unique (eMail)
@@ -37,16 +47,16 @@
         endDate timestamp,
         startDate timestamp,
         state int4 not null,
-        idHost int8 not null,
+        idHost int8,
         idJobResult int8,
         idUserOwner varchar(255) not null,
-        idSession int8 not null,
+        idSession int8,
         primary key (id)
     );
 
     create table JobResult (
         id int8 not null,
-        json varchar(255),
+        json varchar(1024),
         primary key (id)
     );
 
@@ -63,6 +73,15 @@
     create table MathGroup (
         id int8 not null,
         description varchar(255),
+        plugin varchar(255),
+        primary key (id)
+    );
+
+    create table MathLanguage (
+        id int8 not null,
+        baseName varchar(255),
+        consoleCode varchar(255),
+        version varchar(255),
         primary key (id)
     );
 
@@ -116,10 +135,25 @@
         foreign key (id_dir) 
         references File;
 
+    alter table FileShared 
+        add constraint FKE1845D212122065D 
+        foreign key (idFile) 
+        references File;
+
+    alter table FileShared 
+        add constraint FKE1845D2123C1C7EC 
+        foreign key (idUser) 
+        references IMR_User;
+
     alter table IMR_User 
         add constraint FK19C619DC212D1C51 
         foreign key (idRole) 
         references Role;
+
+    alter table IMR_User 
+        add constraint FK19C619DC75B56F45 
+        foreign key (idMathLanguage) 
+        references MathLanguage;
 
     alter table Job 
         add constraint FK1239DFE7A0393 
