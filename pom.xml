@@ -138,6 +138,22 @@
             	<scope>import</scope>
             	<optional>false</optional>
             </dependency>
+            <dependency>
+            	<groupId>org.jboss.bom</groupId>
+            	<artifactId>jboss-javaee-6.0-with-hibernate</artifactId>
+            	<version>1.0.1.Final</version>
+            	<type>pom</type>
+            	<scope>import</scope>
+            	<optional>false</optional>
+            </dependency>
+            <dependency>
+            	<groupId>org.jboss.bom</groupId>
+            	<artifactId>jboss-javaee-6.0-with-hibernate</artifactId>
+            	<version>1.0.1.Final</version>
+            	<type>pom</type>
+            	<scope>import</scope>
+            	<optional>false</optional>
+            </dependency>
         </dependencies>
     </dependencyManagement>
     
@@ -313,6 +329,64 @@
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-search</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-core</artifactId>
+			<scope>provided</scope>
+			<exclusions>
+				<exclusion>
+					<artifactId>xml-apis</artifactId>
+					<groupId>xml-apis</groupId>
+				</exclusion>
+			</exclusions>
+			<optional>false</optional>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-entitymanager</artifactId>
+			<scope>provided</scope>
+			<optional>false</optional>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-validator</artifactId>
+			<scope>provided</scope>
+			<optional>false</optional>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-search</artifactId>
+			<optional>false</optional>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-core</artifactId>
+			<scope>provided</scope>
+			<exclusions>
+				<exclusion>
+					<artifactId>xml-apis</artifactId>
+					<groupId>xml-apis</groupId>
+				</exclusion>
+			</exclusions>
+			<optional>false</optional>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-entitymanager</artifactId>
+			<scope>provided</scope>
+			<optional>false</optional>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-validator</artifactId>
+			<scope>provided</scope>
+			<optional>false</optional>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-search</artifactId>
+			<optional>false</optional>
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate</groupId>
