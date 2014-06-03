@@ -45,6 +45,10 @@
 			margin: 0px;
 			padding: 0px;
 			background:		#66C;	/* color page so it can be seen */
+			font-family: Cambria, Palatino, "Palatino Linotype", "Palatino LT STD", Georgia, serif;
+			color: #1d3c41;
+			font-weight: 400;
+			font-size: 15px;
 		}
 
 		.ui-layout-mask {
@@ -129,9 +133,35 @@
 		}
 		#tabs li .ui-icon-close { float: left; margin: 0.4em 0.2em 0 0; cursor: pointer; }
 		.CodeMirror {border-top: 1px solid black; border-bottom: 1px solid black;}
+		
+		.codrops-top {
+    		line-height: 24px;
+		    font-size: 11px;
+		    /*background: none repeat scroll 0% 0% rgba(255, 255, 255, 0.4);*/
+		    background: url(css/images/bg.jpg) repeat top left;
+		    text-transform: uppercase;
+		    z-index: 9999;
+		    position: relative;
+		    box-shadow: 1px 0px 2px rgba(0, 0, 0, 0.2);
+		 }
+		 
+		.codrops-top span.right {
+    		float: right;
+		}
+		
+		.codrops-top a {
+ 		   	letter-spacing: 1px;
+    		color: #333;
+    		text-shadow: 0px 1px 1px #FFF;
+		}
+		.codrops-top span.right a {
+		    float: left;
+    		display: block;
+		}
 	</style>
 	
   </head>
+  
   <body>
   	<link rel='stylesheet' href='css/codemirror.css'></link>
   	<link rel='stylesheet' href='css/eclipse.css'></link>
@@ -139,47 +169,62 @@
   	<script src='js/libs/codemirror.js'></script>
   	<script src='js/libs/python.js'></script>
   	<script src='js/libs/r.js'></script>
-<!-- The initial filling stuff of the interactive math prototype -->
 
-<!-- The left side panel, which contains file navigation system, team box access, and jobs-->
-<div class="ui-layout-west" id="ui-layout-west" style="width: 100%; height:100%;">
-	<div id="menu_west1" style="margin: 0;">
-		<h2>Remote Files</h2>
-			<div id="divRemoteFiles" style="height:300px; overflow:auto">
-				<div id="toolbarFiles" class="ui-widget-header ui-corner-all">
-					<small>
-					<button id="refreshTreeButton">Refresh tree</button>
-					<button id="uploadFileButton">Upload file</button>
-					<button id="newDirectoryButton">New directory</button>
-					<button id="newFileButton">New File</button>
-					<button id="copyButton">Copy</button>
-					<button id="pasteButton">Paste</button>
-					<button id="deleteButton">Delete</button>
+
+<!--  The static top bar for logout and other methods-->
+ 
+
+	<div class="ui-layout-north" id="ui-layout-north">
+		<div class="codrops-top">
+    		<span class="right">
+    			<a href="logoutIMATHCLOUD.jsp">
+        			<strong>Logout</strong>
+        		</a>
+			</span>
+    		<div class="clr"></div>
+    	</div>
+	</div><!--/ Codrops top bar -->
+	
+	<!-- The initial filling stuff of the interactive math prototype -->            
+	<!-- The left side panel, which contains file navigation system, team box access, and jobs-->
+	<div class="ui-layout-west" id="ui-layout-west" style="width: 100%; height:100%;">
+		<div id="menu_west1" style="margin: 0;">
+			<h2>Remote Files</h2>
+				<div id="divRemoteFiles" style="height:300px; overflow:auto">
+					<div id="toolbarFiles" class="ui-widget-header ui-corner-all">
+						<small>
+						<button id="refreshTreeButton">Refresh tree</button>
+						<button id="uploadFileButton">Upload file</button>
+						<button id="newDirectoryButton">New directory</button>
+						<button id="newFileButton">New File</button>
+						<button id="copyButton">Copy</button>
+						<button id="pasteButton">Paste</button>
+						<button id="deleteButton">Delete</button>
+						</small>
+					</div>
+					<small id="remoteTreeContent">
+						<ul id="remoteTree" class="filetree">
+						</ul>
+						<ul id="remoteTreeShared" class="filetree">
+						</ul>
 					</small>
 				</div>
-				<small id="remoteTreeContent">
-					<ul id="remoteTree" class="filetree">
-					</ul>
-					<ul id="remoteTreeShared" class="filetree">
-					</ul>
-				</small>
-			</div>
-	</div>
-	<div id="menu_west3">
-		<h2>Submitted Jobs</h2>
-			<div id = "divJobs" style="padding: 0;height:300px; overflow:auto"> 
-				<div id="toolbarJobs" class="ui-widget-header ui-corner-all">
-					<small>
-					<button id="refreshJobButton">Refresh jobs list</button>
-					<button id="viewJobButton">View job data</button>
-					<button id="plotJobButton">Plot job output</button>
-					<button id="runJobButton">Run job</button>
-					<button id="pauseJobButton">Pause job</button>
-					<button id="cancelJobButton">Cancel job</button>
-					<button id="deleteJobButton">Delete job</button>
-					</small>
-				</div>
-				<table id="jobsXML" class="footable" border="0">
+		</div>
+		<div id="menu_west3">
+			<h2>Submitted Jobs</h2>
+				<div id = "divJobs" style="padding: 0;height:300px; overflow:auto"> 
+					<div id="toolbarJobs" class="ui-widget-header ui-corner-all">
+						<small>
+						<button id="refreshJobButton">Refresh jobs list</button>
+						<button id="viewJobButton">View job data</button>
+						<button id="plotJobButton">Plot job output</button>
+						<button id="runJobButton">Run job</button>
+						<button id="pauseJobButton">Pause job</button>
+						<button id="cancelJobButton">Cancel job</button>
+						<button id="deleteJobButton">Delete job</button>
+						</small>
+					</div>
+					<table id="jobsXML" class="footable" border="0">
 					<thead>
 						<tr>
 							<th> </th>
@@ -191,34 +236,33 @@
 					</thead>
 					<tbody id="jobsTBODY">
  					</tbody>
-				</table>
-			</div>
+					</table>
+				</div>
 			<!--/div-->
-	</div>
-</div>
-
-<!-- The central panel, which contains tabs, including interactive console-->
-<div class="ui-layout-center" id="ui-layout-center" style="width: 100%; height:100%;">
-	<div id="tabs" style="position: absolute; width: 100%; height:100%;">
-		<ul>
-			<li><a href="#tabs-1">Interactive Math Console</a></li>
-		</ul>
-		<div id="tabs-1" style="padding: 0;">
-			<iframe id="interactive_math" class="interactive_math" width="100%" frameborder="0" scrolling="no"></iframe>
 		</div>
 	</div>
-</div>
+
+<!-- The central panel, which contains tabs, including interactive console-->
+	<div class="ui-layout-center" id="ui-layout-center" style="width: 100%; height:100%;">
+		<div id="tabs" style="position: absolute; width: 100%; height:100%;">
+			<ul>
+				<li><a href="#tabs-1">Interactive Math Console</a></li>
+			</ul>	
+			<div id="tabs-1" style="padding: 0;">
+				<iframe id="interactive_math" class="interactive_math" width="100%" frameborder="0" scrolling="no"></iframe>
+			</div>
+		</div>
+	</div>
 
 <!-- The right panel, which contains functionalities. It is empty now-->
 
-<div class="ui-layout-east" id="ui-layout-east" style="width: 100%; height:100%;">
-	<div id="menu_east1">
-		<h2>Basic Statistics</h2>
-		<div id="basicStatistics" class="ui-corner-all" style="padding: 0;"></div>
+	<div class="ui-layout-east" id="ui-layout-east" style="width: 100%; height:100%;">
+		<div id="menu_east1">
+			<h2>Basic Statistics</h2>
+			<div id="basicStatistics" class="ui-corner-all" style="padding: 0;"></div>
+		</div>
 	</div>
-</div>
-
-<!-- The pop up forms -->
+	<!-- The pop up forms -->
 <div id="dialogPopup">
 <div id="contentPopup"></div>
 </div>
@@ -229,6 +273,7 @@
 </div>
 
 <script>
+
 var userName = "<%= request.getUserPrincipal().getName() %>";
 </script>
   </body>

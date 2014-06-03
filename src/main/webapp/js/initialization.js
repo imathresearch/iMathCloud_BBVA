@@ -8,6 +8,15 @@ $(document).ready( function() {
 		,	maskContents:		true // IMPORTANT - enable iframe masking - all panes in this case
 		//,	onopen:				loadIframePage // same callback for ALL borderPanes
 		,	east__resizeWhileDragging: false	// slow with a page full of iframes!
+		, north: {
+			spacing_open:			1			// cosmetic spacing
+		,	togglerLength_open:		0			// HIDE the toggler button
+		,	togglerLength_closed:	-1			// "100%" OR -1 = full width of pane
+		,	resizable: 				false
+		,	slidable:				false
+		//	override default effect
+		,	fxName:					"none"
+		}
 		});
 //		$('.ui-accordion').bind('accordionchange', function(event, ui) {
 //			  ui.newHeader; // jQuery object, activated header
@@ -32,6 +41,7 @@ $(document).ready( function() {
     	$( "#menu_east2" ).accordion({
         	collapsible: true, active: true, heightStyle: "fill"
     	});
+    	
     	$( "#dialogPopup" ).dialog({
     		autoOpen: false,
     		show: {
