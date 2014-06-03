@@ -339,10 +339,9 @@ function form_tpl_inputText() {
 			+ "<form id='formInput' >"
 			+ "<p>"
 			+ var_content
-			+ "<INPUT TYPE='text' NAME='inputbox' VALUE=" + text_box + ">"
+			+ "<INPUT TYPE='text' NAME='inputbox' VALUE=" + text_box + " onkeyup='if (event.keyCode == 13) $(\"#dialogPopup\").dialog(\"option\", \"buttons\")[Submit].click.apply($(\"#dialogPopup\"));'>"
 			+ "</p>"
 			+ "</form>" + "<div id='response'></div>";
-
 
 	funcSuccess = function(dataOrig) {
 		
@@ -363,20 +362,20 @@ function form_tpl_inputText() {
 		showFileErrorDialog(name_file_dir, cause2);
 	};
 		
-
-	var buttons = {
-		Cancel : function() {
-			$("#dialogPopup").dialog("close");
-		},
-		Submit : function() {
-			if(checkFileName(formInput.inputbox.value)){
-				func(idFile, formInput.inputbox.value, funcSuccess, funcError);
-			}
-			else{
-				var cause = "Not a valid name";
-				showFileErrorDialog(formInput.inputbox.value, cause);
-			}
+	var funcSubmit = function() {
+		alert(formInput.inputbox.value);
+		if(checkFileName(formInput.inputbox.value)){
+			func(idFile, formInput.inputbox.value, funcSuccess, funcError);
 		}
+		else{
+			var cause = "Not a valid name";
+			showFileErrorDialog(formInput.inputbox.value, cause);
+		}
+	};
+	
+	var buttons = {
+		Cancel : function() { $("#dialogPopup").dialog("close");},
+		Submit : funcSubmit
 	};
 
 	// Return the template
