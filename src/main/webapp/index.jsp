@@ -195,11 +195,11 @@
 						<small>
 						<button id="refreshTreeButton">Refresh tree</button>
 						<button id="uploadFileButton">Upload file</button>
-						<button id="newDirectoryButton">New directory</button>
-						<button id="newFileButton">New File</button>
-						<button id="copyButton">Copy</button>
-						<button id="pasteButton">Paste</button>
-						<button id="deleteButton">Delete</button>
+						<!-- button id="newDirectoryButton">New directory</button-->
+						<!-- button id="newFileButton">New File</button-->
+						<!-- button id="copyButton">Copy</button-->
+						<!-- button id="pasteButton">Paste</button-->
+						<!-- button id="deleteButton">Delete</button-->
 						</small>
 					</div>
 					<small id="remoteTreeContent">
@@ -216,12 +216,12 @@
 					<div id="toolbarJobs" class="ui-widget-header ui-corner-all">
 						<small>
 						<button id="refreshJobButton">Refresh jobs list</button>
-						<button id="viewJobButton">View job data</button>
-						<button id="plotJobButton">Plot job output</button>
-						<button id="runJobButton">Run job</button>
-						<button id="pauseJobButton">Pause job</button>
-						<button id="cancelJobButton">Cancel job</button>
-						<button id="deleteJobButton">Delete job</button>
+						<!-- button id="viewJobButton">View job data</button-->
+						<!-- button id="plotJobButton">Plot job output</button-->
+						<!-- button id="runJobButton">Run job</button-->
+						<!-- button id="pauseJobButton">Pause job</button-->
+						<!-- button id="cancelJobButton">Cancel job</button-->
+						<!-- button id="deleteJobButton">Delete job</button-->
 						</small>
 					</div>
 					<table id="jobsXML" class="footable" border="0">
@@ -231,7 +231,7 @@
 							<th>Job#</th>
 							<th>Description</th>
 							<th>Started</th>
-							<th>% Completion</th>
+							<th>% Compl.</th>
 						</tr>
 					</thead>
 					<tbody id="jobsTBODY">

@@ -24,7 +24,7 @@ $(document).ready( function() {
 //			  ui.newPanel; // jQuery object, activated content
 //			  ui.oldPanel; // jQuery object, previous content
 //			});
-		
+		layout.close("east");	// We close the east panel since it is not functional now.
 		$( "#tabs" ).tabs();
 		$( "#menu_west1" ).accordion({
         	collapsible: true, active: 0, heightStyle: "fill",  animate: { duration: 100},
