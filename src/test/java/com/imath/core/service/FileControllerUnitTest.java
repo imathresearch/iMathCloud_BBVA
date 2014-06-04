@@ -1395,7 +1395,7 @@ public class FileControllerUnitTest {
         int linesPerPage = 3;
         String userName = "user";
         this.fileController.setPagination(linesPerPage);
-        String uri = createFile("test.csv", linesPerPage*5);
+        String uri = createFile("test.csv", linesPerPage*5+2);
         File file = new File();
         file.setUrl(uri);
         
@@ -1427,6 +1427,12 @@ public class FileControllerUnitTest {
         assertTrue(lines.get(0).equals("6"));
         assertTrue(lines.get(1).equals("7"));
         assertTrue(lines.get(2).equals("8"));
+        
+        // Extreme case: Page = 6 (The last pagination only has 2 lines)
+        lines = fileController.getFileContent(userName, file, 6);
+        assertTrue(lines.size()==2); // the file only has 17 lines
+        assertTrue(lines.get(0).equals("15"));
+        assertTrue(lines.get(1).equals("16"));
     }
 
     private String createFile(String name, int lines) {
