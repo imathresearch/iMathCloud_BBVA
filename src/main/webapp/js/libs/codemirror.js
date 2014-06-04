@@ -346,7 +346,7 @@ var CodeMirror = (function() {
       },
       getScrollInfo: function() {
         return {x: scroller.scrollLeft, y: scrollbar.scrollTop,
-                height: scrollbar.scrollHeight, width: scroller.scrollWidth};
+                height: scrollbar.scrollHeight, width: scroller.scrollWidth, clientHeight:scrollbar.clientHeight};
       },
       setSize: function(width, height) {
         function interpret(val) {

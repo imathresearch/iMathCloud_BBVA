@@ -924,6 +924,7 @@ function openCodeFile(data, modeStr) {
 	for(var i=0; i<data['content'].length;i++) {
 		code = code + data['content'][i] + '\n';
 	}
+	//alert(code);
 	htmlCode = "<div id=\"codeDIV_" + nameTab + "\" style=\"width:100%; height:100%;\"><textarea name=\"code_" + nameTab + "\">" + code + "</textarea></div>";
 	htmlButtons = generateHTMLToolBarFile(data['id']);
 	tabs.append( "<div id='" + id + "' style='position: relative; width: 100%; height:100%; padding: 0;'><p>" + htmlButtons + htmlCode + "</p></div>" );
@@ -933,7 +934,22 @@ function openCodeFile(data, modeStr) {
 	var he = u.offsetHeight;
 	var x = document.getElementsByName('code_'+nameTab)[0];
 	
-	var conf = {mode: modeStr, lineNumbers: true, value: x.value, theme: "eclipse"};
+	var conf = {
+			mode: modeStr, 
+			lineNumbers: true, 
+			value: x.value, 
+			theme: "eclipse",
+			onScroll: function(cm) {
+				var r = cm.getScrollInfo(); 
+				var totalHeight = r.height;
+				var scrollTop = r.y;
+				var scrollClient = r.clientHeight;
+				
+				var aux =totalHeight - scrollClient;
+				var pctEnd = scrollTop / aux; 
+				//TODO
+			}
+	};
 	var myCodeMirror = CodeMirror.fromTextArea(x,conf);
 	myCodeMirror.setSize(null,(he-150)+"px");
 	//myCodeMirror.getScrollerElement().style.heigth = he+"px";
