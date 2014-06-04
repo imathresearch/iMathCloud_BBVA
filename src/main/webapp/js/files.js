@@ -339,7 +339,7 @@ function form_tpl_inputText() {
 			+ "<form id='formInput' >"
 			+ "<p>"
 			+ var_content
-			+ "<INPUT TYPE='text' NAME='inputbox' VALUE=" + text_box + " onkeyup='if (event.keyCode == 13) $(\"#dialogPopup\").dialog(\"option\", \"buttons\")[Submit].click.apply($(\"#dialogPopup\"));'>"
+			+ "<INPUT TYPE='text' NAME='inputbox' VALUE='" + text_box + "' onkeydown='if (event.keyCode == 13) {clickSubmit(); return false;}'/>"
 			+ "</p>"
 			+ "</form>" + "<div id='response'></div>";
 
@@ -363,7 +363,6 @@ function form_tpl_inputText() {
 	};
 		
 	var funcSubmit = function() {
-		alert(formInput.inputbox.value);
 		if(checkFileName(formInput.inputbox.value)){
 			func(idFile, formInput.inputbox.value, funcSuccess, funcError);
 		}
@@ -386,7 +385,12 @@ function form_tpl_inputText() {
 	};
 }
 
-
+// Just to simulate the click on the submit buton
+// It is used when the user press RETURN 
+function clickSubmit() {
+	$(':button:contains("Submit")').click();
+}
+		
 function renameFile(idFile, newName, funcSuccess, funcError) {
 	
 	if (idFile == undefined) {
