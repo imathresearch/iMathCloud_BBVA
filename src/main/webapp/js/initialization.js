@@ -193,6 +193,9 @@ var mathLanguageCode;				// Default math language of the user
 var mathFunc;						// List of math functions available by the user
 var urlConsole;						// The url connection for the math console
 var filesIdOpen = new Array();		// Just to control whether an open file is doubleclicked again
+var filesPagination = new Array();	// To control the pagination of the loaded file.
+									// If filesIdOpen[i] = idFile, then filesPagination[i] = P, where P is hte current pagination
+
 var filesIdOpenPlot = new Array();	// For plot csv files control
 var cmInstance = new Array();		// If filesIdOpen[i] = idFIle, the code mirror instance for the idFile will
 									// be in cmInstance[i]

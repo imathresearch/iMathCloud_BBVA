@@ -51,7 +51,7 @@ import javax.persistence.EntityTransaction;
 public class FileController extends AbstractController {
 	 
     // We do it this for testing purposes, so we can modify the pagination. 
-    private static int PAGINATION_REAL = 5000;   
+    private static int PAGINATION_REAL = 200;   
     private int PAGINATION = FileController.PAGINATION_REAL;    // See task #47: Used for pagination when requested a file.   
                                                                 // Page 1 will download from line 0 to PAGINATION-1
     

@@ -646,6 +646,7 @@ function addOpenFile(idFile) {
 	}
 	if(yes) { j--; }
 	filesIdOpen[j]=idFile;
+	filesPagination[j] = 1;
 }
 
 function addOpenFilePlot(idFile) {
@@ -732,6 +733,7 @@ function loadFile(idFile){
 	else {
 		if(isFile(idFile)){
 			$.ajax({
+				data: {page: 1},
 		        url: "rest/file_service/getFileContent/" + userName + "/" + idFile,
 		        cache: false,
 		        dataType: "json",
