@@ -52,15 +52,14 @@ public class FileService {
 	//@Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public FileContentDTO REST_getFileContent(@PathParam("userName") String userName, @PathParam("id") Long id,
-		@QueryParam("numLines") Integer numLines){
-		//TODO: Test needed!!
+		@QueryParam("page") Integer page){
 		try { 
 			FileContentDTO out = new FileContentDTO();
 			File file = db.getFileDB().findById(id);
-			if (numLines == null){
+			if (page == null){
 				out.content = fc.getFileContent(userName, file);
 			}else{
-				out.content = fc.getFileContent(userName, file, numLines);
+				out.content = fc.getFileContent(userName, file, page);
 			}
 			out.type=file.getIMR_Type();
 			out.name=file.getName();

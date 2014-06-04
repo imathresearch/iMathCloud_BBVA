@@ -41,6 +41,7 @@ import java.util.logging.Logger;
 
 import javax.persistence.EntityTransaction;
 
+
 /**
  * The File Controller class. It offers a set of methods to manage remote files. 
  * @author iMath
@@ -49,11 +50,21 @@ import javax.persistence.EntityTransaction;
 @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 public class FileController extends AbstractController {
 	 
+    // We do it this for testing purposes, so we can modify the pagination. 
+    private static int PAGINATION_REAL = 5000;   
+    private int PAGINATION = FileController.PAGINATION_REAL;    // See task #47: Used for pagination when requested a file.   
+                                                                // Page 1 will download from line 0 to PAGINATION-1
+    
 	@Inject private FileUtils fileUtils;
 
 	// For testing purposes only, to simulate injection
     public void setFileUtils(FileUtils fu) {
         this.fileUtils = fu;
+    }
+    
+    // For testing purposes only
+    public void setPagination(int pagination) {
+        this.PAGINATION = pagination;
     }
     
     /**
@@ -78,13 +89,14 @@ public class FileController extends AbstractController {
      * Retrieve the entire content of a file. It should be only used for source files and small data files.
      * @param String - The authenticated user name of the system. If it is a remote file, might need credentials.
 	 * @param File - The {@link File}
+	 * @param Integer - The page number to be uploaded
      */
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
-    public List<String> getFileContent(String userName, File file, Integer numLines) throws Exception{
-    	//TODO: Test needed!
+    public List<String> getFileContent(String userName, File file, Integer page) throws Exception{
+
     	LOG.info("File id:" + file.getId() + " requested");
     	try {
-    		return(getFile(userName,file.getUrl(),numLines));
+    		return(getFile(userName,file.getUrl(),page));
     	}
     	catch (Exception e) {
     		LOG.severe("Error opening the file id: " + file.getId());
@@ -765,22 +777,30 @@ public class FileController extends AbstractController {
     	}
     }
     
-    private  List<String> getFile(String userName, String uri, Integer numLines) throws Exception {
+    private  List<String> getFile(String userName, String uri, Integer page) throws Exception {
     	// TODO: Test needed!
     	
-    	// TODO: We must consider multiple-host support!
-    	URI u = URI.create(uri);
+        if (page <= 0) {
+            throw new IMathException(IMathException.IMATH_ERROR.INVALID_PAGINATION);
+        }
+        int initLine = this.PAGINATION * (page-1);
+        int endLine = this.PAGINATION * page - 1;
+        
+        URI u = URI.create(uri);
     	Path path = Paths.get(u.getPath());
     	List<String> output = new ArrayList<String>();
     	try (BufferedReader reader = new BufferedReader(new FileReader(path.toString()))) {
     	    String line = null;
     	    boolean continueReading = true;
-    	    int count = 1;
+    	    int count = 0;
     	    while ((line = reader.readLine()) != null && continueReading) {
-    	        output.add(line);
-    	        continueReading = numLines.equals(null) ? true : (count < numLines);
+    	        if (count >= initLine) {
+    	            output.add(line);    
+    	        }
     	        count++;
+    	        continueReading = count <=endLine;
     	    }
+    	    reader.close();
         	return output;
     	} 
     	catch (IOException e) {

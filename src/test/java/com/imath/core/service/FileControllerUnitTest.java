@@ -34,8 +34,13 @@ import com.imath.core.model.IMR_User;
 import com.imath.core.model.Job;
 import com.imath.core.util.FileUtils;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.lang.Exception;
+import java.net.URI;
 import java.nio.file.Files;
+import java.util.logging.Logger;
 
 public class FileControllerUnitTest {
 
@@ -45,6 +50,9 @@ public class FileControllerUnitTest {
 
     // We do not mock the MainServiceDB. We mock the inside elements.
     private MainServiceDB db;
+    
+    @Mock
+    private Logger LOG;
     
     // Inject objects might be mocked. Not all of them, only the ones we need to control 
     // to test what we want to test
@@ -75,7 +83,7 @@ public class FileControllerUnitTest {
         db.setFileDB(fileDB);
         fileController.setMainServiceDB(db);
         fileController.setFileUtils(fileUtils);
-        
+        fileController.setLog(LOG);
     }
     
     @Test
@@ -1380,5 +1388,60 @@ public class FileControllerUnitTest {
     	assertTrue(captured_files.get(0).getUrl().equals(urlNewFile));
         
     }
+    
+    @Test
+    // Pagination testing 
+    public void test_getFileContent_Pagination_Basic() throws Exception {
+        int linesPerPage = 3;
+        String userName = "user";
+        this.fileController.setPagination(linesPerPage);
+        String uri = createFile("test.csv", linesPerPage*5);
+        File file = new File();
+        file.setUrl(uri);
+        
+        // Base case: Pagination is 0 and negative. An exception should be thrown
+        try{
+            fileController.getFileContent(userName, file, -1);
+        }
+        catch (IMathException e) {
+            assertEquals(e.getIMATH_ERROR(),IMathException.IMATH_ERROR.INVALID_PAGINATION);  
+        }
 
+        try{
+            fileController.getFileContent(userName, file, 0);
+        }
+        catch (IMathException e) {
+            assertEquals(e.getIMATH_ERROR(),IMathException.IMATH_ERROR.INVALID_PAGINATION);  
+        }
+
+        // Standard case: Page = 1
+        List<String> lines = fileController.getFileContent(userName, file, 1);
+        assertTrue(lines.size()==linesPerPage);
+        assertTrue(lines.get(0).equals("0"));
+        assertTrue(lines.get(1).equals("1"));
+        assertTrue(lines.get(2).equals("2"));
+        
+        // Standard case: Page = 3
+        lines = fileController.getFileContent(userName, file, 3);
+        assertTrue(lines.size()==linesPerPage);
+        assertTrue(lines.get(0).equals("6"));
+        assertTrue(lines.get(1).equals("7"));
+        assertTrue(lines.get(2).equals("8"));
+    }
+
+    private String createFile(String name, int lines) {
+        try {
+            java.io.File file = new java.io.File(name);
+            BufferedWriter output = new BufferedWriter(new FileWriter(file));
+            for (int i = 0; i<lines; i++) {
+                String line = i + "\n";
+                output.write(line);    
+            }
+            output.close();
+            return file.toURI().toString();
+          } catch ( IOException e ) {
+             e.printStackTrace();
+             return "";
+          }
+    }
 }

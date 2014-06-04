@@ -31,4 +31,9 @@ public abstract class AbstractController {
     public void setMainServiceDB(MainServiceDB db) {
         this.db = db;
     }
+    
+    // For testing purposes only, to simulate injection    
+    public void setLog(Logger LOG) {
+        this.LOG = LOG;
+    }
 }
