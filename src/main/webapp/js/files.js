@@ -649,6 +649,35 @@ function addOpenFile(idFile) {
 	filesPagination[j] = 1;
 }
 
+// Returns the current pagination of a given open IdFile
+function getPaginationFileId(idFile) {
+	var cc = filesIdOpen.length;
+	var j = 0;
+	var found = false;
+	while (j<cc && !found) {
+		found = (filesIdOpen[j]==idFile);
+		j++;
+	}
+	if (found) { 
+		return filesPagination[j-1];
+	}
+	return 1;
+}
+
+//Sets the current pagination of a given open IdFile
+function setPaginationFileId(idFile, pagination) {
+	var cc = filesIdOpen.length;
+	var j = 0;
+	var found = false;
+	while (j<cc && !found) {
+		found = (filesIdOpen[j]==idFile);
+		j++;
+	}
+	if (found) { 
+		filesPagination[j-1] = pagination;
+	}
+}
+
 function addOpenFilePlot(idFile) {
 	var yes = false;
 	var cc = filesIdOpenPlot.length;
@@ -750,6 +779,29 @@ function loadFile(idFile){
     }
     		
 };
+
+function loadFileNextPage(idFile, cm) {
+	if (isFile(idFile)) {
+		var pagination = getPaginationFileId(idFile);
+		if (pagination > 0) {		// If pagination for this file is 0, it means that the file is completely uloaded. 
+			$.ajax({
+				data: {page: pagination+1},
+		        url: "rest/file_service/getFileContent/" + userName + "/" + idFile,
+		        cache: false,
+		        dataType: "json",
+		        type: "GET",
+		        success: function(fileDTO) {
+		        	setPaginationFileId(idFile, pagination+1);
+		        	attachNewData(fileDTO, cm);
+		        },
+		        error: function(error) {
+		            console.log("error opening file -" + error.status);
+		        }
+		    });
+		}
+	}
+	
+}
 
 function executeFileInConsole(idFile){
 	if(isFile(idFile)){
@@ -910,6 +962,19 @@ function getIdFromTabName(str) {
 	return str.substring(9);
 }
 
+function attachNewData(data, cm) {
+	//alert("in attachNewData");
+	var code="";
+	if (data['content'].length > 0) {
+		for(var i=0; i<data['content'].length;i++) {
+			code = code + data['content'][i] + '\n';
+		}
+		cm.replaceRange(code, {line: Infinity});
+	} else {
+		setPaginationFileId(data['id'], 0);	// This indicates that the file has been completely uploaded
+	}
+}
+
 function openCodeFile(data, modeStr) {
 	var nameTab = buildTabName(data['id']);
 	var tabTemplate = "<li><a href='#{href}'>#{label}</a> <span class='ui-icon ui-icon-close' role='presentation'>Remove Tab</span></li>";
@@ -946,7 +1011,15 @@ function openCodeFile(data, modeStr) {
 				var scrollClient = r.clientHeight;
 				
 				var aux =totalHeight - scrollClient;
-				var pctEnd = scrollTop / aux; 
+				var pctEnd = -1;
+				if (aux > 0) {	// Here we prevent division by 0 and the case where aux is negative (if that possible?)
+					pctEnd = scrollTop / aux * 100; 			// if pctEnd = 0, the scroll is in the top. If close to 100, is at the end of the scroll	
+				} 
+				
+				if (pctEnd >= 95) {
+					var idFile = data['id'];										// We get the idFile being edited
+					loadFileNextPage(idFile, cm);								// We upload the next page of the file
+				}
 				//TODO
 			}
 	};
