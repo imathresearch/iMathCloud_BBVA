@@ -122,6 +122,31 @@ public class FileController extends AbstractController {
     	}
     }
     
+    /**
+     * Save the content of a file considering pagination. It should be only used for source files and small data files.
+     * @param String - The authenticated user name of the system. If it is a remote file, might need credentials.
+     * @param String - The uri of the file
+     * @param Long - The maximum page loaded 
+     */
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    public void saveFileContent(String userName, File file, List<String> content, Long page) throws Exception{
+        //TODO: Test needed!
+        
+        if (userName==null || file==null || content ==null || page==null) {
+            throw new IMathException(IMathException.IMATH_ERROR.OTHER, "saveFileContent - All parameters must be different than Null");
+        }
+        LOG.info("File id:" + file.getId() + " save requested with pagination");        
+        if (page.longValue()<=0) {
+            throw new IMathException(IMathException.IMATH_ERROR.INVALID_PAGINATION);
+        }
+        try {
+            saveFile(userName,file.getUrl(),content, page.longValue());
+        }
+        catch (Exception e) {
+            LOG.severe("Error opening the file id: " + file.getId());
+            throw e;
+        }
+    }
     
     /**
      * Check if a file already exist in a specific directory. 
@@ -752,9 +777,59 @@ public class FileController extends AbstractController {
     	    writer.close();
     	} 
     	catch (IOException e) {
-    		LOG.severe("File: "+ uri + " canno be written");
+    		LOG.severe("File: "+ uri + " cannot be written");
     	    throw e; 
     	}
+    }
+    
+    private void saveFile(String serName, String uri, List<String> content, long page) throws Exception {
+
+        Charset charset = Charset.forName("US-ASCII");
+        
+        URI u = URI.create(uri);
+        Path path = Paths.get(u.getPath());
+        Path pathTemp = Paths.get(u.getPath()+"_temp");
+        
+        // First, we start by writing to a temp file the current content. We do not close it, since we need to append some data.
+        try (BufferedWriter writer = Files.newBufferedWriter(pathTemp, charset)) {
+            Iterator<String> it = content.iterator();
+            while (it.hasNext()) {
+                writer.write(it.next());
+                writer.newLine();
+            }
+            writer.flush();
+            
+            // Now, we open the original file, jump the first block and copy to the temp file the rest 
+            try (BufferedReader reader = Files.newBufferedReader(path, charset)) {
+                int i = 0;
+                long lastLineToAvoid = page * this.PAGINATION - 1;      //Lines from 0 to lastLineToAvoid should not be included in the file
+                String line = null;
+                while ((line = reader.readLine()) != null) {
+                    if (i>lastLineToAvoid) {
+                        writer.write(line);
+                        writer.newLine();
+                    }
+                    i++;
+                }
+                writer.flush();
+                reader.close();
+                
+            } catch (IOException e) {
+                writer.close();
+                LOG.severe("File: "+ uri + " cannot be written");
+                throw e;
+            }
+            writer.close();
+            
+            // Finally, we rename the file properly
+            java.io.File tempFile = new java.io.File(pathTemp.toString());
+            java.io.File realFile = new java.io.File(path.toString());
+            tempFile.renameTo(realFile);
+        } 
+        catch (IOException e) {
+            LOG.severe("Temp File for: "+ uri + " cannot be written");
+            throw e; 
+        }
     }
     
     private  List<String> getFile(String userName, String uri) throws Exception {

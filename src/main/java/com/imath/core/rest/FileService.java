@@ -121,6 +121,28 @@ public class FileService {
 		return builder.build();
     }
 	
+	@POST
+	@Path("/saveFileContent/{userName}/{id}/{page}")
+	@Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response REST_saveFileContent(@PathParam("userName") String userName, @PathParam("id") Long id, @PathParam("page") Long page, List<String> content) {
+        Map<String, String> responseObj = new HashMap<String, String>();
+        responseObj.put("ok","200");
+        Response.ResponseBuilder builder = Response.ok().entity(responseObj);
+        try {
+            File file = db.getFileDB().findById(id);
+            fc.saveFileContent(userName, file, content, page);
+        }
+        catch (Exception e) {
+            LOG.severe("Error saving file id: " + id + " from user: "+ userName);
+            responseObj = new HashMap<String, String>();
+            responseObj.put("error", e.getMessage());
+            builder = Response.status(Response.Status.BAD_REQUEST).entity(responseObj);
+        }
+        //return new Long(1);
+        return builder.build();
+    }
+   
 	
 	@GET
     @Path("/getFiles/{userName}")
