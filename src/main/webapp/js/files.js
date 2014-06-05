@@ -723,12 +723,12 @@ function closeOpenFilePlot(idFile) {
 }
 
 function decreaseTabIndex(pivot) {
-	for (i=0;i<filesIdOpenTabPlot.length;i++) {
+	for (var i=0;i<filesIdOpenTabPlot.length;i++) {
 		if(filesIdOpenTabPlot[i]>pivot) {
 			filesIdOpenTabPlot[i]--;
 		}
 	}
-	for (i=0;i<filesIdOpenTab.length;i++) {
+	for (var i=0;i<filesIdOpenTab.length;i++) {
 		if(filesIdOpenTab[i]>pivot) {
 			filesIdOpenTab[i]--;
 		}
@@ -737,20 +737,31 @@ function decreaseTabIndex(pivot) {
 
 
 function saveFile(idFile, content){
+	var pagination = getPaginationFileId(idFile);
+	var url = "rest/file_service/saveFileContent/" + userName + "/" +idFile;
+	if (pagination > 0) {
+		url = "rest/file_service/saveFileContentPage/" + userName + "/" +idFile;
+		url = url + "/" + pagination;
+	} 
+	
 	$.ajax({
-		url: "rest/file_service/saveFileContent/" + userName + "/" +idFile,
+		url: url,
 		cache: false,
 		contentType: "application/json; charset=utf-8",
 		dataType: "text json",
 		type: "POST",
 		data: JSON.stringify(content),
 		success: function(dat) {
-			// DO something to show that the file is saved
+			if (pagination > 0) {
+				// We must reload everything until current page, just to keep the consistency
+				
+			}
 		},
 		error: function(error) {
 			console.log("error saving file -" + error.responseText);
 		}
 	});
+	
 }
 
 
@@ -967,7 +978,8 @@ function attachNewData(data, cm) {
 	var code="";
 	if (data['content'].length > 0) {
 		for(var i=0; i<data['content'].length;i++) {
-			code = code + data['content'][i] + '\n';
+			
+			code = code + '\n' + data['content'][i];
 		}
 		cm.replaceRange(code, {line: Infinity});
 	} else {
@@ -987,7 +999,10 @@ function openCodeFile(data, modeStr) {
 	
 	var code="";
 	for(var i=0; i<data['content'].length;i++) {
-		code = code + data['content'][i] + '\n';
+		if (i>0) {
+			code = code + '\n';
+		}
+		code = code + data['content'][i];
 	}
 	//alert(code);
 	htmlCode = "<div id=\"codeDIV_" + nameTab + "\" style=\"width:100%; height:100%;\"><textarea name=\"code_" + nameTab + "\">" + code + "</textarea></div>";

@@ -122,7 +122,7 @@ public class FileService {
     }
 	
 	@POST
-	@Path("/saveFileContent/{userName}/{id}/{page}")
+	@Path("/saveFileContentPage/{userName}/{id}/{page}")
 	@Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response REST_saveFileContent(@PathParam("userName") String userName, @PathParam("id") Long id, @PathParam("page") Long page, List<String> content) {

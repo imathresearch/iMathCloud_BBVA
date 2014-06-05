@@ -762,15 +762,19 @@ public class FileController extends AbstractController {
     	Charset charset = Charset.forName("US-ASCII");
     	
     	// TODO: We must consider multiple-host support!
-    	// TODO: We must handle IO errors... If an error occurs during writting, we should restore the original file
+    	// TODO: We must handle IO errors... If an error occurs during writing, we should restore the original file
     	
     	URI u = URI.create(uri);
     	Path path = Paths.get(u.getPath());
     	
     	try (BufferedWriter writer = Files.newBufferedWriter(path, charset)) {
+    	    boolean first = true;
     		Iterator<String> it = content.iterator();
     	    while (it.hasNext()) {
-    	        writer.write(it.next());
+    	        if(!first) {
+    	            writer.write(it.next());
+    	        }
+    	        first = false;
     	        writer.newLine();
     	    }
     	    writer.flush();
@@ -793,25 +797,34 @@ public class FileController extends AbstractController {
         // First, we start by writing to a temp file the current content. We do not close it, since we need to append some data.
         try (BufferedWriter writer = Files.newBufferedWriter(pathTemp, charset)) {
             Iterator<String> it = content.iterator();
+            boolean first = true;
+            boolean something = false;
             while (it.hasNext()) {
+                something = true;
+                if (!first) {
+                    writer.newLine();
+                }
                 writer.write(it.next());
-                writer.newLine();
+                first=false;
             }
-            writer.flush();
-            
             // Now, we open the original file, jump the first block and copy to the temp file the rest 
             try (BufferedReader reader = Files.newBufferedReader(path, charset)) {
                 int i = 0;
                 long lastLineToAvoid = page * this.PAGINATION - 1;      //Lines from 0 to lastLineToAvoid should not be included in the file
                 String line = null;
+                boolean first2 = true;
                 while ((line = reader.readLine()) != null) {
                     if (i>lastLineToAvoid) {
+                        if (!first2 || (first2 && something)) {
+                            writer.newLine();
+                        }
                         writer.write(line);
-                        writer.newLine();
+                        first2 = false;
                     }
                     i++;
                 }
                 writer.flush();
+                writer.close();
                 reader.close();
                 
             } catch (IOException e) {
@@ -819,8 +832,6 @@ public class FileController extends AbstractController {
                 LOG.severe("File: "+ uri + " cannot be written");
                 throw e;
             }
-            writer.close();
-            
             // Finally, we rename the file properly
             java.io.File tempFile = new java.io.File(pathTemp.toString());
             java.io.File realFile = new java.io.File(path.toString());
