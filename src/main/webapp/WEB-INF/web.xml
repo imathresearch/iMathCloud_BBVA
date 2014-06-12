@@ -6,20 +6,25 @@
       <javaee:description>Protects all resources</javaee:description>
       <javaee:url-pattern>/index.jsp</javaee:url-pattern>
       <javaee:url-pattern>/bigcloud.jsp</javaee:url-pattern>
+      <javaee:url-pattern>/rest/*</javaee:url-pattern>
     </javaee:web-resource-collection>
     <javaee:auth-constraint>
       <javaee:role-name>WebAppUser</javaee:role-name>
     </javaee:auth-constraint>
   </javaee:security-constraint>
-  <javaee:security-role>
-    <javaee:role-name>WebAppUser</javaee:role-name>
-  </javaee:security-role>
-  <javaee:login-config>
-    <javaee:auth-method>FORM</javaee:auth-method>
+  <!-- javaee:login-config>
+    <javaee:auth-method>BASIC</javaee:auth-method>
     <javaee:realm-name>ApplicationRealm</javaee:realm-name>
     <javaee:form-login-config>
     	<javaee:form-login-page>/loginform.html</javaee:form-login-page>
 		<javaee:form-error-page>/loginerror.html</javaee:form-error-page>
 	</javaee:form-login-config>
+  </javaee:login-config-->
+  <javaee:login-config>
+    <javaee:auth-method>BASIC</javaee:auth-method>
+    <javaee:realm-name>ApplicationRealm</javaee:realm-name>
   </javaee:login-config>
+  <javaee:security-role>
+    <javaee:role-name>WebAppUser</javaee:role-name>
+  </javaee:security-role>
 </web-app>
