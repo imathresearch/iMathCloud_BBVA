@@ -1,280 +1,89 @@
-<%@ page import="java.security.Principal" %>
-
-<!-- apps/frontend/templates/layoutimath.php -->
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
- "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-  <head>
-    <title>iMathCloud - Your Math in the Cloud</title>
-	<!--link rel="stylesheet" type="text/css" href="js/codebase/dhtmlx.css"></link-->
-	<link href="css/start/jquery-ui-1.10.0.custom.css" rel="stylesheet">
-	<link href="css/imath.css" rel="stylesheet">
-
-	<!-- link href="css/jquery.dataTables_themeroller.css" rel="stylesheet"-->
-	<link href="css/jquery.treeview.css" rel="stylesheet">
-	<link href="css/jquery.contextMenu.css" rel="stylesheet">
-	<link href="css/footable-0.1.css" rel="stylesheet" type="text/css" />
-		
-	<!-- External Libs -->
+<head>
+	<meta charset="UTF-8" />
+    <title>iMath Cloud Login Page</title>
+    <link href="css/demo.css" rel="stylesheet" type="text/css" />
+	<link href="css/style2.css" rel="stylesheet" type="text/css" />
+	<link href="css/animate-custom.css" rel="stylesheet" type="text/css" />
 	<script src="js/libs/jquery-1.9.0.js" type="text/javascript"></script>
-	<script src="js/libs/jquery-ui-1.10.0.custom.min.js" type="text/javascript"></script>
-	<script src="js/libs/jquery.contextMenu.js" type="text/javascript"></script>
-	<script src="js/libs/jquery.layout-latest.js" type="text/javascript"></script>
-	<script src="js/libs/jquery.treeview.js" type="text/javascript"></script>
-	<script src="js/libs/jquery.treeview.edit.js" type="text/javascript"></script>
-	<!-- <script src="js/libs/data-generator.js" type="text/javascript"></script> --><!-- This file doesn't exist! --> 
-	<script src="js/libs/footable-0.1.js" type="text/javascript"></script>
-	<script src="js/flotcharts/jquery.flot.js" type="text/javascript"></script>
-	<script src="js/flotcharts/jquery.flot.errorbars.js" type="text/javascript"></script>
-	<script src="js/flotcharts/jquery.flot.boxplot.js" type="text/javascript"></script>
-	<script src="js/libs/jquery.csv.min.js" type="text/javascript"></script>
-	<script src="js/libs/serializeObject.js" type="text/javascript"></script>
-	
-	<!-- Own Libs -->
-	<script src="js/plot/plotCSV.js" type="text/javascript"></script>
-	<script src="js/files.js" type="text/javascript"></script>
-	<script src="js/jobs.js" type="text/javascript"></script>
-	<script src="js/plugins.js" type="text/javascript"></script>
-	<script src="js/toolbar.js" type="text/javascript"></script>
-	<script src="js/notebook.js" type="text/javascript"></script>
-	<script src="js/Plugin/desc.statistics.js" type="text/javascript"></script>
-	<script src="js/initialization.js" type="text/javascript"></script>
-	
-	<style type="text/css">
-			html, body {
-			margin: 0px;
-			padding: 0px;
-			background:		#66C;	/* color page so it can be seen */
-			font-family: Cambria, Palatino, "Palatino Linotype", "Palatino LT STD", Georgia, serif;
-			color: #1d3c41;
-			font-weight: 400;
-			font-size: 15px;
-		}
+</head>
 
-		.ui-layout-mask {
-			background:	#C00 !important;
-			opacity:	.20 !important;
-			filter:		alpha;
-		}
-		.ui-layout-pane {
-			color:			#000;
-			background:		#EEE;
-		}
-		
-		table.dataTable {
-			margin: 0px;
-		}
-		
-		iframe {
-			padding:	0 !important; /* iframes should not have padding */
-			overflow:	auto !important;
-		}
-		
-		.ui-layout-pane { /* all 'panes' */ 
-			border: 1px solid #BBB; 
-		} 
-		.ui-layout-pane-center { /* IFRAME pane */ 
-			padding: 0;
-			margin:  0;
-		}
-		 
-		.ui-layout-pane-west { /* west pane */ 
-			padding: 0; 
-			margin:  0;
-			background-color: #EEE !important;
-			overflow: auto;
-		} 
+<br><br>
 
-		.ui-layout-resizer { /* all 'resizer-bars' */ 
-			background: #DDD; 
-			} 
-			
-		.ui-layout-resizer-open:hover { /* mouse-over */
-			background: #9D9; 
-		}
+<body>
+<div class="container">
+<section>				
+<div id="container_demo" >
 
-		.ui-layout-toggler { /* all 'toggler-buttons' */ 
-			background: #AAA; 
-		} 
-		.ui-layout-toggler-closed { /* closed toggler-button */ 
-			background: #CCC; 
-			border-bottom: 1px solid #BBB; 
-		} 
-		/*.ui-layout-toggler .content { /* toggler-text */ 
-			/*font: 14px bold Verdana, Verdana, Arial, Helvetica, sans-serif;*/
-		/*}*/
-		
-		.ui-layout-toggler:hover { /* mouse-over */ 
-			background: #DCA; 
-		} 
-		.ui-layout-toggler:hover .content { /* mouse-over */ 
-			color: #009; 
-		}
-		/* masks are usually transparent - make them visible (must 'override' default) */
-		.ui-layout-mask {
-			background:	#C00 !important;
-			opacity:	.20 !important;
-			filter:		alpha(opacity=20) !important;
-		}
-		
-		.ui-accordion .ui-accordion-content {
-			padding: 0;
-		}
-		.ui-tab .ui-tab-content {
-			padding: 0;
-		}
-		.treeview ul {
-    		background-color: transparent;
-   		 	margin-top:4px;
-		}	
-		.toolbar {
-			padding: 0px;
-			display: inline-block;
-		}
-		#tabs li .ui-icon-close { float: left; margin: 0.4em 0.2em 0 0; cursor: pointer; }
-		.CodeMirror {border-top: 1px solid black; border-bottom: 1px solid black;}
-		
-		.codrops-top {
-    		line-height: 24px;
-		    font-size: 11px;
-		    /*background: none repeat scroll 0% 0% rgba(255, 255, 255, 0.4);*/
-		    background: url(css/images/bg.jpg) repeat top left;
-		    text-transform: uppercase;
-		    z-index: 9999;
-		    position: relative;
-		    box-shadow: 1px 0px 2px rgba(0, 0, 0, 0.2);
-		 }
-		 
-		.codrops-top span.right {
-    		float: right;
-		}
-		
-		.codrops-top a {
- 		   	letter-spacing: 1px;
-    		color: #333;
-    		text-shadow: 0px 1px 1px #FFF;
-		}
-		.codrops-top span.right a {
-		    float: left;
-    		display: block;
-		}
-	</style>
-	
-  </head>
-  
-  <body>
-  	<link rel='stylesheet' href='css/codemirror.css'></link>
-  	<link rel='stylesheet' href='css/eclipse.css'></link>
-  	<!--script src="js/layoutInteractiveMath.js" type="text/javascript"></script-->
-  	<script src='js/libs/codemirror.js'></script>
-  	<script src='js/libs/python.js'></script>
-  	<script src='js/libs/r.js'></script>
-
-
-<!--  The static top bar for logout and other methods-->
- 
-
-	<div class="ui-layout-north" id="ui-layout-north">
-		<div class="codrops-top">
-    		<span class="right">
-    			<a href="logoutIMATHCLOUD.jsp">
-        			<strong>Logout</strong>
-        		</a>
-			</span>
-    		<div class="clr"></div>
-    	</div>
-	</div><!--/ Codrops top bar -->
-	
-	<!-- The initial filling stuff of the interactive math prototype -->            
-	<!-- The left side panel, which contains file navigation system, team box access, and jobs-->
-	<div class="ui-layout-west" id="ui-layout-west" style="width: 100%; height:100%;">
-		<div id="menu_west1" style="margin: 0;">
-			<h2>Remote Files</h2>
-				<div id="divRemoteFiles" style="height:300px; overflow:auto">
-					<div id="toolbarFiles" class="ui-widget-header ui-corner-all">
-						<small>
-						<button id="refreshTreeButton">Refresh tree</button>
-						<button id="uploadFileButton">Upload file</button>
-						<!-- button id="newDirectoryButton">New directory</button-->
-						<!-- button id="newFileButton">New File</button-->
-						<!-- button id="copyButton">Copy</button-->
-						<!-- button id="pasteButton">Paste</button-->
-						<!-- button id="deleteButton">Delete</button-->
-						</small>
-					</div>
-					<small id="remoteTreeContent">
-						<ul id="remoteTree" class="filetree">
-						</ul>
-						<ul id="remoteTreeShared" class="filetree">
-						</ul>
-					</small>
-				</div>
-		</div>
-		<div id="menu_west3">
-			<h2>Submitted Jobs</h2>
-				<div id = "divJobs" style="padding: 0;height:300px; overflow:auto"> 
-					<div id="toolbarJobs" class="ui-widget-header ui-corner-all">
-						<small>
-						<button id="refreshJobButton">Refresh jobs list</button>
-						<!-- button id="viewJobButton">View job data</button-->
-						<!-- button id="plotJobButton">Plot job output</button-->
-						<!-- button id="runJobButton">Run job</button-->
-						<!-- button id="pauseJobButton">Pause job</button-->
-						<!-- button id="cancelJobButton">Cancel job</button-->
-						<!-- button id="deleteJobButton">Delete job</button-->
-						</small>
-					</div>
-					<table id="jobsXML" class="footable" border="0">
-					<thead>
-						<tr>
-							<th> </th>
-							<th>Job#</th>
-							<th>Description</th>
-							<th>Started</th>
-							<th>% Compl.</th>
-						</tr>
-					</thead>
-					<tbody id="jobsTBODY">
- 					</tbody>
-					</table>
-				</div>
-			<!--/div-->
-		</div>
+<div id="wrapper">
+	<a class="hiddenanchor" id="toregister"></a>
+    <a class="hiddenanchor" id="tologin"></a>
+	<div id="login" class="animate form">
+    	<form  action="login.jsp" method="POST" autocomplete="on"> 
+        	<h1>iMath Cloud - Log in</h1> 
+            	<p> 
+                	<label for="username" class="uname" data-icon="u" > Your email or username </label>
+                    <input id="username" name="j_username" required="required" type="text" placeholder="myusername or mymail@mail.com"/>
+                </p>
+                <p> 
+                	<label for="password" class="youpasswd" data-icon="p"> Your password </label>
+                    <input id="password" name="j_password" required="required" type="password" placeholder="eg. X8df!90EO" /> 
+                </p>
+                <p class="keeplogin"> 
+					<input type="checkbox" name="loginkeeping" id="loginkeeping" value="loginkeeping" /> 
+					<label for="loginkeeping">Keep me logged in</label>
+				</p>
+                <p class="login button"> 
+                	<input type="submit" value="Login" /> 
+				</p>
+                <!--p class="change_link">
+					Not a member yet ?
+					<a href="#toregister" class="to_register">Join us</a>
+				</p-->
+		</form>
 	</div>
-
-<!-- The central panel, which contains tabs, including interactive console-->
-	<div class="ui-layout-center" id="ui-layout-center" style="width: 100%; height:100%;">
-		<div id="tabs" style="position: absolute; width: 100%; height:100%;">
-			<ul>
-				<li><a href="#tabs-1">Interactive Math Console</a></li>
-			</ul>	
-			<div id="tabs-1" style="padding: 0;">
-				<iframe id="interactive_math" class="interactive_math" width="100%" frameborder="0" scrolling="no"></iframe>
-			</div>
-		</div>
-	</div>
-
-<!-- The right panel, which contains functionalities. It is empty now-->
-
-	<div class="ui-layout-east" id="ui-layout-east" style="width: 100%; height:100%;">
-		<div id="menu_east1">
-			<h2>Basic Statistics</h2>
-			<div id="basicStatistics" class="ui-corner-all" style="padding: 0;"></div>
-		</div>
-	</div>
-	<!-- The pop up forms -->
-<div id="dialogPopup">
-<div id="contentPopup"></div>
+	<!-- div id="register" class="animate form">
+    	<form  action="" autocomplete="on"> 
+			<h1> Sign up </h1> 
+            	<p> 
+                	<label for="usernamesignup" class="uname" data-icon="u">Your username</label>
+                    <input id="usernamesignup" name="usernamesignup" required="required" type="text" placeholder="mysuperusername690" />
+				</p>
+				<p> 
+					<label for="emailsignup" class="youmail" data-icon="e" > Your email</label>
+					<input id="emailsignup" name="emailsignup" required="required" type="email" placeholder="mysupermail@mail.com"/> 
+				</p>
+				<p> 
+					<label for="passwordsignup" class="youpasswd" data-icon="p">Your password </label>
+					<input id="passwordsignup" name="passwordsignup" required="required" type="password" placeholder="eg. X8df!90EO"/>
+				</p>
+				<p> 
+					<label for="passwordsignup_confirm" class="youpasswd" data-icon="p">Please confirm your password </label>
+					<input id="passwordsignup_confirm" name="passwordsignup_confirm" required="required" type="password" placeholder="eg. X8df!90EO"/>
+				</p>
+				<p class="signin button"> 
+					<input type="submit" value="Sign up"/> 
+				</p>
+				<p class="change_link">  
+					Already a member ?
+					<a href="#tologin" class="to_register"> Go and log in </a>
+				</p>
+		</form>
+	</div-->
 </div>
-
-<!-- The pop up form for the sharing options -->
-<div id="sharingOptions">
-<div id="contentSharingOptions"></div>
 </div>
+</section>
+</div>
+</body>
+</html>
 
-<script>
-
-var userName = "<%= request.getUserPrincipal().getName() %>";
-</script>
-  </body>
-</html> 
+<!-- 
+<form action="j_security_check" method=post>
+    <p><strong>Please Enter Your User Name: </strong>
+    <input type="text" name="j_username" size="25">
+    <p><p><strong>Please Enter Your Password: </strong>
+    <input type="password" size="15" name="j_password">
+    <p><p>
+    <input type="submit" value="Submit">
+    <input type="reset" value="Reset">
+</form> -->

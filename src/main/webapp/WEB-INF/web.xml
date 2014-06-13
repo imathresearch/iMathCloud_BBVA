@@ -4,7 +4,7 @@
     <javaee:web-resource-collection>
       <javaee:web-resource-name>All resources</javaee:web-resource-name>
       <javaee:description>Protects all resources</javaee:description>
-      <javaee:url-pattern>/index.jsp</javaee:url-pattern>
+      <javaee:url-pattern>/indexNew.jsp</javaee:url-pattern>
       <javaee:url-pattern>/bigcloud.jsp</javaee:url-pattern>
       <javaee:url-pattern>/rest/*</javaee:url-pattern>
     </javaee:web-resource-collection>
