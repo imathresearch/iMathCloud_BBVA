@@ -63,11 +63,12 @@ public class Exec {
     @Produces(MediaType.APPLICATION_JSON)
     public PublicResponse.StateDTO REST_getExecStatus(@PathParam("resourceId") String resourceId, @Context SecurityContext sc){
         //TODO: Test
+        PublicResponse.StateDTO out = null;
         try { 
             Long idJob = Long.parseLong(resourceId);
             Job job = jc.getJobStructure(idJob, sc);
-            PublicResponse.StateDTO out = null;
             if (job == null) {
+                // TODO: Response status should be INTERNAL_SERVER_ERROR!
                 out = PublicResponse.generateStatus(Response.Status.ACCEPTED.getStatusCode(), "exec/"+resourceId, "", PublicResponse.Status.NOTFOUND);
             } else {
                 PublicResponse.Status aux = null;
@@ -96,15 +97,35 @@ public class Exec {
                     out.setPcts(percDTO.getPerc());
                 }
             }
-            return out;
         }
         catch (Exception e) {
             LOG.severe("Error accessing resource exec/" + resourceId);
-            PublicResponse.StateDTO out = PublicResponse.generateStatus(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(), "exec/"+resourceId, "", PublicResponse.Status.NOTFOUND); 
-            return out;
+            out = PublicResponse.generateStatus(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(), "exec/"+resourceId, "", PublicResponse.Status.NOTFOUND); 
         }
+        return out;
     }
     
+    @GET
+    @Path("/stop/{resourceId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public PublicResponse.StateDTO REST_stopJob(@PathParam("resourceId") String resourceId, @Context SecurityContext sc){
+        PublicResponse.StateDTO out = null;
+        try {
+            Long idJob = Long.parseLong(resourceId);
+            Job job = jc.getJobStructure(idJob, sc);
+            if (job == null) {
+                out = PublicResponse.generateStatus(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(), "exec/"+resourceId, "", PublicResponse.Status.NOTFOUND);
+            } else {
+                job = jc.stopJob(idJob);
+                out = PublicResponse.generateStatus(Response.Status.ACCEPTED.getStatusCode(), "exec/"+resourceId, job.getDescription(), PublicResponse.Status.READY);                
+            }
+        } catch (Exception e) {
+            LOG.severe("Error accessing resource exec/" + resourceId);
+            out = PublicResponse.generateStatus(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(), "exec/"+resourceId, "", PublicResponse.Status.NOTFOUND); 
+        }
+        return out;
+    }
+
     /**
      * REST call that returns the output files given a jobId
      */

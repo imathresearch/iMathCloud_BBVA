@@ -37,6 +37,7 @@ public class Constants {
     static public final String HPC2_PLUGIN_SERVICE = "plugin";
     static public final String HPC2_PCTS_SERVICE = "getpct";
     static public final String HPC2_SUBMITJOB_SERVICE = "core/submit";
+    static public final String HPC2_STOPJOB_SERVICE = "stopJob";
     
     static public final String HPC2_REST_PLUGIN_KEY_FILENAME = "fileName";
     static public final String HPC2_REST_PLUGIN_KEY_DIRECTORY = "directory";

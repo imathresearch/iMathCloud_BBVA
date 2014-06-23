@@ -34,6 +34,8 @@ import com.imath.core.model.Job;
 import com.imath.core.model.JobResult;
 import com.imath.core.model.Job.States;
 import com.imath.core.model.Session;
+import com.imath.core.service.PluginController.PercDTO;
+import com.imath.core.util.Constants;
 import com.imath.core.data.MainServiceDB;
 import com.imath.core.exception.IMathException;
 
@@ -382,6 +384,65 @@ public class JobController extends AbstractController{
 				throw e2;
 			}
 		}
+    }
+    
+    
+    /**
+     * Stops a job of the given idJob. It updates the state of the job to terminated and calls HPC2 to really stop de job in the server 
+     * @param idJob 
+     */
+    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+    public Job stopJob(Long idJob) throws Exception{
+        try {
+            Job job = db.getJobDB().findById(idJob);
+            Host host = job.getHosted();
+            String finalURL = generateURLForHPC2Generic(host.getUrl(), Constants.HPC2_STOPJOB_SERVICE,idJob, "");
+            String json = this.makeAJAXCall_GET_ONE_INPUT(finalURL); 
+            job.setState(States.CANCELLED);
+            em.persist(job);
+            return job;
+        } catch(Exception e) {
+            return null;
+        }
+    }
+    
+    // REPLICATED from PluginController:
+    // TODO: Refactor as soon as possible
+    private String generateURLForHPC2Generic(String hostUrl, String service, Long idJob, String urlParams) {
+        String finalURL = Constants.HPC2_HTTP + 
+                hostUrl +  
+                ":" + Constants.HPC2_PORT + 
+                "/" + service + 
+                ""  + "?id=" + idJob;
+                if (!urlParams.equals("")) {
+                    finalURL = finalURL + "&" + urlParams;
+                }
+                
+        return finalURL;
+    }
+    
+    // REPLICATED from PluginController:
+    // TODO: Refactor as soon as possible
+    private String makeAJAXCall_GET_ONE_INPUT(String finalURL) {
+        LOG.info(finalURL);
+        String json = "";
+        try {
+            URL url = new URL(finalURL);
+            URLConnection urlConn = url.openConnection();
+            //urlConn.setRequestProperty("Content-Type", "application/json; charset=utf-8");
+            urlConn.setUseCaches(false);
+            urlConn.setDoOutput(false);     //Set method to GET
+            //urlConn.setDoInput(true);
+            urlConn.connect();          
+            BufferedReader in = new BufferedReader(new InputStreamReader(urlConn.getInputStream()));
+            json = in.readLine();
+            in.close();
+            
+        } catch(Exception e) {
+            // TODO:
+            // do nothing
+        }
+        return json;
     }
     
     /**
