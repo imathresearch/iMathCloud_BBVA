@@ -51,12 +51,11 @@ function getJobs(b) {
     });
 }
 
-
 function fillJobs(jobs) {
 	for(var i=0; i<jobs.length; i++) {
 		job = jobs[i];
 		var date = new Date(job['startDate']);
-		var aux = "<tr>";
+		var aux = "<tr id='" + genIdJobContextMenu(job['id'], job['state']) + "' class='" + genClassJobContextMenu(job['id']) + "' >";
 		aux = aux +"<td>" + getImageJobStatus(job['state']) + "</td>";
 		aux = aux + "<td><a onclick='showJobStatus(\""+ job['id'] + "\")' + >" + job['id'] + "</a></td>";
 		aux = aux + "<td><a onclick='showJobStatus(\""+ job['id'] + "\")' + >" + job['description'] + "</a></td>";
@@ -64,7 +63,27 @@ function fillJobs(jobs) {
 		aux = aux + '<td data-value="' + jobPercentCompletion(job) + '">' + jobPercentCompletion(job) + '</td>';
 		aux = aux + "</tr>";
 		$( "#jobsTBODY" ).append(aux);
+		
+		// Now we create the contextual menus
+		$.contextMenu({
+	        selector: '.' + genClassJobContextMenu(job['id']) , 
+	        trigger: 'right',
+	        callback: function(key, options) {
+	        	var a = options.$trigger.attr("id");
+				var b = a.split("__");
+	        	executeMenuJob(key,b[1]);
+	        },
+	        items: getContextMenuJob(job['state'])
+	    });
 	}
+}
+
+function genIdJobContextMenu (jobId, state) {
+	return "job__" + jobId;
+}
+
+function genClassJobContextMenu(jobId) {
+	return "con_menujob_" + jobId;
 }
 
 function jobPercentCompletion(job){
@@ -92,12 +111,14 @@ function jobPercentCompletion(job){
 }
 
 function getImageJobStatus(status) {
+	// TODO: Consider another status: CANCELLED. Not it is treated as FINISHED_OK
 	var aux;
 	switch(status) {
 		case "RUNNING":
 			aux = '<img src="css/images/job_running.png" alt="Running">';
 			break;
 		case "FINISHED_OK":
+		case "CANCELLED":
 			aux = '<img src="css/images/job_ok.png" alt="Finished ok">';
 			break;
 		case "FINISHED_ERROR":
@@ -123,6 +144,24 @@ function showJobStatus(idJob) {
         }
     });
 }
+
+function stopJob(idJob) {
+	if (confirm("The job will be cancelled. Do you want to continue?")) {
+		$.ajax({
+	        url: "rest/beta/api/exec/stop/" + idJob,
+	        cache: false,
+	        dataType: "json",
+	        type: "GET",
+	        success: function(job) {
+	        	refreshJobsTable();
+	        },
+	        error: function(error) {
+	            console.log("error loading files - " + error.status);
+	        }
+	    });
+	}
+}
+
 
 function showJobDialog(job) {
 	var aux;
