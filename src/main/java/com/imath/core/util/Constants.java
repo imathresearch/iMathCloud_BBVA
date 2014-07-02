@@ -8,6 +8,7 @@ public class Constants {
     // The REST url paths for data and exec access
     static public final String urlDataPath = "/" + VERSION + "/api/data";
     static public final String urlExecPath = "/" + VERSION + "/api/exec";
+    static public final String urlUserPath = "/" + VERSION + "/api/user";
     
     // The root name used to identify the root directories in iMath Cloud cloud
     static public final String rootNAME = "ROOT";

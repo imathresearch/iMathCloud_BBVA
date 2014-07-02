@@ -26,6 +26,10 @@ public class RoleController extends AbstractController {
 	}
 	
 	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+	public Role getRole(Long id) throws Exception {
+	    
+	}
+	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 	public Role modifyRole(Role role) throws Exception {
 		db.makePersistent(role);
 		return role;
