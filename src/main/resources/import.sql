@@ -27,6 +27,9 @@ insert into MathLanguage (id, baseName, version, consoleCode) values (-2, 'R', '
 insert into imr_user (username, email, firstname, lastname, organization, phone1, idrole, idMathLanguage) values ('ammartinez', 'ammartinez@imathresearch.com', 'Andrea', 'Martinez','iMath Research S.L.','610003964',-1,-1);
 --ammartinez
 
+-- user52
+insert into imr_user (username, email, firstname, lastname, organization, phone1, idrole, idMathLanguage) values ('user52', 'user@user.com', 'User', 'User','S.L.','111111112',-1,-1);
+
 insert into imr_user (username, email, firstname, lastname, organization, phone1, idrole, idMathLanguage) values ('ipinyol', 'ipinyol@imathresearch.com', 'Isaac', 'Pinyol','iMath Research S.L.','636683729',-1,-2);
 insert into imr_user (username, email, firstname, lastname, organization, phone1, idrole, idMathLanguage) values ('ipinyolTest', 'ipinyolTest@imathresearch.com', 'Isaac', 'Pinyol','iMath Research S.L.','555555667',-1,-2);
 --inavarro
@@ -49,6 +52,9 @@ insert into File (id, imr_type, name, url, id_dir, iduserowner, sharingstate) va
 insert into File (id, imr_type, name, url, id_dir, iduserowner, sharingstate) values (-100,'r','exampleInR.r','file://localhost/iMathCloud/ipinyolTest/src/examples/exampleInR.r',-3,'ipinyolTest',0);
 insert into File (id, imr_type, name, url, id_dir, iduserowner, sharingstate) values (-101,'csv','test.csv','file://localhost/iMathCloud/ipinyolTest/test.csv',-1,'ipinyolTest',0);
 insert into File (id, imr_type, name, url, id_dir, iduserowner, sharingstate) values (-102,'csv','test_small.csv','file://localhost/iMathCloud/ipinyolTest/test_small.csv',-1,'ipinyolTest',0);
+
+--user52 
+insert into File (id, imr_type, name, url, id_dir, iduserowner, sharingstate) values (-300,'dir','ROOT','file://localhost/iMathCloud/user52',null,'user52',0);
 
 --ammartinez
 insert into File (id, imr_type, name, url, id_dir, iduserowner, sharingstate) values (-200,'dir','ROOT','file://localhost/iMathCloud/ammartinez',null,'ammartinez',0);
