@@ -35,4 +35,12 @@
   <javaee:security-role>
     <javaee:role-name>WebAppUser</javaee:role-name>
   </javaee:security-role>
+  <javaee:servlet>
+    <javaee:servlet-name>register</javaee:servlet-name>
+    <javaee:servlet-class>com.imath.web.servlet.Register</javaee:servlet-class>
+  </javaee:servlet>
+  <javaee:servlet-mapping>
+    <javaee:servlet-name>register</javaee:servlet-name>
+    <javaee:url-pattern>/register</javaee:url-pattern>
+  </javaee:servlet-mapping>
 </web-app>
