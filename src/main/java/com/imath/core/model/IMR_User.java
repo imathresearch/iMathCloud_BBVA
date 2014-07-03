@@ -18,7 +18,6 @@ import org.hibernate.validator.constraints.NotEmpty;
 @Entity
 @Table(name = "IMR_User", uniqueConstraints = @UniqueConstraint(columnNames = "email"))
 public class IMR_User implements Serializable {
-
 	   
 	@Id
 	@NotNull

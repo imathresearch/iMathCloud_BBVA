@@ -27,8 +27,9 @@ public class RoleController extends AbstractController {
 	
 	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 	public Role getRole(Long id) throws Exception {
-	    
+	    return db.getEntityManager().find(Role.class, id);
 	}
+	
 	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 	public Role modifyRole(Role role) throws Exception {
 		db.makePersistent(role);

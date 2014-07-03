@@ -6,7 +6,15 @@
       <javaee:description>Protects all resources</javaee:description>
       <javaee:url-pattern>/indexNew.jsp</javaee:url-pattern>
       <javaee:url-pattern>/bigcloud.jsp</javaee:url-pattern>
-      <javaee:url-pattern>/rest/*</javaee:url-pattern>
+      <javaee:url-pattern>/rest/file_service/*</javaee:url-pattern>
+      <javaee:url-pattern>/rest/jobpython_service/*</javaee:url-pattern>
+      <javaee:url-pattern>/rest/job_service/*</javaee:url-pattern>
+      <javaee:url-pattern>/rest/plugin_service/*</javaee:url-pattern>
+      <javaee:url-pattern>/rest/public/job_service/*</javaee:url-pattern>
+      <javaee:url-pattern>/rest/session_service/*</javaee:url-pattern>
+      <javaee:url-pattern>/rest/user_service/*</javaee:url-pattern>
+      <javaee:url-pattern>/rest/beta/api/data/*</javaee:url-pattern>
+      <javaee:url-pattern>/rest/beta/api/exec/*</javaee:url-pattern>
     </javaee:web-resource-collection>
     <javaee:auth-constraint>
       <javaee:role-name>WebAppUser</javaee:role-name>

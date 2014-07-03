@@ -7,6 +7,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -47,7 +48,7 @@ public class UserManagement {
     @Path("/newUser/{username}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response newUser(String userName, NewUserDTO newUserDTO) {
+    public Response newUser(@PathParam("username")String userName, NewUserDTO newUserDTO) {
         // Check that password is present
         if(newUserDTO.password==null) {
             return Response.status(Response.Status.BAD_REQUEST).build();
@@ -58,8 +59,8 @@ public class UserManagement {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
         
-        Role role = db.getEntityManager().find(Role.class, -1); // Provisional
-        MathLanguage mathLan = db.getEntityManager().find(MathLanguage.class, -1);  // Python by default
+        Role role = db.getEntityManager().find(Role.class, -1L); // Provisional
+        MathLanguage mathLan = db.getEntityManager().find(MathLanguage.class, -1L);  // Python by default
         
         try {
             userController.createNewUser(userName, newUserDTO.password, newUserDTO.firstName, newUserDTO.lastName, role, 
@@ -67,17 +68,17 @@ public class UserManagement {
         } catch (Exception e) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
-        return Response.status(Response.Status.OK).build();
         
+        return Response.status(Response.Status.OK).build();
     }
     
     static public class NewUserDTO {
-        String password;
-        String eMail;
-        String firstName;
-        String lastName;
-        String organization;
-        String phone1;
-        String phone2;
+        public String password;
+        public String eMail;
+        public String firstName;
+        public String lastName;
+        public String organization;
+        public String phone1;
+        public String phone2;
     }
 }
