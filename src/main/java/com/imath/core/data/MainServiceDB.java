@@ -135,6 +135,9 @@ public class MainServiceDB {
 		
 	}
 	
+	public EntityManager getEntityManager() {
+	    return this.em;
+	}
 	
 	// Public methods for testing purposes only. It simulates an injection
 	public void setEntityManager(EntityManager em) {

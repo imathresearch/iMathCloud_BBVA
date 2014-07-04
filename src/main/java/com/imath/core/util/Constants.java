@@ -8,12 +8,10 @@ public class Constants {
     // The REST url paths for data and exec access
     static public final String urlDataPath = "/" + VERSION + "/api/data";
     static public final String urlExecPath = "/" + VERSION + "/api/exec";
+    static public final String urlUserPath = "/" + VERSION + "/api/user";
     
     // The root name used to identify the root directories in iMath Cloud cloud
     static public final String rootNAME = "ROOT";
-    static public final String ROOT_FILE_SYSTEM = "/iMathCloud"; //In Production, it must be changed
-    
-    static public final String iMathTRASH = ROOT_FILE_SYSTEM + "/trash";
     
     /*
      * HPC2 - iMath Cloud Connection constants
@@ -24,7 +22,10 @@ public class Constants {
     static public final String LOCALHOST_String = "localhost";
     
     static public final String URI_HEAD = "file://";
-    
+    static public final String HOST_STORAGE = LOCALHOST;        // Now, storage is in LOCALHOST
+    static public final String ROOT_FILE_SYSTEM = "/iMathCloud"; 
+    static public final String ROOT_EXEC_DIR = ROOT_FILE_SYSTEM + "/exec_dir"; 
+    static public final String iMathTRASH = ROOT_FILE_SYSTEM + "/trash";
     
     
     static public final String HPC2_HTTP = "http://";
@@ -47,4 +48,12 @@ public class Constants {
     static public final String HPC2_REST_SUBMITJOB_KEY_DIRECTORY = "directory";
     
     static public final String HPC2_SEPARATOR = "|#|";
+    
+    // System constants
+    // IMPORTANT: We assume that JBOSS is launched from JBOSS-HOME/bin
+    static public final String ADD_USER_CLI = "./add-user.sh";
+    static public final String ROLES_FILE = "../standalone/configuration/application-roles.properties";  
+    static public final String SYSTEM_ROLE = "WebAppUser";
+    
+    
 }
