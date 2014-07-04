@@ -33,11 +33,13 @@ public class Security {
         Process p = pb.start();
         p.waitFor();
         
-        // We add the role of the user
-        String line = userName + "=" + role;
-        Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(Constants.ROLES_FILE, true), "UTF-8"));
-        writer.append(line + "\n");
-        writer.close();
+        // We add the role of the user if role is not null
+        if (role != null) {
+            String line = userName + "=" + role;
+            Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(Constants.ROLES_FILE, true), "UTF-8"));
+            writer.append(line + "\n");
+            writer.close();
+        }
     }
     
     private static String loadStream(InputStream s) throws Exception

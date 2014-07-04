@@ -177,9 +177,11 @@
 	<div class="ui-layout-north" id="ui-layout-north">
 		<div class="codrops-top">
     		<span class="right">
-    			<a href="logoutIMATHCLOUD.jsp">
+    			<button id="selfButton">Profile</button>
+    			<button id="logoutButton">Log out</button>
+    			<!-- a href="logoutIMATHCLOUD.jsp">
         			<strong>Logout</strong>
-        		</a>
+        		</a-->
 			</span>
     		<div class="clr"></div>
     	</div>
@@ -272,9 +274,51 @@
 <div id="contentSharingOptions"></div>
 </div>
 
+<div id="profilePopup">
+<div id="profile" class="form">
+	<form  action="changePassword" method="post" autocomplete="on"> 
+    	<h1> Profile - Change Password </h1> 
+    	<p> 
+            <label for="passwordsignup" class="youpasswd" data-icon="p">Your current password </label>
+            <input id="passwordOld" name="passwordOld" required="required" type="password" placeholder="eg. X8df!90EO"/>
+        </p>
+        <p> 
+            <label for="passwordsignup" class="youpasswd" data-icon="p">Your new password </label>
+            <input id="passwordNew" name="passwordNew" required="required" type="password" placeholder="eg. X8df!90EO"/>
+        </p>
+        <p> 
+            <label for="passwordsignup_confirm" class="youpasswd" data-icon="p">Please confirm your new password </label>
+            <input id="passwordNewConf" name="passwordNewConf" required="required" type="password" placeholder="eg. X8df!90EO"/>
+        </p>
+        <p class="signin button"> 
+		<input type="submit" value="Sign up"/> 
+	</form>
+</div>
+</div>
+<!-- a href="logoutIMATHCLOUD.jsp">
+        			<strong>Logout</strong>
+        		</a-->
 <script>
 
 var userName = "<%= request.getUserPrincipal().getName() %>";
+
+$("#logoutButton").button({
+	text: false,
+	icons: { primary: "ui-icon-arrowthickstop-1-e" }
+});
+$("#selfButton").button({
+	text: false,
+	icons: { primary: "ui-icon-person" }
+});
+$("#logoutButton").click(function() { 
+	window.location.href = "logoutIMATHCLOUD.jsp";
+});
+
+$("#selfButton").click(function() { 
+	$("#profilePopup").dialog().open();
+});
+
+
 </script>
   </body>
 </html> 
