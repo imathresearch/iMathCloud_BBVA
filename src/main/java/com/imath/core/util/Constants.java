@@ -52,7 +52,10 @@ public class Constants {
     // System constants
     // IMPORTANT: We assume that JBOSS is launched from JBOSS-HOME/bin
     static public final String ADD_USER_CLI = "./add-user.sh";
-    static public final String ROLES_FILE = "../standalone/configuration/application-roles.properties";  
+    static public final String ROLES_FILE = "../standalone/configuration/application-roles.properties";
+    static public final String USERS_FILE = "../standalone/configuration/application-users.properties";
+    static public final String ROLES_DOMAIN_FILE = "../domain/configuration/application-roles.properties";
+    static public final String USERS_DOMAIN_FILE = "../domain/configuration/application-users.properties";
     static public final String SYSTEM_ROLE = "WebAppUser";
     
     

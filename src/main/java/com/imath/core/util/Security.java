@@ -2,7 +2,10 @@ package com.imath.core.util;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
@@ -18,6 +21,16 @@ import java.lang.ProcessBuilder.Redirect;
  */
 
 public class Security {
+    
+    public void updateSystemPassword(String userName, String password) throws Exception {
+        //TODO: Refactor as soon as possible!
+        eraseUserLine(Constants.ROLES_DOMAIN_FILE, userName);
+        eraseUserLine(Constants.USERS_DOMAIN_FILE, userName);
+        eraseUserLine(Constants.ROLES_FILE, userName);
+        eraseUserLine(Constants.USERS_FILE, userName);
+        createSystemUser(userName, password, "WebAppUser");
+    }
+    
     public void createSystemUser(String userName, String password, String role) throws Exception {
         // We add the system user
         //Process p = Runtime.getRuntime().exec(Constants.ADD_USER_CLI + " -a " + userName + " " + password + " > /dev/tty");
@@ -50,5 +63,28 @@ public class Security {
         while((line=br.readLine()) != null)
             sb.append(line).append("\n");
         return sb.toString();
+    }
+    
+    private void eraseUserLine(String fileName, String userName) throws Exception {
+        String tempFileName = fileName + ".temp";
+        Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(tempFileName, false), "UTF-8"));
+        BufferedReader br = new BufferedReader(new FileReader(fileName));
+        String line;
+        while ((line = br.readLine()) != null) {
+            if (line.length() <= userName.length()+1)
+                writer.append(line + "\n");
+            else {
+                String sub = line.substring(0, userName.length()+1);
+                if (!sub.equals(userName+"=")) {
+                    writer.append(line + "\n");
+                }
+            }
+        }
+        writer.close();
+        br.close();
+        File tempFile = new File(tempFileName);
+        File rigthFile = new File(fileName);
+        tempFile.renameTo(rigthFile);
+        
     }
 }

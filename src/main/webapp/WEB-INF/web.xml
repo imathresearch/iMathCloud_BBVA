@@ -45,6 +45,10 @@
     <javaee:servlet-class>com.imath.web.servlet.ChangePassword</javaee:servlet-class>
   </javaee:servlet>
   <javaee:servlet-mapping>
+    <javaee:servlet-name>register</javaee:servlet-name>
+    <javaee:url-pattern>/register</javaee:url-pattern>
+  </javaee:servlet-mapping>
+  <javaee:servlet-mapping>
     <javaee:servlet-name>changepassword</javaee:servlet-name>
     <javaee:url-pattern>/changePassword</javaee:url-pattern>
   </javaee:servlet-mapping>

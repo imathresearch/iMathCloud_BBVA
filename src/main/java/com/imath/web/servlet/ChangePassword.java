@@ -41,10 +41,11 @@ public class ChangePassword extends HttpServlet {
         }
         
         // Here everything is fine, so we proceed with the password change
-        request.getSession().invalidate();
+        request.logout();
         try {
-            security.createSystemUser(userName, passwordNew, null);
+            security.updateSystemPassword(userName, passwordNew);
         } catch (Exception e) {
+            e.printStackTrace();
             response.sendRedirect("loginerror.html");
             return;
         }
