@@ -166,6 +166,11 @@
             <artifactId>cdi-api</artifactId>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+			<groupId>com.sun.jna</groupId>
+			<artifactId>jna</artifactId>
+			<version>3.0.9</version>
+		</dependency>
 		<dependency>  	
         	<groupId>org.jboss.spec</groupId>  
          	<artifactId>jboss-javaee-web-6.0</artifactId>  

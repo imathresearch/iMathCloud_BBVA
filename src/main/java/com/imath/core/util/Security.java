@@ -31,6 +31,15 @@ public class Security {
         createSystemUser(userName, password, "WebAppUser");
     }
     
+    public void createLinuxUser(String userName) throws Exception {
+        ProcessBuilder pb = new ProcessBuilder(Constants.ADD_USER_LINUX, "-d",  "/home/" + userName, "-m", userName, "-g", Constants.IMATHSYSTEMGROUP);
+        pb.redirectInput(Redirect.INHERIT);
+        pb.redirectOutput(Redirect.INHERIT);
+        pb.redirectError(Redirect.INHERIT);
+        Process p = pb.start();
+        p.waitFor();
+    }
+    
     public void createSystemUser(String userName, String password, String role) throws Exception {
         // We add the system user
         //Process p = Runtime.getRuntime().exec(Constants.ADD_USER_CLI + " -a " + userName + " " + password + " > /dev/tty");

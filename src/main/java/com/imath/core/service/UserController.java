@@ -60,6 +60,9 @@ public class UserController extends AbstractController {
 		user.setPhone2(phone2);
 		db.makePersistent(user);
 		
+		// We create the Linux user
+		security.createLinuxUser(userName);
+		
 		// We create the base directories in the system to host the Cloud files
 		String url = this.createBaseDirectories(userName);
 		
@@ -88,6 +91,8 @@ public class UserController extends AbstractController {
 	    String urlDirectoryExecDir = Constants.URI_HEAD + Constants.HOST_STORAGE + Constants.ROOT_EXEC_DIR + "/" + userName;
 	    fileUtils.createDirectory(urlDirectoryExecDir);
 	    
+	    fileUtils.protectDirectory(urlDirectoryExecDir, userName);
+	    fileUtils.protectDirectory(urlDirectory, userName);
 	    return urlDirectory;
 	}
 	

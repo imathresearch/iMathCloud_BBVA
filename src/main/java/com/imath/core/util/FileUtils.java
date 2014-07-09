@@ -16,6 +16,8 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 import javax.ejb.Stateful;
+import com.sun.jna.Library;
+import com.sun.jna.Native;
 
 import org.apache.commons.io.IOUtils;
 
@@ -258,6 +260,18 @@ public class FileUtils {
     	return directory.mkdir();
     }
     
+    public void protectDirectory(String urlDirectory, String user) {
+        URI uriDirectory = URI.create(urlDirectory);
+        java.nio.file.Path pathDirectory = Paths.get(uriDirectory.getPath());
+        if (uriDirectory.getHost().equals(Constants.LOCALHOST)) {
+            System.out.println(urlDirectory);
+            SystemUtil.chmodFile(pathDirectory.toString(), "700");    // Only the owner can read, write, execute in the directory
+            SystemUtil.chownDir(pathDirectory.toString(), user, Constants.IMATHSYSTEMGROUP);
+        } else {
+            // TODO: Manage remote file systems
+        }
+    }
+    
     /**
      * Physically create a new file/directory
      * @param String urlParentDir - url of the parent directory
@@ -291,7 +305,7 @@ public class FileUtils {
     	}
     	
     	return typeFile;
-    }
+    }   
     
     public String getAbsolutePath(String file_url, String userName){
     
@@ -321,5 +335,56 @@ public class FileUtils {
     	
     }
     
-   
+    
+    
+    public static class SystemUtil {
+        // TODO: refactor as soon as possible to use only JNA calls
+        //private static CLibrary libc = (CLibrary) Native.loadLibrary("c", CLibrary.class);
+        
+        //interface CLibrary extends Library {
+        //    public int chmod(String path, int mode);
+        //}
+        
+        public static void chownFile(String path, String user, String group) {
+            String line = "chown " + user + ":" + group + " " + path;
+            try {
+                Process p = Runtime.getRuntime().exec(line);
+                p.waitFor();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        
+        public static void chownDir(String path, String user, String group) {
+            String line = "chown " + user + ":" + group + " -R " + path;
+            System.out.println(line);
+            try {
+                Process p = Runtime.getRuntime().exec(line);
+                p.waitFor();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        
+        public static void chmodDir(String path, int mode) {
+            String line = "chmod -R " + mode + " " + path;
+            try {
+                Process p = Runtime.getRuntime().exec(line);
+                p.waitFor();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        
+        public static void chmodFile(String path, String mode) {
+            String line = "chmod  " + mode + " " + path;
+            try {
+                Process p = Runtime.getRuntime().exec(line);
+                p.waitFor();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        
+    }
 }
