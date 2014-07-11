@@ -260,13 +260,24 @@ public class FileUtils {
     	return directory.mkdir();
     }
     
+    // Only should be called in empty directories
     public void protectDirectory(String urlDirectory, String user) {
         URI uriDirectory = URI.create(urlDirectory);
         java.nio.file.Path pathDirectory = Paths.get(uriDirectory.getPath());
-        if (uriDirectory.getHost().equals(Constants.LOCALHOST)) {
-            System.out.println(urlDirectory);
-            SystemUtil.chmodFile(pathDirectory.toString(), "700");    // Only the owner can read, write, execute in the directory
+        if (uriDirectory.getHost().equals(Constants.LOCALHOST) || uriDirectory.getHost().equals(Constants.LOCALHOST_String)) {
+            SystemUtil.chmodDir(pathDirectory.toString(), "700");    // Only the owner can read, write, execute in the directory
             SystemUtil.chownDir(pathDirectory.toString(), user, Constants.IMATHSYSTEMGROUP);
+        } else {
+            // TODO: Manage remote file systems
+        }
+    }
+    
+    public void protectFile(String urlDirectory, String user) {
+        URI uriDirectory = URI.create(urlDirectory);
+        java.nio.file.Path pathDirectory = Paths.get(uriDirectory.getPath());
+        if (uriDirectory.getHost().equals(Constants.LOCALHOST) || uriDirectory.getHost().equals(Constants.LOCALHOST_String)) {
+            SystemUtil.chmodFile(pathDirectory.toString(), "600");    // Only the owner can read, write, execute in the directory
+            SystemUtil.chownFile(pathDirectory.toString(), user, Constants.IMATHSYSTEMGROUP);
         } else {
             // TODO: Manage remote file systems
         }
@@ -347,6 +358,7 @@ public class FileUtils {
         
         public static void chownFile(String path, String user, String group) {
             String line = "chown " + user + ":" + group + " " + path;
+            System.out.println(line);
             try {
                 Process p = Runtime.getRuntime().exec(line);
                 p.waitFor();
@@ -366,7 +378,7 @@ public class FileUtils {
             }
         }
         
-        public static void chmodDir(String path, int mode) {
+        public static void chmodDir(String path, String mode) {
             String line = "chmod -R " + mode + " " + path;
             try {
                 Process p = Runtime.getRuntime().exec(line);

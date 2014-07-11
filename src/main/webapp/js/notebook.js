@@ -17,7 +17,7 @@ function setDefaultLanguage(str) {
 
 function setEnvironmentVariable(str) {
 	console.log("setEnvironmentVariable " + str);
-	sendMessage(MSG_DEFAULT_USER_ENVIRONMENT, str);
+	sendMessage(MSG_DEFAULT_USER_ENVIRONMENT, str + ";" + userName);
 }
 
 function sendMessage(msgType, content) {

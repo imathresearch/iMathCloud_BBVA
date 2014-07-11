@@ -121,7 +121,7 @@ public class Data {
         //TODO: do it well! This is provisional, to see if files can be really stored
         //TODO: warning when a filename exists. Add some flag to notify about overwriting files etc... 
         
-    	
+    	String userName = sc.getUserPrincipal().getName();
     	
         String fileName = "";
         Map<String, List<InputPart>> uploadForm = input.getFormDataMap();
@@ -143,6 +143,7 @@ public class Data {
             LOG.info("Filename: " + fileName);
             com.imath.core.model.File file = this.fileController.createNewFileInROOTDirectory(fileName, sc);
             fileUtils.writeFile(bytes,file.getUrl());
+            fileUtils.protectFile(file.getUrl(), userName);
             PublicResponse.StateDTO out = PublicResponse.generateStatus(Response.Status.ACCEPTED.getStatusCode(), "data/" + file.getId(), fileName, PublicResponse.Status.READY);
             listOut.add(out);
             
@@ -379,6 +380,7 @@ public class Data {
             }
             
             fileUtils.writeFile(bytes,file.getUrl());
+            fileUtils.protectFile(file.getUrl(), userName);
             PublicResponse.StateDTO out = PublicResponse.generateStatus(Response.Status.ACCEPTED.getStatusCode(), "data/" + file.getId(), fileName, PublicResponse.Status.READY);
             listOut.add(out);
           

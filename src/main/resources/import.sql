@@ -32,6 +32,11 @@ insert into imr_user (username, email, firstname, lastname, organization, phone1
 
 insert into imr_user (username, email, firstname, lastname, organization, phone1, idrole, idMathLanguage) values ('ipinyol', 'ipinyol@imathresearch.com', 'Isaac', 'Pinyol','iMath Research S.L.','636683729',-1,-2);
 insert into imr_user (username, email, firstname, lastname, organization, phone1, idrole, idMathLanguage) values ('ipinyolTest', 'ipinyolTest@imathresearch.com', 'Isaac', 'Pinyol','iMath Research S.L.','555555667',-1,-2);
+
+--conan
+insert into imr_user (username, email, firstname, lastname, organization, phone1, idrole, idMathLanguage) values ('conan', 'conan@imathresearch.com', 'conan', 'conan','iMath Research S.L.','636683729',-1,-1);
+
+
 --inavarro
 insert into imr_user (username, email, firstname, lastname, organization, phone1, idrole, idMathLanguage) values ('inavarro', 'inavarro@imathresearch.com', 'Ivan', 'Navarro','iMath Research S.L.','555443322',-1,-1);
 insert into imr_user (username, email, firstname, lastname, organization, phone1, idrole, idMathLanguage) values ('inavarroUser', 'inavarroUser@imathresearch.com', 'Ivan', 'Navarro','iMath Research S.L.','555443322',-1,-2);
@@ -55,6 +60,9 @@ insert into File (id, imr_type, name, url, id_dir, iduserowner, sharingstate) va
 
 --user52 
 insert into File (id, imr_type, name, url, id_dir, iduserowner, sharingstate) values (-300,'dir','ROOT','file://localhost/iMathCloud/user52',null,'user52',0);
+
+-- conan
+insert into File (id, imr_type, name, url, id_dir, iduserowner, sharingstate) values (-400,'dir','ROOT','file://localhost/iMathCloud/conan',null,'conan',0);
 
 --ammartinez
 insert into File (id, imr_type, name, url, id_dir, iduserowner, sharingstate) values (-200,'dir','ROOT','file://localhost/iMathCloud/ammartinez',null,'ammartinez',0);

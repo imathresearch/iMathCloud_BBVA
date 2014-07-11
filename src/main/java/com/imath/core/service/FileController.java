@@ -115,6 +115,7 @@ public class FileController extends AbstractController {
     	LOG.info("File id:" + file.getId() + " save requested");
     	try {
     		saveFile(userName,file.getUrl(),content);
+    		fileUtils.protectFile(file.getUrl(), userName);
     	}
     	catch (Exception e) {
     		LOG.severe("Error opening the file id: " + file.getId());
@@ -141,6 +142,7 @@ public class FileController extends AbstractController {
         }
         try {
             saveFile(userName,file.getUrl(),content, page.longValue());
+            fileUtils.protectFile(file.getUrl(), userName);
         }
         catch (Exception e) {
             LOG.severe("Error opening the file id: " + file.getId());
@@ -256,6 +258,7 @@ public class FileController extends AbstractController {
         File dir = this.getParentDir(fileNamePath,userName);
         File file = this.createNewFileInDirectory(dir,fileName, imrType); 
         fileUtils.writeFile(bytes,file.getUrl());
+        fileUtils.protectFile(file.getUrl(), userName);
         return file;
     }
     
@@ -272,6 +275,10 @@ public class FileController extends AbstractController {
     public File writeFileFromUploadInROOT(byte [] bytes, String fileName, SecurityContext sc) throws Exception {
         File file = this.createNewFileInROOTDirectory(fileName, sc);
         fileUtils.writeFile(bytes,file.getUrl());
+        if (sc.getUserPrincipal() != null) {
+            String userName = sc.getUserPrincipal().getName();
+            fileUtils.protectFile(file.getUrl(), userName);
+        }
         return file;
     }
     
@@ -697,7 +704,8 @@ public class FileController extends AbstractController {
     			//Physically create the directory
     			if(fileUtils.createDirectory(url_newDirectory)){
     				//Create the directory in DB
-    				this.createNewFileInDirectory(file_parentDir, dirName, "dir"); 				
+    				File newDir = this.createNewFileInDirectory(file_parentDir, dirName, "dir");
+    				fileUtils.protectDirectory(newDir.getUrl(), userName);
     			}
     			else{
     				throw new IMathException(IMathException.IMATH_ERROR.OTHER, "The directory " + dirName + " cannot be created");
@@ -739,7 +747,12 @@ public class FileController extends AbstractController {
     			String typeFile = fileUtils.createFile(file_parentDir.getUrl(), name, type);
     			if(typeFile != null){
     				//Create the file in DB
-    				this.createNewFileInDirectory(file_parentDir, name, typeFile); 				
+    				File newFile = this.createNewFileInDirectory(file_parentDir, name, typeFile);
+    				if (typeFile.equals("dir")) {
+    				    fileUtils.protectDirectory(newFile.getUrl(), userName);
+    				} else {
+    				    fileUtils.protectFile(newFile.getUrl(), userName);
+    				}
     			}
     			else{
     				throw new IMathException(IMathException.IMATH_ERROR.OTHER, "The file " + name + " cannot be created");
@@ -836,6 +849,7 @@ public class FileController extends AbstractController {
             java.io.File tempFile = new java.io.File(pathTemp.toString());
             java.io.File realFile = new java.io.File(path.toString());
             tempFile.renameTo(realFile);
+            
         } 
         catch (IOException e) {
             LOG.severe("Temp File for: "+ uri + " cannot be written");
