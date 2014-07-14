@@ -32,6 +32,7 @@ public class Constants {
     static public final String HPC2_PORT = "8890";
     static public final String IMATH_PORT = "8080";     // In Development 
     //static public final String IMATH_PORT = "80";       // In Production
+    static public final int CONSOLE_PORT = 8888;        // ipython notebook initial value
     
     static public final String IMATH_HOST = LOCALHOST;         // In Development
     //static public final String IMATH_HOST = "158.109.125.112"; // In Production

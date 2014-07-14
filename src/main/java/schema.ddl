@@ -95,6 +95,7 @@
     create table Session (
         id int8 not null,
         endDate timestamp,
+        portConsole int4,
         startDate timestamp not null,
         idHostConsole int8 not null,
         idUser varchar(255) not null,

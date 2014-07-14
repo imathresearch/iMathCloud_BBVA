@@ -71,6 +71,7 @@ public class SessionDB {
         Root<Session> job = criteria.from(Session.class);
         Predicate p1 = cb.isNull(job.get("endDate"));
         criteria.select(job).where(p1);
+        criteria.orderBy(cb.asc(job.get("portConsole")));
         return em.createQuery(criteria).getResultList();
     }
 }

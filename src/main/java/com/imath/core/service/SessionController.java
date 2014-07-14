@@ -20,6 +20,11 @@ import com.imath.core.data.MainServiceDB;
 
 import java.util.logging.Logger;
 
+import com.imath.core.util.Console;
+import com.imath.core.util.Constants;
+
+
+    
 /**
  * The Sessions Controller class. It offers a set of methods to control sessions in Core of  
  * iMath Services. Each user (both web-based or through the Rest interface) that is authenticated
@@ -31,7 +36,7 @@ import java.util.logging.Logger;
 @Stateless
 @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 public class SessionController extends AbstractController{
-    
+
     /**
      * It closes down the open session of the user. 
      * @param String - The authenticated user name of the system. It must be a valid {@link User} id.
@@ -97,32 +102,54 @@ public class SessionController extends AbstractController{
         		}
         		// TODO: Select the best host for interactive math console. 
         		// Now, we get the first if the list
+        		
         		session.setHostConsole(hosts.get(0));
         		session.setEndDate(null);
+        		session.setPortConsole(this.getPortConsole());
+        		
         		try {
-        			db.beginTransaction();
         			db.makePersistent(session);
-        			db.commitTransaction();
-        			
         		}
         		catch (Exception e) {
         			LOG.severe("Error saving session: " + e.getMessage());
-        			db.rollBackTransaction();
         			throw e;
-        		}	
+        		}
+        		
         	}
     		//List<String> params = new ArrayList<String>();
     		//params.add("%2Fhome%2Fipinyol%2Ftest.csv");
     		//pc.callPlugin(new Long(1), session, params); // Just to test. PROVISIONAL
+    		Console.startConsole(userName, ""+session.getPortConsole());
         	return session;
     	}
     	catch (Exception e) {
     		LOG.severe("Error retreiving sessions");
     		throw e;
     	}
-    	
     }
     
+    private int getPortConsole() {
+        List<Session> openSessions = db.getSessionDB().getOpenSessions();
+        if (openSessions == null) return Constants.CONSOLE_PORT;
+        if (openSessions.size()==0) return Constants.CONSOLE_PORT;
+        
+        int port = Constants.CONSOLE_PORT-1;
+        int i=0;
+        boolean done = false;
+        while (i<openSessions.size() || done) {
+            Session session = openSessions.get(i);
+            if (session.getPortConsole()>Constants.CONSOLE_PORT+1 && i==0) {
+                done=true;
+            } else {
+                if (session.getPortConsole()>port+1) done=true;
+            }
+            i++;
+            port++;
+        }
+        if (done) return port;
+        return port+1;
+        
+    }
     //public Session sessionRequestRest(String publicKey) throws Exception {
     //	LOG.info("User with public key :" + publicKey + " requesting a session");
     //}

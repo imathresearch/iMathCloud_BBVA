@@ -35,6 +35,9 @@ public class Session implements Serializable {
     @JoinColumn(name="idHostConsole", nullable=false, updatable=false)
 	private Host hostConsole;
     
+    @Column(nullable=true)
+    private int portConsole;
+    
 	private static final long serialVersionUID = 1L;
 
 	public Session() {
@@ -74,5 +77,13 @@ public class Session implements Serializable {
 	}
 	public void setHostConsole(Host hostConsole) {
 		this.hostConsole=hostConsole;
+	}
+	
+	public int getPortConsole() {
+	    return this.portConsole;
+	}
+	
+	public void setPortConsole(int portConsole) {
+	    this.portConsole = portConsole;
 	}
 }

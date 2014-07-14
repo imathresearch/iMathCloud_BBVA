@@ -29,6 +29,7 @@ insert into imr_user (username, email, firstname, lastname, organization, phone1
 
 -- user52
 insert into imr_user (username, email, firstname, lastname, organization, phone1, idrole, idMathLanguage) values ('user52', 'user@user.com', 'User', 'User','S.L.','111111112',-1,-1);
+insert into imr_user (username, email, firstname, lastname, organization, phone1, idrole, idMathLanguage) values ('conanc', 'conan@user.com', 'Conan', 'conan','S.L.','111111112',-1,-1);
 
 insert into imr_user (username, email, firstname, lastname, organization, phone1, idrole, idMathLanguage) values ('ipinyol', 'ipinyol@imathresearch.com', 'Isaac', 'Pinyol','iMath Research S.L.','636683729',-1,-2);
 insert into imr_user (username, email, firstname, lastname, organization, phone1, idrole, idMathLanguage) values ('ipinyolTest', 'ipinyolTest@imathresearch.com', 'Isaac', 'Pinyol','iMath Research S.L.','555555667',-1,-2);
@@ -109,9 +110,9 @@ insert into FileShared(id, iduser, idfile, permission) values(-2, 'ipinyolTest',
 insert into FileShared(id, iduser, idfile, permission) values(-3, 'inavarro', -4, 1);
 
 
-insert into Session (id, enddate, startdate, idhostconsole, iduser) values (-1,'2013-01-09 22:30', '2013-01-09 19:12', -1, 'ipinyolTest');
+insert into Session (id, enddate, startdate, idhostconsole, iduser, portConsole) values (-1,'2013-01-09 22:30', '2013-01-09 19:12', -1, 'ipinyolTest', 8888);
 --inavarro
-insert into Session (id, enddate, startdate, idhostconsole, iduser) values (-2,'2013-01-09 22:30', '2013-01-09 19:12', -2, 'inavarro');
+insert into Session (id, enddate, startdate, idhostconsole, iduser, portConsole) values (-2,'2013-01-09 22:30', '2013-01-09 19:12', -2, 'inavarro', 8888);
 --/inavarro
 
 insert into Job (id, description, startDate, state, idhost, iduserowner, idsession) values (-1, 'Recalculating PCA','2013-01-09 19:30',1,-1,'ipinyolTest',-1);
