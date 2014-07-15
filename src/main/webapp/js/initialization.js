@@ -222,8 +222,23 @@ function requestSession() {
         dataType: "json",
         type: "GET",
         success: function(host) {
-        	urlConsole = 'http://'+host['url']+':8888';
-        	$( "#interactive_math" ).attr('src','http://'+host['url']+':8888/new');
+        	conectToConsole(host);
+        },
+        error: function(error) {
+            console.log("error updating table -" + error.status);
+        }
+    });
+}
+
+// keeps trying to connect to the console every second.
+// When it gets it, stops the deamon.
+// this is done because the console may take some time to start!
+function conectToConsole(host) {
+	urlConsole = 'http://'+host['url']+':' + host['port'];
+	var id = setInterval(function() {
+		if (isReady(host['url'], host['port'])) {
+			clearInterval(id);
+			$( "#interactive_math" ).attr('src',urlConsole +'/new');
         	var u = document.getElementById('tabs');
         	var he = u.offsetHeight;
         	$( "#interactive_math" ).height(he-70);
@@ -233,12 +248,26 @@ function requestSession() {
     			var env_var = "/iMathCloud/" + userName;
     			setEnvironmentVariable(env_var);
     		});
-    		
-        },
-        error: function(error) {
-            console.log("error updating table -" + error.status);
-        }
+		}
+	}, 1000);
+}
+// Check if a url is ready
+function isReady(host, port) {
+    //var encodedURL = encodeURIComponent(url);
+    var isValid = false;
+    var urlCall = "rest/session_service/isConsoleReady/"+host+"/"+port; 
+    $.ajax({
+      url: urlCall,
+      type: "get",
+      async: false,
+      success: function() {
+        isValid = true;
+      },
+      error: function(){
+        isValid = false;
+      }
     });
+    return isValid;
 }
 
 function manageWestAccordion() {

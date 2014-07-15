@@ -22,6 +22,10 @@ import com.imath.core.model.Host;
 import com.imath.core.data.MainServiceDB;
 import com.imath.core.service.SessionController;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.logging.Logger;
 
 /**
@@ -55,6 +59,7 @@ public class SessionService {
 		HostDTO hostdto = new HostDTO();
 		hostdto.url =session.getHostConsole().getUrl(); 
 		hostdto.mathLanguage = session.getUser().getMathLanguage();
+		hostdto.port = ""+session.getPortConsole();
 		return hostdto;
     }
 	
@@ -73,9 +78,29 @@ public class SessionService {
 		}
     }
 	
+	@GET
+	@Path("/isConsoleReady/{host}/{port}") 
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response REST_isConsoleReady(@PathParam("host") String host, @PathParam("port") String port) {
+	    String urlString = "http://" + host + ":" + port;
+	    System.out.println(urlString);
+        try {
+            URL url = new URL(urlString);
+            URLConnection urlConn = url.openConnection();
+            urlConn.setUseCaches(false);
+            urlConn.setDoOutput(false);     //Set method to GET
+            urlConn.connect();
+            return Response.status(Response.Status.OK).build();
+        } catch(Exception e) {
+            e.printStackTrace();
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+	}
+	
 	private class HostDTO {
 		public String url;
 		public MathLanguage mathLanguage;
+		public String port;
 		public HostDTO() {}
 	}
 }

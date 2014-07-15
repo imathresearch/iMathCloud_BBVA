@@ -311,7 +311,7 @@ $("#selfButton").button({
 	icons: { primary: "ui-icon-person" }
 });
 $("#logoutButton").click(function() { 
-	window.location.href = "logoutIMATHCLOUD.jsp";
+	window.location.href = "logout";
 });
 
 $("#selfButton").click(function() { 

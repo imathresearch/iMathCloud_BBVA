@@ -54,13 +54,10 @@ public class SessionController extends AbstractController{
     			session.setEndDate(new Date());
     			//TODO: Manage to close the connection with Tornado 
     			try {
-        			db.beginTransaction();
         			db.makePersistent(session);
-        			db.commitTransaction();
         		}
         		catch (Exception e) {
         			LOG.severe("Error saving session: " + e.getMessage());
-        			db.rollBackTransaction();
         			throw e;
         		}	
     		}
