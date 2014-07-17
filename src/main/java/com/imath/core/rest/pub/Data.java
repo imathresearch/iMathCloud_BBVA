@@ -305,6 +305,8 @@ public class Data {
         
     	
     	String userName = sc.getUserPrincipal().getName(); 
+    	
+    	
         String fileName = "";
         Map<String, List<InputPart>> uploadForm = input.getFormDataMap();
         
@@ -358,12 +360,14 @@ public class Data {
  
             MultivaluedMap<String, String> header = inputPart.getHeaders();
             fileName = getFileName(header);
+            
  
             //convert the uploaded file to inputstream
             InputStream inputStream = inputPart.getBody(InputStream.class,null);
  
             byte [] bytes = fileUtils.getBytesFromInputStream(inputStream);
             com.imath.core.model.File file = new com.imath.core.model.File();
+            
             
             if(directory != null){					
 				//File extension

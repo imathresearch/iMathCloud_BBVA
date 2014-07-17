@@ -24,8 +24,13 @@ insert into MathLanguage (id, baseName, version, consoleCode) values (-1, 'Pytho
 insert into MathLanguage (id, baseName, version, consoleCode) values (-2, 'R', '2.15.3','codeR');
 
 --ammartinez
-insert into imr_user (username, email, firstname, lastname, organization, phone1, idrole, idMathLanguage) values ('ammartinez', 'ammartinez@imathresearch.com', 'Andrea', 'Martinez','iMath Research S.L.','610003964',-1,-1);
+insert into imr_user (username, email, firstname, lastname, organization, phone1, idrole, idMathLanguage) values ('ammartinez', 'ammartinez@ammartinez.com', 'Andrea', 'Martinez','iMath Research S.L.','610003964',-1,-1);
 --ammartinez
+
+--imath
+insert into imr_user (username, email, firstname, lastname, organization, phone1, idrole, idMathLanguage) values ('imath', 'ammartinez@imathresearch.com', 'Andrea', 'Martinez','iMath Research S.L.','610203964',-1,-1);
+insert into imr_user (username, email, firstname, lastname, organization, phone1, idrole, idMathLanguage) values ('imathTest', 'andrea.mmt84@gmail.com', 'Andrea', 'Martinez','iMath Research S.L.','610244964',-1,-1);
+
 
 -- user52
 insert into imr_user (username, email, firstname, lastname, organization, phone1, idrole, idMathLanguage) values ('user52', 'user@user.com', 'User', 'User','S.L.','111111112',-1,-1);
@@ -64,6 +69,10 @@ insert into File (id, imr_type, name, url, id_dir, iduserowner, sharingstate) va
 
 -- conan
 insert into File (id, imr_type, name, url, id_dir, iduserowner, sharingstate) values (-400,'dir','ROOT','file://localhost/iMathCloud/conan',null,'conan',0);
+
+-- imath 
+insert into File (id, imr_type, name, url, id_dir, iduserowner, sharingstate) values (-500,'dir','ROOT','file://localhost/iMathCloud/imath',null,'imath',0);
+insert into File (id, imr_type, name, url, id_dir, iduserowner, sharingstate) values (-600,'dir','ROOT','file://localhost/iMathCloud/imathTest',null,'imathTest',0);
 
 --ammartinez
 insert into File (id, imr_type, name, url, id_dir, iduserowner, sharingstate) values (-200,'dir','ROOT','file://localhost/iMathCloud/ammartinez',null,'ammartinez',0);

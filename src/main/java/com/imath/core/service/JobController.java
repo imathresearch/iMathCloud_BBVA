@@ -183,7 +183,8 @@ public class JobController extends AbstractController{
     		if(job.getState()==States.FINISHED_OK && !json.matches(".*error.*")) { // We do nothing if an error was retrieved.
     			  
     			Set<File> outputFiles = new HashSet<File>();
-    			String userName = job.getSession().getUser().getUserName();
+    			//String userName = job.getSession().getUser().getUserName();
+    			String userName = job.getOwner().getUserName();
     			
     			for (String dirpath : listdirs){   				
     				String [] parts = dirpath.split("/");

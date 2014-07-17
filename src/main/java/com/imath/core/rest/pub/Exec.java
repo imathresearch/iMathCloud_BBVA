@@ -254,8 +254,8 @@ public class Exec {
     @Path("/jobpython/exec/")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public PublicResponse.StateDTO REST_submitPythonJob(InfoDTO infoDTO, @Context SecurityContext sc) {        
-        
+    public PublicResponse.StateDTO REST_submitPythonJob(InfoDTO infoDTO, @Context SecurityContext sc) {
+    	        
     	Set<File> files = null; 
         try {
             files =  fc.getFilesFromString(infoDTO.getExecFiles(), sc);
