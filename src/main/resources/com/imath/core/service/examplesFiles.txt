@@ -13,7 +13,7 @@ py,multiPlot.py,EXAMPLES/basic,EXAMPLES/basic/multiPlot.py
 py,pythonBars.py,EXAMPLES/basic,EXAMPLES/basic/pythonBars.py
 txt,readme.txt,EXAMPLES/basic,EXAMPLES/basic/readme.txt
 csv,iris_data.csv,EXAMPLES/fileAccess,EXAMPLES/fileAccess/iris_data.csv
-csv,iris_target.csv,EXAMPLES/fileAccess,EXAMPLES/fileAcces/iris_target.csv
+csv,iris_target.csv,EXAMPLES/fileAccess,EXAMPLES/fileAccess/iris_target.csv
 py,irisPlot.py,EXAMPLES/fileAccess,EXAMPLES/fileAccess/irisPlot.py
 txt,readme.txt,EXAMPLES/fileAccess,EXAMPLES/fileAccess/readme.txt
 zip,EXAMPLES.zip
