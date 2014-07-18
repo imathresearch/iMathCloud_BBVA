@@ -2,6 +2,7 @@ package com.imath.core.util;
 
 import java.io.IOException;
 import java.lang.ProcessBuilder.Redirect;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 
@@ -11,13 +12,22 @@ public class Console {
         //String command = "\"/usr/local/bin/ipython notebook --port=" + port + " --ip=* --pylab=inline\"";
         
         // if for whatever reasion the console is alreay up and in the same port, we do not launch it again!
+        boolean start=true;
         try {
             URL url = new URL(Constants.IMATH_HTTP + host+":"+ port);
-            URLConnection urlConn = url.openConnection();
-            urlConn.setUseCaches(false);
-            urlConn.setDoOutput(false);     //Set method to GET
-            urlConn.connect();
+            HttpURLConnection huc =  (HttpURLConnection) url.openConnection();
+            //URLConnection urlConn = url.openConnection();
+            //urlConn.setUseCaches(false);
+            //urlConn.setDoOutput(false);     //Set method to GET
+            //urlConn.connect();
+            huc.setRequestMethod ("GET");  //OR  huc.setRequestMethod ("HEAD"); 
+            huc.connect () ; 
+            int code = huc.getResponseCode() ;
+            if (code<400) start=false;  //This means that the port is up
         } catch (Exception e) {
+            //Do nothing. It means that tornado is not yet started!
+        }
+        if (start) {
             // We start the console
             ProcessBuilder pb = new ProcessBuilder("./console.sh", user, port);
             pb.redirectInput(Redirect.INHERIT);
