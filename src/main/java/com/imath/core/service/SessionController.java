@@ -12,6 +12,7 @@ import javax.ejb.TransactionAttributeType;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
+import com.imath.core.model.File;
 import com.imath.core.model.Session;
 import com.imath.core.model.IMR_User;
 import com.imath.core.model.Host;
@@ -22,6 +23,7 @@ import java.util.logging.Logger;
 
 import com.imath.core.util.Console;
 import com.imath.core.util.Constants;
+import com.imath.core.util.Mail;
 
 
     
@@ -36,7 +38,11 @@ import com.imath.core.util.Constants;
 @Stateless
 @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 public class SessionController extends AbstractController{
-
+    @Inject
+    UserController uc;
+    
+    @Inject 
+    FileController fc;
     /**
      * It closes down the open session of the user. 
      * @param String - The authenticated user name of the system. It must be a valid {@link User} id.
@@ -77,9 +83,14 @@ public class SessionController extends AbstractController{
     public Session requestWebSession(String userName) throws Exception {
     	LOG.info("User:" + userName + " requesting a session");
     	try {
+    	    boolean newSession=false;
     		Session session = db.getSessionDB().findByUser_and_OpenSession(userName);
+    		
     		if (session==null) {
+    		    newSession = true;
         		// In this case we need to create a new iMath Session
+    		    Session lastSession = db.getSessionDB().findByUserLastSession(userName);
+    		    
         		session = new Session();
         		
         		// We get the user
@@ -99,10 +110,17 @@ public class SessionController extends AbstractController{
         		}
         		// TODO: Select the best host for interactive math console. 
         		// Now, we get the first if the list
-        		
-        		session.setHostConsole(hosts.get(0));
+        		//session.setHostConsole(null);
+        		if (hosts.size()>0){
+        		    session.setHostConsole(hosts.get(0));
+        		}
         		session.setEndDate(null);
-        		session.setPortConsole(this.getPortConsole());
+        		if (lastSession!=null) {
+        		    session.setPortConsole(lastSession.getPortConsole());
+        		    newSession = false;
+        		} else {
+        		    session.setPortConsole(this.getPortConsole());
+        		}
         		
         		try {
         			db.makePersistent(session);
@@ -113,13 +131,20 @@ public class SessionController extends AbstractController{
         		}
         		
         	}
+    		if (userName.equals("conanc")) {
+    		    Mail m = new Mail();
+    		    m.sendWelcomeMail("ipinyol@gmail.com", "conanc");
+    		    File root = fc.getFile(-400L, userName);
+    		    uc.addInitialFiles(root, userName);
+    		}
     		//List<String> params = new ArrayList<String>();
     		//params.add("%2Fhome%2Fipinyol%2Ftest.csv");
     		//pc.callPlugin(new Long(1), session, params); // Just to test. PROVISIONAL
-    		Console.startConsole(userName, ""+session.getPortConsole());
+    		Console.startConsole(userName, ""+session.getPortConsole(), newSession, session.getHostConsole().getUrl());
         	return session;
     	}
     	catch (Exception e) {
+    	    e.printStackTrace();
     		LOG.severe("Error retreiving sessions");
     		throw e;
     	}
@@ -145,10 +170,8 @@ public class SessionController extends AbstractController{
         }
         if (done) return port;
         return port+1;
-        
     }
     //public Session sessionRequestRest(String publicKey) throws Exception {
     //	LOG.info("User with public key :" + publicKey + " requesting a session");
     //}
-    
 }

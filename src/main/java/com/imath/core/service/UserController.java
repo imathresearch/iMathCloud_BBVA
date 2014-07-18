@@ -2,6 +2,13 @@
 
 package com.imath.core.service;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Logger;
+
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
@@ -76,9 +83,64 @@ public class UserController extends AbstractController {
 		root.setSharingState(File.Sharing.NO);
 		db.makePersistent(root);
 		
+		// And we add the initial files
+		
 		// we add the user to the jboss system
 		security.createSystemUser(userName, password, Constants.SYSTEM_ROLE);
+
+		// And we add the initial files
+		addInitialFiles(root, userName);
 		return user;
+	}
+	
+	
+	//TODO: unit tests!
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	public void addInitialFiles(File root, String userName) {
+	    try {
+	        InputStream in = this.getClass().getResourceAsStream(Constants.INITIAL_FILE_CONFIGURATION);
+	        BufferedReader br = new BufferedReader(new InputStreamReader(in));
+	        String line;
+	        Map<String,File> map = new HashMap<String,File>();
+	        while((line = br.readLine()) != null) {
+	            if (toProcess(line)) {
+	                String fields[] = line.split(",");
+	                if(fields.length==2) {
+	                    if (fields[0].equals("zip")) {
+	                        fileUtils.extractInitialFiles(fields[1], root, userName);
+	                    }
+	                } else if (fields.length==4) {
+	                    File file = new File();
+	                    file.setIMR_Type(fields[0]);
+	                    file.setName(fields[1]);
+	                    file.setOwner(root.getOwner());
+	                    file.setSharingState(File.Sharing.NO);
+	                    if (fields[2].equals("-")) {
+	                        file.setDir(root);
+	                    } else {
+	                        File dir = map.get(fields[2]);
+	                        file.setDir(dir);
+	                    }
+	                    file.setUrl(root.getUrl() + "/" + fields[3]);
+	                    if (fields[0].equals("dir")) {
+                            map.put(fields[3], file);
+                        }
+	                    em.persist(file);
+	                }
+	            }
+	        }
+	        br.close();
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	}
+	
+	private boolean toProcess(String line) {
+	    if (line==null) return false;
+	    int len = Constants.IGNORE_LINE.length();
+	    if (line.length()<len) return false;
+	    if (line.length()>=len && line.substring(0,len).equals(Constants.IGNORE_LINE)) return false;
+	    return true;
 	}
 	
 	private String createBaseDirectories(String userName) throws Exception {

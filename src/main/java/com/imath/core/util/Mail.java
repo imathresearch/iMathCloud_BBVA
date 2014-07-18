@@ -58,7 +58,7 @@ public class Mail {
     
     public void sendWelcomeMail(String to, String username) throws Exception {
         String html="";
-        InputStream in = this.getClass().getResourceAsStream("welcomeTemplate.html");
+        InputStream in = this.getClass().getResourceAsStream(Constants.WELLCOME_TEMPLATE);
         BufferedReader br = new BufferedReader(new InputStreamReader(in));
         String line;
         while((line = br.readLine()) != null) {
@@ -66,7 +66,7 @@ public class Mail {
         }
         br.close();
         html = html.replace("[USERNAME]", username);
-        String url = Constants.IMATH_HOST;
+        String url = Constants.IMATH_HTTP + Constants.IMATH_HOST;
         if (!Constants.IMATH_PORT.equals("80")) {
             url += ":" + Constants.IMATH_PORT;
         }

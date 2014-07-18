@@ -27,7 +27,7 @@ public class Constants {
     static public final String ROOT_EXEC_DIR = ROOT_FILE_SYSTEM + "/exec_dir"; 
     static public final String iMathTRASH = ROOT_FILE_SYSTEM + "/trash";
     
-    
+    static public final String IMATH_HTTP = "http://";
     static public final String HPC2_HTTP = "http://";
     static public final String HPC2_PORT = "8890";
     static public final String IMATH_PORT = "8080";     // In Development 
@@ -63,4 +63,7 @@ public class Constants {
     
     static public final String IMATHSYSTEMGROUP = "imathuser";      // The linux system group. All imath users will belong to this group.
     
+    static public final String INITIAL_FILE_CONFIGURATION = "examplesFiles.txt";    // The file name containing the initial files to be included when registered
+    static public final String IGNORE_LINE = "--"; // The characters that at the initial of the line in the configuration file, make the line to be ignored
+    static public final String WELLCOME_TEMPLATE = "welcomeTemplate.html"; // The html template for wellcome email  
 }

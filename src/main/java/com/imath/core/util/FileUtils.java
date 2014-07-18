@@ -7,17 +7,23 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
+import java.net.URL;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
+import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 import javax.ejb.Stateful;
+import javax.inject.Inject;
+
 import com.sun.jna.Library;
 import com.sun.jna.Native;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 import org.apache.commons.io.IOUtils;
 
@@ -29,7 +35,8 @@ import org.apache.commons.io.IOUtils;
  */
 @Stateful
 public class FileUtils {
-
+    @Inject
+    private Logger LOG;
     /**
      * Generates a zip file 
      * @param outputFile The output zip file name to generate
@@ -190,6 +197,56 @@ public class FileUtils {
     }
     
     
+    public void extractInitialFiles(String zipfile, com.imath.core.model.File root, String userName) {
+        InputStream in = this.getClass().getResourceAsStream(zipfile);
+        ZipInputStream stream = new ZipInputStream(in);
+        byte[] buffer = new byte[2048];
+        try  {
+            // now iterate through each item in the stream. The get next
+            // entry call will return a ZipEntry for each file in the
+            // stream
+            ZipEntry entry;
+            while((entry = stream.getNextEntry())!=null)  {
+                // Once we get the entry from the stream, the stream is
+                // positioned read to read the raw data, and we keep
+                // reading until read returns 0 or less.
+                if (entry.isDirectory()) {
+                    String url = root.getUrl()+"/"+entry;
+                    this.createDirectory(url);
+                    this.protectDirectory(url, userName);
+                } else {
+                    String urlRoot = root.getUrl();
+                    URI uri = new URI(urlRoot);
+                    String outpath = uri.getPath() + "/" + entry.getName();
+                    FileOutputStream output = null;
+                    try {
+                        output = new FileOutputStream(outpath);
+                        int len = 0;
+                        while ((len = stream.read(buffer)) > 0)
+                        {
+                            output.write(buffer, 0, len);
+                        }
+                    } finally {
+                        // we must always close the output file
+                        if(output!=null) output.close();
+                        this.protectFile(root.getUrl()+"/"+entry.getName(), userName);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            LOG.severe("Error unziping initial example files");
+            e.printStackTrace();
+        }
+        finally
+        {
+            try {
+                stream.close();
+            } catch (Exception e) {
+                LOG.severe("Error closing zip stream for initial examples");
+                e.printStackTrace();
+            }
+        }
+    }
     /**
      * Physically move an imath File to a different destination
      * @param file - imath file to be moved

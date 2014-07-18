@@ -1,6 +1,7 @@
 package com.imath.web.servlet;
 
 import java.io.IOException;
+import java.util.logging.Logger;
 
 import javax.inject.Inject;
 import javax.servlet.ServletException;
@@ -20,10 +21,13 @@ public class Logout extends HttpServlet{
     private static final long serialVersionUID = 1L;
     
     @Inject
-    MainServiceDB db;
+    private MainServiceDB db;
     
     @Inject
-    SessionController sc;
+    private SessionController sc;
+    
+    @Inject 
+    private Logger LOG;
     
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String userName = request.getUserPrincipal().getName();
@@ -31,12 +35,15 @@ public class Logout extends HttpServlet{
         // We close the imath cloud web session
         Session session = db.getSessionDB().findByUser_and_OpenSession(userName);
         if (session == null) {
-            throw new ServletException("No open session!");
-        }
-        try {
-            sc.closeSession(userName);
-        } catch (Exception e) {
-            throw new ServletException(e.getMessage());
+            LOG.severe("No open session to close");
+            //throw new ServletException("No open session!");
+        } else {
+            try {
+                //sc.closeSession(userName);    //Provisional, we do not close the session
+            } catch (Exception e) {
+                LOG.severe("Error closing session");
+                //throw new ServletException(e.getMessage());
+            }
         }
         
         // we close the interactive console

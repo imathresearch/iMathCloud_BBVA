@@ -234,23 +234,28 @@ function requestSession() {
 // When it gets it, stops the deamon.
 // this is done because the console may take some time to start!
 function conectToConsole(host) {
-	urlConsole = 'http://'+host['url']+':' + host['port'];
-	var id = setInterval(function() {
+	window.hostGlobal=host;
+}
+var id = setInterval(function() {
+	if (! (typeof window.hostGlobal=== 'undefined')) {
+		host = window.hostGlobal;
+		urlConsole = 'http://'+host['url']+':' + host['port'];
 		if (isReady(host['url'], host['port'])) {
 			clearInterval(id);
 			$( "#interactive_math" ).attr('src',urlConsole +'/new');
-        	var u = document.getElementById('tabs');
-        	var he = u.offsetHeight;
-        	$( "#interactive_math" ).height(he-70);
-        	mathLanguageCode = host['mathLanguage']['consoleCode'];
-    		getUserMathFunctions();
-    		$('iframe#interactive_math').load(function() {
-    			var env_var = "/iMathCloud/" + userName;
-    			setEnvironmentVariable(env_var);
-    		});
+	    	var u = document.getElementById('tabs');
+	    	var he = u.offsetHeight;
+	    	$( "#interactive_math" ).height(he-70);
+	    	mathLanguageCode = host['mathLanguage']['consoleCode'];
+			getUserMathFunctions();
+			$('iframe#interactive_math').load(function() {
+				var env_var = "/iMathCloud/" + userName;
+				setEnvironmentVariable(env_var);
+			});
 		}
-	}, 1000);
-}
+	}
+}, 2000);
+
 // Check if a url is ready
 function isReady(host, port) {
     //var encodedURL = encodeURIComponent(url);

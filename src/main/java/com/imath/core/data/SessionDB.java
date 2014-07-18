@@ -62,6 +62,32 @@ public class SessionDB {
     }
     
     /**
+     * Returns the last session {@link Session} of the given user
+     * @param idUser 
+     *      The id of the {@link IMR_User}. 
+     * @author ipinyol
+     */
+    public Session findByUserLastSession(String userName) {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Session> criteria = cb.createQuery(Session.class);
+        Root<Session> job = criteria.from(Session.class);
+        Predicate p1 = cb.equal(job.get("user").get("userName"), userName);
+        criteria.select(job).where(p1);
+        criteria.orderBy(cb.desc(job.get("startDate")));
+        
+        try { 
+            List<Session> sessions = em.createQuery(criteria).getResultList();
+            if (sessions.size()>0) return sessions.get(0);
+            return null;
+        }
+        catch (Exception e) {
+            // Curiously, getSingleResult return an exception when no single result exists.
+            // TODO: find a better way of doing it
+            return null;
+        }
+         
+    }
+    /**
      * Returns the list of open {@link Session}, the ones with endDate=null
      * @author ipinyol
      */

@@ -34,13 +34,13 @@ insert into imr_user (username, email, firstname, lastname, organization, phone1
 
 -- user52
 insert into imr_user (username, email, firstname, lastname, organization, phone1, idrole, idMathLanguage) values ('user52', 'user@user.com', 'User', 'User','S.L.','111111112',-1,-1);
-insert into imr_user (username, email, firstname, lastname, organization, phone1, idrole, idMathLanguage) values ('conanc', 'conan@user.com', 'Conan', 'conan','S.L.','111111112',-1,-1);
+--insert into imr_user (username, email, firstname, lastname, organization, phone1, idrole, idMathLanguage) values ('conanc', 'conan@user.com', 'Conan', 'conan','S.L.','111111112',-1,-1);
 
 insert into imr_user (username, email, firstname, lastname, organization, phone1, idrole, idMathLanguage) values ('ipinyol', 'ipinyol@imathresearch.com', 'Isaac', 'Pinyol','iMath Research S.L.','636683729',-1,-2);
 insert into imr_user (username, email, firstname, lastname, organization, phone1, idrole, idMathLanguage) values ('ipinyolTest', 'ipinyolTest@imathresearch.com', 'Isaac', 'Pinyol','iMath Research S.L.','555555667',-1,-2);
 
---conan
-insert into imr_user (username, email, firstname, lastname, organization, phone1, idrole, idMathLanguage) values ('conan', 'conan@imathresearch.com', 'conan', 'conan','iMath Research S.L.','636683729',-1,-1);
+--conanc
+insert into imr_user (username, email, firstname, lastname, organization, phone1, idrole, idMathLanguage) values ('conanc', 'conan@imathresearch.com', 'conan', 'conan','iMath Research S.L.','636683729',-1,-1);
 
 
 --inavarro
@@ -67,8 +67,8 @@ insert into File (id, imr_type, name, url, id_dir, iduserowner, sharingstate) va
 --user52 
 insert into File (id, imr_type, name, url, id_dir, iduserowner, sharingstate) values (-300,'dir','ROOT','file://localhost/iMathCloud/user52',null,'user52',0);
 
--- conan
-insert into File (id, imr_type, name, url, id_dir, iduserowner, sharingstate) values (-400,'dir','ROOT','file://localhost/iMathCloud/conan',null,'conan',0);
+-- conanc
+insert into File (id, imr_type, name, url, id_dir, iduserowner, sharingstate) values (-400,'dir','ROOT','file://localhost/iMathCloud/conanc',null,'conanc',0);
 
 -- imath 
 insert into File (id, imr_type, name, url, id_dir, iduserowner, sharingstate) values (-500,'dir','ROOT','file://localhost/iMathCloud/imath',null,'imath',0);
