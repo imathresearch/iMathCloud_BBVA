@@ -145,6 +145,14 @@ public class SessionController extends AbstractController{
     	}
     }
     
+    //TODO: Provisional
+    private int getPortConsole() {
+        List<Session> openSessions = db.getSessionDB().getAllSessions();
+        if (openSessions == null) return Constants.CONSOLE_PORT;
+        if (openSessions.size()==0) return Constants.CONSOLE_PORT;
+        return openSessions.get(0).getPortConsole()+1;
+    }
+    /*
     private int getPortConsole() {
         List<Session> openSessions = db.getSessionDB().getOpenSessions();
         if (openSessions == null) return Constants.CONSOLE_PORT;
@@ -165,7 +173,7 @@ public class SessionController extends AbstractController{
         }
         if (done) return port;
         return port+1;
-    }
+    }*/
     //public Session sessionRequestRest(String publicKey) throws Exception {
     //	LOG.info("User with public key :" + publicKey + " requesting a session");
     //}
