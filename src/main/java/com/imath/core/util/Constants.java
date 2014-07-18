@@ -30,12 +30,12 @@ public class Constants {
     static public final String IMATH_HTTP = "http://";
     static public final String HPC2_HTTP = "http://";
     static public final String HPC2_PORT = "8887";
-    //static public final String IMATH_PORT = "8080";     // In Development 
-    static public final String IMATH_PORT = "80";       // In Production
+    static public final String IMATH_PORT = "8080";     // In Development 
+    //static public final String IMATH_PORT = "80";       // In Production
     static public final int CONSOLE_PORT = 8888;        // ipython notebook initial value
     
-    //static public final String IMATH_HOST = LOCALHOST;         // In Development
-    static public final String IMATH_HOST = "158.109.125.112"; // In Production
+    static public final String IMATH_HOST = LOCALHOST;         // In Development
+    //static public final String IMATH_HOST = "158.109.125.112"; // In Production
     static public final String HPC2_PLUGIN_SERVICE = "plugin";
     static public final String HPC2_PCTS_SERVICE = "getpct";
     static public final String HPC2_SUBMITJOB_SERVICE = "core/submit";
