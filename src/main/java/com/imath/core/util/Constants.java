@@ -29,7 +29,7 @@ public class Constants {
     
     static public final String IMATH_HTTP = "http://";
     static public final String HPC2_HTTP = "http://";
-    static public final String HPC2_PORT = "8890";
+    static public final String HPC2_PORT = "8887";
     static public final String IMATH_PORT = "8080";     // In Development 
     //static public final String IMATH_PORT = "80";       // In Production
     static public final int CONSOLE_PORT = 8888;        // ipython notebook initial value
