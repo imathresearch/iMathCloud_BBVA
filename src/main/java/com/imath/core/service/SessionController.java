@@ -131,12 +131,7 @@ public class SessionController extends AbstractController{
         		}
         		
         	}
-    		if (userName.equals("conanc")) {
-    		    Mail m = new Mail();
-    		    m.sendWelcomeMail("ipinyol@gmail.com", "conanc");
-    		    File root = fc.getFile(-400L, userName);
-    		    uc.addInitialFiles(root, userName);
-    		}
+    		
     		//List<String> params = new ArrayList<String>();
     		//params.add("%2Fhome%2Fipinyol%2Ftest.csv");
     		//pc.callPlugin(new Long(1), session, params); // Just to test. PROVISIONAL
