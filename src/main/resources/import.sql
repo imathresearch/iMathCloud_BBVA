@@ -101,7 +101,7 @@ insert into File (id, imr_type, name, url, id_dir, iduserowner, sharingstate) va
 --ammartinez
 
 --inavarro
-insert into File (id, imr_type, name, url, id_dir, iduserowner, sharingstate) values (-9,'dir','ROOT','file://localhost/iMathCloud',null,'inavarro',0);
+insert into File (id, imr_type, name, url, id_dir, iduserowner, sharingstate) values (-9,'dir','ROOT','file://localhost/iMathCloud/inavarro',null,'inavarro',0);
 insert into File (id, imr_type, name, url, id_dir, iduserowner, sharingstate) values (-10,'dir','EXAMPLES','file://localhost/iMathCloud/inavarro/EXAMPLES',-9,'inavarro',0);
 insert into File (id, imr_type, name, url, id_dir, iduserowner, sharingstate) values (-11,'dir','basic','file://localhost/iMathCloud/inavarro/EXAMPLES/basic',-10,'inavarro',0);
 insert into File (id, imr_type, name, url, id_dir, iduserowner, sharingstate) values (-12,'dir','fileAccess','file://localhost/iMathCloud/inavarro/EXAMPLES/fileAccess',-10,'inavarro',0);
