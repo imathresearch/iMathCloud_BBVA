@@ -101,17 +101,18 @@ insert into File (id, imr_type, name, url, id_dir, iduserowner, sharingstate) va
 --ammartinez
 
 --inavarro
-insert into File (id, imr_type, name, url, id_dir, iduserowner, sharingstate) values (-9,'dir','ROOT','file://localhost/media/iMathCloud',null,'inavarro',0);
-insert into File (id, imr_type, name, url, id_dir, iduserowner, sharingstate) values (-10,'dir','src','file://localhost/media/iMathCloud/src',-9,'inavarro',0);
-insert into File (id, imr_type, name, url, id_dir, iduserowner, sharingstate) values (-11,'dir','examples','file://localhost/media/iMathCloud/usr/examples',-10,'inavarro',0);
-insert into File (id, imr_type, name, url, id_dir, iduserowner, sharingstate) values (-12,'dir','data','file://localhost/media/iMathCloud/data',-9,'inavarro',1);
-insert into File (id, imr_type, name, url, id_dir, iduserowner, sharingstate) values (-13,'py','example1.py','file://localhost/media/iMathCloud/src/examples/example1.py',-11,'inavarro',0);
-insert into File (id, imr_type, name, url, id_dir, iduserowner, sharingstate) values (-14,'py','example2.py','file://localhost/media/iMathCloud/src/examples/example2.py',-11,'inavarro',0);
-insert into File (id, imr_type, name, url, id_dir, iduserowner, sharingstate) values (-15,'py','example3.py','file://localhost/media/iMathCloud/src/examples/example3.py',-11,'inavarro',0);
-insert into File (id, imr_type, name, url, id_dir, iduserowner, sharingstate) values (-16,'csv','test.csv','file://localhost/media/iMathCloud/data/test.csv',-12,'inavarro',0);
-insert into File (id, imr_type, name, url, id_dir, iduserowner, sharingstate) values (-17,'csv','univar.csv','file://localhost/media/iMathCloud/data/univar.csv',-12,'inavarro',0);
-insert into File (id, imr_type, name, url, id_dir, iduserowner, sharingstate) values (-18,'csv','multivar.csv','file://localhost/media/iMathCloud/data/multivar.csv',-12,'inavarro',0);
-insert into File (id, imr_type, name, url, id_dir, iduserowner, sharingstate) values (-19,'csv','reglin.csv','file://localhost/media/iMathCloud/data/reglin.csv',-12,'inavarro',0);
+insert into File (id, imr_type, name, url, id_dir, iduserowner, sharingstate) values (-9,'dir','ROOT','file://localhost/iMathCloud/inavarro',null,'inavarro',0);
+insert into File (id, imr_type, name, url, id_dir, iduserowner, sharingstate) values (-10,'dir','EXAMPLES','file://localhost/iMathCloud/inavarro/EXAMPLES',-9,'inavarro',0);
+insert into File (id, imr_type, name, url, id_dir, iduserowner, sharingstate) values (-11,'dir','basic','file://localhost/iMathCloud/inavarro/EXAMPLES/basic',-10,'inavarro',0);
+insert into File (id, imr_type, name, url, id_dir, iduserowner, sharingstate) values (-12,'dir','fileAccess','file://localhost/iMathCloud/inavarro/EXAMPLES/fileAccess',-10,'inavarro',0);
+insert into File (id, imr_type, name, url, id_dir, iduserowner, sharingstate) values (-13,'py','colossusBasic.py','file://localhost/iMathCloud/inavarro/EXAMPLES/basic/colossusBasic.py',-11,'inavarro',0);
+insert into File (id, imr_type, name, url, id_dir, iduserowner, sharingstate) values (-14,'py','multiPlot.py','file://localhost/iMathCloud/inavarro/EXAMPLES/basic/multiPlot.py',-11,'inavarro',0);
+insert into File (id, imr_type, name, url, id_dir, iduserowner, sharingstate) values (-15,'py','pythonBars.py','file://localhost/iMathCloud/inavarro/EXAMPLES/basic/pythonBars.py',-11,'inavarro',0);
+insert into File (id, imr_type, name, url, id_dir, iduserowner, sharingstate) values (-16,'txt','readme.txt','file://localhost/iMathCloud/inavarro/EXAMPLES/basic/readme.txt',-11,'inavarro',0);
+insert into File (id, imr_type, name, url, id_dir, iduserowner, sharingstate) values (-17,'csv','iris_data.csv','file://localhost/iMathCloud/inavarro/EXAMPLES/fileAccess/iris_data.csv',-12,'inavarro',0);
+insert into File (id, imr_type, name, url, id_dir, iduserowner, sharingstate) values (-18,'py','irisPlot.py','file://localhost/iMathCloud/inavarro/EXAMPLES/fileAccess/irisPlot.py',-12,'inavarro',0);
+insert into File (id, imr_type, name, url, id_dir, iduserowner, sharingstate) values (-19,'csv','iris_target.csv','file://localhost/iMathCloud/inavarro/EXAMPLES/fileAccess/iris_target.csv',-12,'inavarro',0);
+insert into File (id, imr_type, name, url, id_dir, iduserowner, sharingstate) values (-20,'txt','readme.txt','file://localhost/iMathCloud/inavarro/EXAMPLES/fileAccess/readme.txt',-12,'inavarro',0);
 --/inavarro
 
 insert into FileShared(id, iduser, idfile, permission) values(-1, 'ipinyolTest', -10, 1);
