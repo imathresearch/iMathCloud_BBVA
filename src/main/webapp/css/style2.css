@@ -290,6 +290,7 @@ p.change_link{
 	top: 1px;
 }
 /** Styling both forms **/
+#recover,
 #register, 
 #login{
 	position: absolute;
@@ -307,9 +308,15 @@ p.change_link{
 		 border-radius: 5px;
 			
 }
+
+#recover{	
+	z-index: 20;
+	/*opacity: 0;*/
+}
+
 #register{	
 	z-index: 21;
-	opacity: 0;
+	/*opacity: 0;*/
 }
 #login{
 	z-index: 22;

@@ -17,6 +17,7 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
+
 public class Mail {
     // TODO: put this into protected external files
     public static String cr1 = "imathcloud@imathresearch.com";
@@ -74,6 +75,28 @@ public class Mail {
         html = html.replace("[URL_IMATHCLOUD]", url);
         Mail.sendHTMLMail(to, "Welcome to iMathCloud", html);
     }
+    
+    public void sendRecoverPasswordMail(String to, String username, String newPassword) throws Exception {
+        String html="";
+        InputStream in = this.getClass().getResourceAsStream("recoverPassTemplate.html");
+        BufferedReader br = new BufferedReader(new InputStreamReader(in));
+        String line;
+        while((line = br.readLine()) != null) {
+            html += line + "\n";
+        }
+        br.close();
+        html = html.replace("[USERNAME]", username);
+        html = html.replace("[PASSWORD]", newPassword);
+        String url = Constants.IMATH_HTTP + Constants.IMATH_HOST;;
+        if (!Constants.IMATH_PORT.equals("80")) {
+            url += ":" + Constants.IMATH_PORT;
+        }
+        url += "/iMathCloud";
+        html = html.replace("[URL_IMATHCLOUD]", url);
+        Mail.sendHTMLMail(to, "Recover iMathCloud Password", html);
+    }
+    
+    
     
     private static Session getSession() {
         Properties props = new Properties();

@@ -44,16 +44,33 @@ public class Security {
         // We add the system user
         //Process p = Runtime.getRuntime().exec(Constants.ADD_USER_CLI + " -a " + userName + " " + password + " > /dev/tty");
         ProcessBuilder pb = new ProcessBuilder(Constants.ADD_USER_CLI, "-a",  userName, password);
+        
+        /*
+        File commands = new File("/home/andrea/workspace/AddUserJboss/src/Commands.txt");
+		File output = new File("/home/andrea/workspace/AddUserJboss/src/ProcessLog.txt");
+		File errors = new File("/home/andrea/workspace/AddUserJboss/src/ErrorLog.txt");
+		 
+		pb.redirectInput(commands);
+		pb.redirectError(errors);
+		pb.redirectOutput(output);
+        */
+        
+        
         pb.redirectInput(Redirect.INHERIT);
         pb.redirectOutput(Redirect.INHERIT);
         pb.redirectError(Redirect.INHERIT);
+        
+        
+        
         //String error  = loadStream(p.getErrorStream());
         //String output = loadStream(p.getInputStream());
         
         //System.out.println("STDERROR: add-uset.sh--------------:" + error);
         //System.out.println("STDOUTPUT: add-user.sh-------------:" + output);
         Process p = pb.start();
-        p.waitFor();
+        int signal = p.waitFor();
+        
+        System.out.println("SIGNAL " + signal);
         
         // We add the role of the user if role is not null
         if (role != null) {
