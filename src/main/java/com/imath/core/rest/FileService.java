@@ -31,7 +31,7 @@ import com.imath.core.model.IMR_User;
 import com.imath.core.data.MainServiceDB;
 import com.imath.core.service.FileController;
 import com.imath.core.util.FileUtils;
-
+import com.imath.core.security.SecurityManager;
 import java.util.logging.Logger;
 
 /**
@@ -51,9 +51,9 @@ public class FileService {
     @Path("/getFileContent/{userName}/{id}")
 	//@Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public FileContentDTO REST_getFileContent(@PathParam("userName") String userName, @PathParam("id") Long id,
-		@QueryParam("page") Integer page){
+    public FileContentDTO REST_getFileContent(@PathParam("userName") String userName, @PathParam("id") Long id, @QueryParam("page") Integer page, @Context SecurityContext sc){
 		try { 
+		    SecurityManager.secureBasic(userName, sc);
 			FileContentDTO out = new FileContentDTO();
 			File file = db.getFileDB().findById(id);
 			if (page == null){
@@ -76,9 +76,11 @@ public class FileService {
     @Path("/getFile/{userName}/{id}")
 	//@Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public FileDTO REST_getFile(@PathParam("userName") String userName, @PathParam("id") Long id){
+    public FileDTO REST_getFile(@PathParam("userName") String userName, @PathParam("id") Long id, @Context SecurityContext sc){
 		//TODO: Test needed!!
 		try { 
+		    SecurityManager.secureBasic(userName, sc);
+		    
 			File file = db.getFileDB().findByIdSecured(id, userName);
 			FileDTO filedto = new FileDTO();
 			filedto.id = file.getId();
@@ -97,17 +99,17 @@ public class FileService {
 			throw new WebApplicationException(Response.Status.NOT_FOUND);
 		}
     }
-
 	
 	@POST
     @Path("/saveFileContent/{userName}/{id}")
 	@Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response REST_saveFileContent(@PathParam("userName") String userName, @PathParam("id") Long id, List<String> content) {
+    public Response REST_saveFileContent(@PathParam("userName") String userName, @PathParam("id") Long id, List<String> content, @Context SecurityContext sc) {
 		Map<String, String> responseObj = new HashMap<String, String>();
 		responseObj.put("ok","200");
 		Response.ResponseBuilder builder = Response.ok().entity(responseObj);
 		try {
+		    SecurityManager.secureBasic(userName, sc);
 			File file = db.getFileDB().findById(id);
 			fc.saveFileContent(userName, file, content);
 		}
@@ -125,11 +127,12 @@ public class FileService {
 	@Path("/saveFileContentPage/{userName}/{id}/{page}")
 	@Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response REST_saveFileContent(@PathParam("userName") String userName, @PathParam("id") Long id, @PathParam("page") Long page, List<String> content) {
+    public Response REST_saveFileContent(@PathParam("userName") String userName, @PathParam("id") Long id, @PathParam("page") Long page, List<String> content, @Context SecurityContext sc) {
         Map<String, String> responseObj = new HashMap<String, String>();
         responseObj.put("ok","200");
         Response.ResponseBuilder builder = Response.ok().entity(responseObj);
         try {
+            SecurityManager.secureBasic(userName, sc);
             File file = db.getFileDB().findById(id);
             fc.saveFileContent(userName, file, content, page);
         }
@@ -201,11 +204,12 @@ public class FileService {
 	@GET
     @Path("/getSharedFiles/{userName}")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<FileDTO> REST_getSharedFiles(@PathParam("userName") String userName) {
+    public List<FileDTO> REST_getSharedFiles(@PathParam("userName") String userName, @Context SecurityContext sc) {
 		//TODO: Test needed!!
 		//TODO: Authenticate the call. Make sure that it is done from index.html
 		// and that the user is authenticated
 		try {
+		    SecurityManager.secureBasic(userName, sc);
 			List<FileShared> filesShared = db.getFileSharedDB().getFilesSharedByUser(userName);
 			List<FileDTO> out = new ArrayList<FileDTO>();
 
