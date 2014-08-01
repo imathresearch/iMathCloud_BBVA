@@ -196,7 +196,7 @@
 					<div id="toolbarFiles" class="ui-widget-header ui-corner-all">
 						<small>
 						<button id="refreshTreeButton">Refresh tree</button>
-						<button id="uploadFileButton">Upload file</button>
+						<!-- <button id="uploadFileButton">Upload file</button>-->
 						<!-- button id="newDirectoryButton">New directory</button-->
 						<!-- button id="newFileButton">New File</button-->
 						<!-- button id="copyButton">Copy</button-->
