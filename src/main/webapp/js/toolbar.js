@@ -146,7 +146,6 @@ function generateHTMLToolBarFile(idFile) {
 	var html = '<div id="toolbarFile_' + idFile + '" class="ui-widget-header ui-corner-all">';
 	html += '<small>';
 	html += '<button id="saveFileButton_' + idFile + '">Save file</button>';
-	html += '<button id="saveAsFileButton_' + idFile + '">Save as file</button>';
 	html += '<button id="executeConFileButton_' + idFile + '">Execute in console </button>';
 	html += '<button id="executeJobFileButton_' + idFile + '">Execute as a job </button>';
 	html += '</small></div>';
@@ -157,10 +156,6 @@ function generateToolBarFile(idFile) {
 	$( "#saveFileButton_"+idFile).button({
 		text: false,
 		icons: { primary: "ui-icon-disk" }
-	});
-	$( "#saveAsFileButton_"+idFile).button({
-		text: false,
-		icons: { primary: "ui-icon-calculator" }
 	});
 	$( "#executeConFileButton_"+idFile).button({
 		text: false,
