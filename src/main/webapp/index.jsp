@@ -12,10 +12,16 @@
         <meta name="description" content="Login and Registration Form with HTML5 and CSS3" />
         <meta name="keywords" content="html5, css3, form, switch, animation, :target, pseudo-class" />
         <meta name="author" content="Codrops" />
+        
+        <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>      
+        <script src="js/loginInitialization.js" type="text/javascript"></script>
+        
         <link rel="shortcut icon" href="../favicon.ico"> 
         <link rel="stylesheet" type="text/css" href="css/demo.css" />
         <link rel="stylesheet" type="text/css" href="css/style2.css" />
-		<link rel="stylesheet" type="text/css" href="css/animate-custom.css" />
+		<!-- link rel="stylesheet" type="text/css" href="css/animate-custom.css" /-->
+		<link rel="stylesheet" type="text/css" href="css/login.css" />
+		
     </head>
     <br><br>
     <body>
@@ -24,15 +30,16 @@
             <section>				
                 <div id="container_demo" >
                     <!-- hidden anchor to stop jump http://www.css3create.com/Astuce-Empecher-le-scroll-avec-l-utilisation-de-target#wrap4  -->
+                    <a class="hiddenanchor" id="torecover"></a>
                     <a class="hiddenanchor" id="toregister"></a>
                     <a class="hiddenanchor" id="tologin"></a>
                     <div id="wrapper">
-                        <div id="login" class="animate form">
+                        <div id="login" class="animated form in">
                             <form  action="login.jsp" method="POST" autocomplete="on"> 
                                 <h1> iMath Cloud - Log in </h1> 
                                 <p> 
-                                    <label for="username" class="uname" data-icon="u" > Your email or username </label>
-                                    <input id="username" name="j_username" required="required" type="text" placeholder="myusername or mymail@mail.com"/>
+                                    <label for="username" class="uname" data-icon="u" > Your username </label>
+                                    <input id="username" name="j_username" required="required" type="text" placeholder="myusername"/>
                                 </p>
                                 <p> 
                                     <label for="password" class="youpasswd" data-icon="p"> Your password </label>
@@ -45,14 +52,17 @@
                                 <p class="login button"> 
                                     <input type="submit" value="Login" /> 
 								</p>
+								<p>
+								  <a href="javascript:gotobox('recover');" class="to_register">Did you forget your password ?</a>
+								</p>
                                 <p class="change_link">
 									Not a member yet ?
-									<a href="#toregister" class="to_register">Join us</a>
+									<a href="javascript:gotobox('register');" class="to_register">Join us</a>
 								</p>
                             </form>
                         </div>
 
-                        <div id="register" class="animate form">
+                        <div id="register" class="animated form out">
                             <form  action="register" method="POST" autocomplete="on"> 
                                 <h1> iMath Cloud - Sign up </h1> 
                                 <p> 
@@ -76,7 +86,24 @@
 								</p>
                                 <p class="change_link">  
 									Already a member ?
-									<a href="#tologin" class="to_register"> Go and log in </a>
+									<a href="javascript:gotobox('login');" class="to_register"> Go and log in </a>
+								</p>
+                            </form>
+                        </div>
+                        
+                         <div id="recover" class="animated form out">
+                            <form  action="recoverpassword" method="POST" autocomplete="on"> 
+                                <h1>  iMathCloud - Recover password </h1>                                 
+                                <p> 
+                                    <label for="emailsignup" class="youmail" data-icon="e" > Your email</label>
+                                    <input id="emailsignup" name="emailsignup" required="required" type="email" placeholder="mysupermail@mail.com"/> 
+                                </p>                               
+                                <p class="signin button"> 
+									<input type="submit" value="Recover"/> 
+								</p>
+                               <p class="change_link">
+									Already a member ?
+									<a href="javascript:gotobox('login');"  class="to_register"> Go and log in </a>
 								</p>
                             </form>
                         </div>

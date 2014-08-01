@@ -1,0 +1,16 @@
+.out  {
+  transform: translateX(-1000px);
+  -webkit-transform: translateX(-1000px);
+  opacity: 0;
+}
+
+.in  {
+  transform: translateX(0);
+  -webkit-transform: translateX(0);
+  opacity: 1;
+}
+
+.animated  {
+	transition: 0.4s ease-in-out;
+	-webkit-transition: 0.4s ease-in-out;
+}

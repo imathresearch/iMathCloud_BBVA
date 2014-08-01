@@ -2,6 +2,7 @@
 
 package com.imath.core.rest;
 
+import com.imath.core.security.SecurityManager;
 import com.imath.core.service.PluginController.PercDTO;
 
 import javax.ejb.Stateful;
@@ -13,7 +14,9 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.SecurityContext;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
 
@@ -52,8 +55,9 @@ public class JobService {
 	@GET
     @Path("/getJobsRunning/{userName}")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<JobDTO> REST_getJobs(@PathParam("userName") String userName) {
+    public List<JobDTO> REST_getJobs(@PathParam("userName") String userName, @Context SecurityContext sc) {
 		try {
+		    SecurityManager.secureBasic(userName, sc);
 			List<Job> jobs = db.getJobDB().getJobsByUser_and_State(userName, Job.States.RUNNING);
 			return prepareJobsToSubmit(jobs);
 		}
@@ -66,12 +70,13 @@ public class JobService {
 	@GET
     @Path("/getJobs/{userName}")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<JobDTO> REST_getJobsAll(@PathParam("userName") String userName) {
+    public List<JobDTO> REST_getJobsAll(@PathParam("userName") String userName, @Context SecurityContext sc) {
 		//TODO: Test needed!!
 		//TODO: Authenticate the call. Make sure that it is done from index.html
 		// and that the user is authenticated
 		//System.out.println("GETTING JOBS");
 		try {
+		    SecurityManager.secureBasic(userName, sc);
 			List<Job> jobs =  db.getJobDB().getJobsByUser(userName);
 			return prepareJobsToSubmit(jobs);
 		}
@@ -84,9 +89,10 @@ public class JobService {
 	@GET
     @Path("/getJob/{idJob}")
     @Produces(MediaType.APPLICATION_JSON)
-    public JobDTO REST_getJob(@PathParam("idJob") Long idJob) {
+    public JobDTO REST_getJob(@PathParam("idJob") Long idJob, @Context SecurityContext sc) {
 		try {
-			Job job =  db.getJobDB().findById(idJob);
+		    Job job = db.getJobDB().findByIdSecured(idJob, sc.getUserPrincipal().getName());
+			//Job job =  db.getJobDB().findById(idJob);
 			return prepareJobToSubmit(job);
 		}
 		catch (Exception e) {
@@ -98,9 +104,10 @@ public class JobService {
 	@GET
     @Path("/getJobOutputFiles/{idJob}")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<FileDTO> REST_getJobOutputFiles(@PathParam("idJob") Long idJob) {
+    public List<FileDTO> REST_getJobOutputFiles(@PathParam("idJob") Long idJob, @Context SecurityContext sc) {
 		try {
-			Job job =  db.getJobDB().findById(idJob);
+		    Job job = db.getJobDB().findByIdSecured(idJob, sc.getUserPrincipal().getName());
+			//Job job =  db.getJobDB().findById(idJob);
 			return PrepareToSubmitFiles(job.getOutputFiles());
 		}
 		catch (Exception e) {

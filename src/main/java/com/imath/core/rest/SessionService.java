@@ -12,7 +12,9 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.SecurityContext;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
 
@@ -20,6 +22,7 @@ import com.imath.core.model.MathLanguage;
 import com.imath.core.model.Session;
 import com.imath.core.model.Host;
 import com.imath.core.data.MainServiceDB;
+import com.imath.core.security.SecurityManager;
 import com.imath.core.service.SessionController;
 
 import java.io.BufferedReader;
@@ -44,12 +47,13 @@ public class SessionService {
 	@GET
     @Path("/newSession/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public HostDTO REST_requestWebSession(@PathParam("id") String userName) {
+    public HostDTO REST_requestWebSession(@PathParam("id") String userName, @Context SecurityContext sec) {
 		//TODO: Authenticate the call. Make sure that it is done from index.html
 		// and that the user is authenticated
 		//System.out.println("Creating new session");
 		Session session;
 		try {
+		    SecurityManager.secureBasic(userName, sec);
 			session = sc.requestWebSession(userName);
 		}
 		catch (Exception e) {
@@ -66,10 +70,9 @@ public class SessionService {
 	@GET
     @Path("/closeSession/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public void REST_closeSession(@PathParam("id") String userName) {
-		//TODO: Authenticate the call. Make sure that it is done from index.html
-		// and that the user is authenticated
+    public void REST_closeSession(@PathParam("id") String userName, @Context SecurityContext sec) {
 		try {
+		    SecurityManager.secureBasic(userName, sec);
 			sc.closeSession(userName);
 		}
 		catch (Exception e) {

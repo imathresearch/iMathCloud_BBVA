@@ -25,4 +25,11 @@ public class SecurityManager {
 		}
 		
 	}
+	// It throws an exception if access it not allowed
+    // TODO: This is provisional
+    public static void secureBasic(String userName, SecurityContext sc) throws Exception {
+        if (sc==null) throw new Exception();
+        if (sc.getUserPrincipal()==null) throw new Exception();
+        if (!sc.getUserPrincipal().getName().equals(userName)) throw new Exception();
+    }
 }

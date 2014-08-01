@@ -7,9 +7,12 @@ import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
+import java.security.Principal;
 import java.util.List;
+import java.util.logging.Logger;
 
 import javax.persistence.EntityManager;
+import javax.ws.rs.core.SecurityContext;
 
 import org.hamcrest.CoreMatchers;
 import org.junit.Before;
@@ -48,11 +51,22 @@ public class JobControllerUnitTest {
     @Mock
     private FileController fc;
     
+    @Mock 
+    private Logger LOG;
+
+    @Mock 
+    private SecurityContext sc;                   // The security context
+    
+    @Mock 
+    private Principal principal;                  // It contains logged info user
+
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
         
         // Create with new the class we want to test
+        when(sc.getUserPrincipal()).thenReturn(principal);
+        
         jobController = new JobController();
         db = new MainServiceDB();
         
@@ -62,6 +76,7 @@ public class JobControllerUnitTest {
        
         jobController.setMainServiceDB(db);
         jobController.setFileController(fc);
+        jobController.setLog(LOG);
         
     }
 
@@ -100,7 +115,7 @@ public class JobControllerUnitTest {
         Session s = new Session();
         s.setUser(user);
         job.setSession(s);
-        
+        job.setOwner(user);
         File dir_example = new File();
         dir_example.setId(1L);
         dir_example.setName("examples");
@@ -161,6 +176,7 @@ public class JobControllerUnitTest {
         Session s = new Session();
         s.setUser(user);
         job.setSession(s);
+        job.setOwner(user);
        
         // When trying to access the job by id, we return the job we just created
         when(db.getJobDB().findById(1L)).thenReturn(job);

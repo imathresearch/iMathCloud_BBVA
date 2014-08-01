@@ -15,7 +15,9 @@ import javax.ws.rs.Encoded;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.SecurityContext;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
 
@@ -54,6 +56,7 @@ import java.util.Iterator;
 
 import com.imath.core.model.Job.States;
 
+import com.imath.core.security.SecurityManager;
 //Just to check
 import com.imath.core.service.JobController;
 import com.imath.core.service.JobController.Pair;
@@ -107,14 +110,14 @@ public class JobPythonService {
     @Path("/submitJob/{userName}/{idFile}")
 	//@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-    public PublicResponse.StateDTO REST_submitJob(@PathParam("userName") String userName, @PathParam("idFile") Long idFile) {		
+    public PublicResponse.StateDTO REST_submitJob(@PathParam("userName") String userName, @PathParam("idFile") Long idFile, @Context SecurityContext sc) {		
 		
 		Set<File> files = new HashSet<File>(); 
 		
 		try {
-			
+		    SecurityManager.secureBasic(userName, sc);
 			Session session = getSession(userName);		
-			File file = getFile(idFile);			
+			File file = getFile(idFile, userName);			
 			files.add(file);
 			
 			List<Param> params = new ArrayList<Param>();
@@ -152,8 +155,8 @@ public class JobPythonService {
 	}
 	
 	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
-	private File getFile(Long idFile) {
-		return db.getFileDB().findById(idFile);
+	private File getFile(Long idFile, String userName) {
+		return db.getFileDB().findByIdSecured(idFile,userName);
 	}
 	
 	private static class Param {

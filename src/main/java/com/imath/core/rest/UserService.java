@@ -12,7 +12,9 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.SecurityContext;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
 
@@ -20,6 +22,7 @@ import com.imath.core.model.Session;
 import com.imath.core.model.Host;
 import com.imath.core.model.IMR_User;
 import com.imath.core.data.MainServiceDB;
+import com.imath.core.security.SecurityManager;
 import com.imath.core.service.SessionController;
 
 import java.util.logging.Logger;
@@ -38,11 +41,10 @@ public class UserService {
 	
 	@GET
     @Path("/getUserInfo/{id}")
-    @Produces(MediaType.APPLICATION_JSON)		//TODO: Authenticate the call. Make sure that it is done from index.html
-    		// and that the user is authenticated
-
-    public IMR_User REST_getUserInfo(@PathParam("id") String userName) {
+    @Produces(MediaType.APPLICATION_JSON)
+    public IMR_User REST_getUserInfo(@PathParam("id") String userName, @Context SecurityContext sc) {
 		try {
+		    SecurityManager.secureBasic(userName, sc);
 			IMR_User user = db.getIMR_UserDB().findById(userName);
 			return user;
 		}
