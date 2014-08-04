@@ -1190,7 +1190,6 @@ public class DataUnitTest {
     	assertTrue(response.getMetadata().get("Content-Disposition").get(0).equals("attachment; filename=\"file.txt.zip\"") );
 	       
         verify(fileController, times(1)).getFile(idFile, userTest);
-        verify(fileUtils, times(1)).generateGeneralZip(Matchers.eq(f_d), Matchers.eq("/dir/file.txt.zip"));
         
     }
     
@@ -1215,7 +1214,6 @@ public class DataUnitTest {
     	assertTrue(response.getMetadata().get("Content-Disposition").get(0).equals("attachment; filename=\"file.txt.zip\"") );
 	       
         verify(fileController, times(1)).checkIfFileExistInUser(path_file_directory,userTest);
-        verify(fileUtils, times(1)).generateGeneralZip(Matchers.eq(f_d), Matchers.eq("/dir/file.txt.zip"));
         
     }
     
@@ -1242,7 +1240,6 @@ public class DataUnitTest {
     	assertTrue(response.getMetadata().get("Content-Disposition").get(0).equals("attachment; filename=\"zip_test.zip\"") );
 	       
         verify(fileController, times(1)).getFile(idFile, userTest);
-        verify(fileUtils, times(1)).generateGeneralZip(Matchers.eq(f_d), Matchers.eq("/dir/zip_test.zip"));
         
     }
     
@@ -1267,7 +1264,6 @@ public class DataUnitTest {
     	assertTrue(response.getMetadata().get("Content-Disposition").get(0).equals("attachment; filename=\"zip_test.zip\"") );
 	       
         verify(fileController, times(1)).checkIfFileExistInUser(path_file_directory,userTest);
-        verify(fileUtils, times(1)).generateGeneralZip(Matchers.eq(f_d), Matchers.eq("/dir/zip_test.zip"));
         
     }
     
