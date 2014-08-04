@@ -213,8 +213,15 @@ function fileAlreadyExist(uploadFile, existentFiles){
 };
 
 function downloadFileDirectory(idFileDir){
-	
-	window.location.href = "rest/beta/api/data/download?idDownloadFile=" + idFileDir;
+	var hiddenIFrameID = 'hiddenDownloader',
+    iframe = document.getElementById(hiddenIFrameID);
+	if (iframe === null) {
+	    iframe = document.createElement('iframe');
+	    iframe.id = hiddenIFrameID;
+	    iframe.style.display = 'none';
+	    document.body.appendChild(iframe);
+	}
+	iframe.src = "rest/beta/api/data/download?idDownloadFile=" + idFileDir;
 	
 }
 

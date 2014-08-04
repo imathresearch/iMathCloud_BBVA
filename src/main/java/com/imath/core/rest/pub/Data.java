@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
+import java.util.zip.ZipInputStream;
+import java.util.zip.ZipOutputStream;
 
 import javax.ejb.Stateful;
 import javax.enterprise.context.RequestScoped;
@@ -37,6 +39,8 @@ import org.apache.commons.io.IOUtils;
 import org.jboss.resteasy.plugins.providers.multipart.InputPart;
 import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -413,11 +417,10 @@ public class Data {
      */
     @GET
     @Path("/download")
-    @Produces(MediaType.APPLICATION_OCTET_STREAM)
-    //@Produces({"application/zip",  MediaType.APPLICATION_OCTET_STREAM }) 
+    @Produces({"application/zip",  MediaType.APPLICATION_OCTET_STREAM }) 
     public Response REST_download(@QueryParam("pathDownloadFile") String pathName_FileDirectory, @QueryParam("idDownloadFile") String id_FileDirectory, @QueryParam("zipFile") String zipFile, @Context SecurityContext sc) {
 	
-    	Response.ResponseBuilder response;
+    	Response.ResponseBuilder response = null;
     	
     	if((pathName_FileDirectory == null && id_FileDirectory == null) || (pathName_FileDirectory != null && id_FileDirectory != null)){
     		LOG.severe("Incorrect sintax call");
@@ -456,23 +459,27 @@ public class Data {
 			if(zipFile != null){
 				nameZipFile = zipFile;
 			}
-			//We supposse that the zip file is saved in the same directory where the file/dir is located
-			URI aux = URI.create(f_d.getUrl());
-			java.nio.file.Path pathParent = Paths.get(aux.getPath()).getParent(); 
-			java.nio.file.Path pathNameZipFile = Paths.get(pathParent.toString(), nameZipFile + ".zip");
-			
-			try{
-				this.fileUtils.generateGeneralZip(f_d, pathNameZipFile.toString());
-			}
-			catch (Exception e) {
-			    throw new WebApplicationException(Response.Status.INTERNAL_SERVER_ERROR);
-			}
 
-			java.io.File fileStream = new java.io.File(pathNameZipFile.toString());
-			response = Response.ok((Object) fileStream, MediaType.APPLICATION_OCTET_STREAM);
-			response.header("Content-Disposition", "attachment; filename=\"" + nameZipFile + ".zip\"");			
+			// We generate directly a Zip OutputStream shall be returned as Response without being stored. 
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			ZipOutputStream zos = new ZipOutputStream(baos);
 			
-			return response.build();
+			URI fileUri = URI.create(f_d.getUrl());
+		        java.nio.file.Path pathFile = Paths.get(fileUri.getPath()); 
+		        File fileToDownload = new File(pathFile.toString());
+		        try {
+		            this.fileUtils.addFileToZip("", fileToDownload, zos);
+                            zos.close();
+                            baos.close();
+                        } catch (Exception e) {
+                            throw new WebApplicationException(Response.Status.INTERNAL_SERVER_ERROR);
+                        }
+		        
+		        response = Response.status(Response.Status.OK)
+                              .entity(new ByteArrayInputStream(baos.toByteArray()))
+                              .header("Content-Disposition","attachment; filename=\"" + nameZipFile + ".zip\"")
+                              .type(MediaType.APPLICATION_OCTET_STREAM);
+                        return response.build() ;
     	}
     	else{
     		LOG.severe("The file or directory does not exist");

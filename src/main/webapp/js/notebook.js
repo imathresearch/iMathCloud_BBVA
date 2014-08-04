@@ -21,8 +21,11 @@ function setEnvironmentVariable(str) {
 }
 
 function sendMessage(msgType, content) {
-	var win = document.getElementById("interactive_math").contentWindow;
+	iframeObj = document.getElementById("interactive_math");
+	var win = iframeObj.contentWindow;
 	console.log("sendMessage" + msgType + content);
 	console.log("sendMessage" + urlConsole);
 	win.postMessage(msgType + content, urlConsole);
+	divTabs = iframeObj.parentNode.parentNode;
+	$("#" + divTabs.id + " a")[0].click(); // here we click to the first tab. We guess it is the console always.
 }

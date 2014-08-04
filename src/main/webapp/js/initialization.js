@@ -81,10 +81,6 @@ $(document).ready( function() {
 			text: false,
 			icons: { primary: "ui-icon-refresh" }
 		});
-		$( "#uploadFileButton" ).button({
-			text: false,
-			icons: { primary: "ui-icon-arrowthickstop-1-n" }
-		});
 
 		$( "#newDirectoryButton" ).button({
 			text: false,
@@ -143,14 +139,6 @@ $(document).ready( function() {
     	});
     	$("#refreshTreeButton").click(function() { 
     		refreshFilesTree();
-    	});
-    	
-    	$("#uploadFileButton").click(function() {
-    		var files = undefined;
-    		key = "uploadFiles";
-    		showFormDialog(key);
-    		directory_path = undefined;
-    		prepareUploadFile();
     	});
     	
     	$( "#tabs" ).tabs().delegate( "span.ui-icon-close", "click", function() {

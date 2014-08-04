@@ -15,7 +15,9 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.SecurityContext;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
 
@@ -48,6 +50,7 @@ import com.imath.core.model.MathGroup;
 import com.imath.core.model.MathFunction;
 
 import com.imath.core.data.MainServiceDB;
+import com.imath.core.security.SecurityManager;
 import com.imath.core.service.PluginController;
 
 import java.io.IOException;
@@ -108,8 +111,9 @@ public class PluginService {
     @Path("/getMathFunctions/{userName}")
     @Produces(MediaType.APPLICATION_JSON)
 	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
-    public List<MathFunctionDTO> REST_getMathFunctions(@PathParam("userName") String userName) {		
+    public List<MathFunctionDTO> REST_getMathFunctions(@PathParam("userName") String userName, @Context SecurityContext sc) {		
 		try {
+		    SecurityManager.secureBasic(userName, sc);
 			IMR_User user = db.getIMR_UserDB().findById(userName);
 			Set<MathGroup> groups = user.getRole().getMathGroups();
 			List<MathFunction> functions = new ArrayList<MathFunction>();
@@ -134,9 +138,10 @@ public class PluginService {
     @Path("/submitMathFunction/{userName}/{idMath}/{idFile}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-    public void REST_submitMathFunction(@PathParam("userName") String userName, @PathParam("idMath") Long idMath, @PathParam("idFile") Long idFile, ParamDTO paramDTO) {		
+    public void REST_submitMathFunction(@PathParam("userName") String userName, @PathParam("idMath") Long idMath, @PathParam("idFile") Long idFile, ParamDTO paramDTO, @Context SecurityContext sc) {		
 		try {
 			//TODO: Convert JSON to List
+		    SecurityManager.secureBasic(userName, sc);
 			Session session = getSession(userName);
 			List<String> params = new ArrayList<String>();
 			File file = getFile(idFile);

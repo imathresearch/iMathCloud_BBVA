@@ -69,22 +69,6 @@ public class FileUtils {
         zos.close();
     }
     
-    public void generateGeneralZip(com.imath.core.model.File file, String pathNameZipFile) throws Exception{
-         	
-        FileOutputStream fos = new FileOutputStream(pathNameZipFile);
-        ZipOutputStream zos = new ZipOutputStream(fos);
-               
-        //Create a java File
-        URI aux = URI.create(file.getUrl());
-    	java.nio.file.Path pathFile = Paths.get(aux.getPath()); 
-        File fileToDownload = new File(pathFile.toString());
-        addFileToZip("", fileToDownload, zos);
-        
-        zos.close();
-        
-    	
-    }
-    
     public void addFileToZip(String path, File srcFile, ZipOutputStream zos) throws Exception {
 		    
     	if (srcFile.isDirectory()){
