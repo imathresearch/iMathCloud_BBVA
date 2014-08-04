@@ -51,6 +51,7 @@ function executeMenu(key,id, fileName) {
 }
 
 function executeMenuJob(key, jobId) {
+	console.log("executeMenuJob");
 	console.log(key);
 	switch(key) {
 	case "stop":
@@ -58,15 +59,6 @@ function executeMenuJob(key, jobId) {
 	}
 }
 
-function getContextMenuJob(state) {
-	var stdOut = '';
-	disabled = "true";
-	if (state == "RUNNING") {
-			disabled="false";
-	}
-	stdOut += '{"stop" : {"name": "Terminate", "icon":"ui-icon-cancel", "disabled":' + disabled + '}}';
-	return JSON.parse(stdOut);
-}
 
 function genContextMenu(type, shareZone, sharingState, isRoot) {
 	// shareZone= 0-> own files. shareZone=1-> other users files. 
