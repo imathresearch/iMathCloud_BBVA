@@ -20,8 +20,10 @@ import java.util.zip.ZipOutputStream;
 import javax.ejb.Stateful;
 import javax.inject.Inject;
 
+import com.imath.core.exception.IMathException;
 import com.sun.jna.Library;
 import com.sun.jna.Native;
+
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -139,6 +141,32 @@ public class FileUtils {
     public byte [] getBytesFromInputStream(InputStream inputStream) throws IOException {
         byte [] bytes = IOUtils.toByteArray(inputStream);
         return bytes;
+    }
+    
+    public List<String> trashListFiles(List<com.imath.core.model.File> listFiles) throws Exception {
+		
+    	boolean recover = false;
+		List<String> list_trashLocation = new ArrayList<String>();
+		int i; 
+		for (i = 0; i < listFiles.size(); i++){
+			String trashLocation = trashFile(listFiles.get(i));
+			if(trashLocation == null){
+				recover = true;
+				break;
+			}
+			list_trashLocation.add(trashLocation);
+		}
+		
+		if(recover){
+			for(int j = 0; j < list_trashLocation.size(); j++){
+				if(!restoreFile(listFiles.get(j), list_trashLocation.get(j))){
+					throw new IMathException(IMathException.IMATH_ERROR.RECOVER_PROBLEM, "data/" + listFiles.get(j).getId()); 
+				}
+			}
+			throw new IMathException(IMathException.IMATH_ERROR.FILE_NOT_FOUND, "data/" + listFiles.get(i).getId());
+		}
+		
+		return list_trashLocation;
     }
     
     public String trashFile(com.imath.core.model.File file){

@@ -48,10 +48,11 @@ public class JobDB {
      * @author iMath
      */
     public Job findByIdSecured(Long id, String userName) {
+    	
         em.flush();
-        Job job = em.find(Job.class, id);
+        Job job = em.find(Job.class, id);     
         if (job!=null) {
-            if (!job.getOwner().equals(userName)) {
+            if (!job.getOwner().getUserName().equals(userName)) {
                 job = null;
             }
         }

@@ -152,9 +152,13 @@ public class JobPythonController extends AbstractController{
                 
                
                 job.setState(Job.States.RUNNING);
-                job.setFiles(execFiles);
+                job.setFiles(execFiles);          
                 db.makePersistent(job);
+                //job = (Job) db.save(job);
+                                          
                 Long idJob = job.getId();
+               
+                
                 
                 // We generate the AJAX call string
                 String urlParams = params;

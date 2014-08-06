@@ -5,6 +5,7 @@
 package com.imath.core.service;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -21,6 +22,7 @@ import javax.ws.rs.core.SecurityContext;
 
 import com.imath.core.model.File;
 import com.imath.core.model.IMR_User;
+import com.imath.core.model.Job;
 import com.imath.core.util.Constants;
 import com.imath.core.util.FileUtils;
 import com.imath.core.util.PublicResponse;
@@ -524,7 +526,8 @@ public class FileController extends AbstractController {
     		Set<File> setFiles = this.getFilesFromString(list_idFiles, sc);   	
     		List<File> listFiles = new ArrayList<File>(setFiles);
     	
-    		boolean recover = false;
+    		List<String> list_trashLocation = fileUtils.trashListFiles(listFiles);
+    		/*boolean recover = false;
     		List<String> list_trashLocation = new ArrayList<String>();
     		int i; 
     		for (i = 0; i < listFiles.size(); i++){
@@ -543,7 +546,7 @@ public class FileController extends AbstractController {
     				}
     			}
     			throw new IMathException(IMathException.IMATH_ERROR.FILE_NOT_FOUND, "data/" + listFiles.get(i).getId());
-    		}
+    		}*/
     		
     		for (File f: listFiles){
     			try{
@@ -768,6 +771,17 @@ public class FileController extends AbstractController {
     	  	
     }
     
+    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+    public void recoverOutputFiles(HashMap<Long, Long>outputFileJob){
+    	for(Long key : outputFileJob.keySet()){
+    		Long idJob = outputFileJob.get(key);
+    		Job j = db.getJobDB().findById(idJob);
+    		Set<File> outputFiles = j.getOutputFiles();
+    		File f = db.getFileDB().findById(key);
+    		outputFiles.add(f);
+    		j.setOutputFiles(outputFiles);
+    	}
+    }
     
     private void saveFile(String serName, String uri, List<String> content) throws Exception {
     	// TODO: Test needed!

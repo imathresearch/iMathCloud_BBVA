@@ -30,7 +30,6 @@ import com.imath.core.model.File;
 import com.imath.core.model.Job;
 import com.imath.core.model.Session;
 import com.imath.core.model.Job.States;
-import com.imath.core.model.JobResult;
 import com.imath.core.model.IMR_User;
 import com.imath.core.model.MathGroup;
 import com.imath.core.model.MathFunction;

@@ -3,6 +3,7 @@ package com.imath.core.rest.pub;
 import com.imath.core.util.Constants;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -15,6 +16,7 @@ import java.util.zip.ZipOutputStream;
 import javax.ejb.Stateful;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
+import javax.persistence.EntityManager;
 import javax.ws.rs.Path;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -29,8 +31,12 @@ import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
 
+import com.imath.core.data.MainServiceDB;
 import com.imath.core.exception.IMathException;
+import com.imath.core.model.Job;
+import com.imath.core.model.Job.States;
 import com.imath.core.service.FileController;
+import com.imath.core.service.JobController;
 import com.imath.core.util.Constants;
 import com.imath.core.util.FileUtils;
 import com.imath.core.util.PublicResponse;
@@ -61,6 +67,8 @@ public class Data {
     @Inject private Logger LOG;
     @Inject private FileController fileController;
     @Inject private FileUtils fileUtils;
+    @Inject private JobController jobController;
+    
     
     @GET
     @Path("/{resourceId}")
@@ -497,7 +505,7 @@ public class Data {
    @Consumes("multipart/form-data")
    @Produces(MediaType.APPLICATION_JSON)
    public PublicResponse.StateDTO REST_eraseFiles(MultipartFormDataInput input, @Context SecurityContext sc) {
-	   
+	   	   
        // We process the input parameters
        Map<String, List<InputPart>> uploadForm = input.getFormDataMap();
        List<InputPart> list_idFiles = uploadForm.get("idDeletedFile");
@@ -519,10 +527,17 @@ public class Data {
        
        List<com.imath.core.model.File> all_files = new ArrayList<com.imath.core.model.File>();
        
-       Set<String> all_idFiles = new HashSet<String>();
+       Set<String> all_idFiles = new HashSet<String>();     
        
-       if(list_idFiles != null){
-    	   //Long id_file;
+       // Structure to control when the deleted file is an output file of a job
+       // In the case that there is a problem deleting the file, the output file has to be recover as part of the job
+       HashMap<Long, Long> outputFileJob = new HashMap<Long, Long>();
+       
+       boolean found = false;
+       if(list_idFiles != null){    	   
+    	   // We get the user's jobs to check if the file that we want to delete is a job output file.
+    	   List<Job> user_jobs = jobController.getUserJobs(userName); 
+    	   
     	   String id_file;
     	   for(InputPart idFile: list_idFiles){
     		   try{
@@ -535,9 +550,29 @@ public class Data {
     					   PublicResponse.StateDTO out = PublicResponse.generateStatus(Response.Status.NOT_FOUND.getStatusCode(), "", "", PublicResponse.Status.NOTFOUND); 
         				   return out;
     				   }
+    				  
+    				   // We do not allow for deleting a file which is an output file of a job in state running or paused.
+    				   for (Job j : user_jobs){
+    					   Set<com.imath.core.model.File> outputFiles = j.getOutputFiles();    					   
+    					   for(com.imath.core.model.File file : outputFiles){
+    						   if (file.getId() == Long.valueOf(id_file)){
+    							   // The file cannot be deleted because its associated job is still running
+    							   if (j.getState() == States.PAUSED || j.getState() == States.RUNNING){
+    								   PublicResponse.StateDTO out = PublicResponse.generateStatus(Response.Status.NOT_FOUND.getStatusCode(), "", "", PublicResponse.Status.NOTFOUND); 
+    		        				   return out;
+    							   }
+    							   jobController.removeOutputFileFromJob(j.getId(), Long.valueOf(id_file), userName);
+    							   outputFileJob.put(f_d.getId(), j.getId());
+    							   found = true;
+    							   break;
+    						   }
+    					   }
+    					   if(found){
+    						   break;
+    					   }
+    				    }    	    				   
     				   all_idFiles.add(id_file);
-    			   }
-    			   
+    			   }   			   
     		   }
     		   catch (Exception e){
     			   PublicResponse.StateDTO out = PublicResponse.generateStatus(Response.Status.NOT_FOUND.getStatusCode(), "", "", PublicResponse.Status.NOTFOUND); 
@@ -546,8 +581,14 @@ public class Data {
     	   }
        }
        
+       found = false;
        if(list_pathFiles != null){
     	   for(InputPart pathFile: list_pathFiles){
+    		   
+    		   // We get the user's jobs to check if the file that we want to delete is a job output file.
+        	   List<Job> user_jobs = jobController.getUserJobs(userName);
+        	   
+        	   
     		   try{
     			   String path_file = pathFile.getBodyAsString();
     			   
@@ -556,9 +597,30 @@ public class Data {
         			   PublicResponse.StateDTO out = PublicResponse.generateStatus(Response.Status.NOT_FOUND.getStatusCode(), "", "", PublicResponse.Status.NOTFOUND); 
     				   return out;
         		   }
-    			   
+        		      			   
     			   f_d = this.fileController.checkIfFileExistInUser(path_file, userName);
-    			   if(f_d != null){
+    			   if(f_d != null){   				   
+    				   // We do not allow for deleting a file which is an output file of a job in state running or paused.
+    				   for (Job j : user_jobs){
+    					   Set<com.imath.core.model.File> outputFiles = j.getOutputFiles();
+    					   for(com.imath.core.model.File file : outputFiles){
+    						   if (file.getId() == f_d.getId()){
+    							   // The file cannot be deleted because its associated job is still running
+    							   if (j.getState() == States.PAUSED || j.getState() == States.RUNNING){
+    								   PublicResponse.StateDTO out = PublicResponse.generateStatus(Response.Status.NOT_FOUND.getStatusCode(), "", "", PublicResponse.Status.NOTFOUND); 
+    		        				   return out;
+    							   }
+    							   jobController.removeOutputFileFromJob(j.getId(),  f_d.getId(), userName);    							   
+    							   outputFileJob.put(f_d.getId(), j.getId());
+    							   found = true;
+    							   break;
+    						   }
+    					   }
+    					   
+    					   if(found){
+    						   break;
+    					   }
+    				   }   				     				   
     				   all_idFiles.add(String.valueOf(f_d.getId()));
     			   }
     			   else{
@@ -585,6 +647,8 @@ public class Data {
 		   return out;
        }
        catch(Exception e){
+    	   // The output files of a job that were trying to be deleted have to be recovered as part of the job 
+    	   this.fileController.recoverOutputFiles(outputFileJob);
     	   PublicResponse.StateDTO out = PublicResponse.generateStatus(Response.Status.NOT_FOUND.getStatusCode(), "", "", PublicResponse.Status.NOTFOUND); 
 	       return out;
     	   

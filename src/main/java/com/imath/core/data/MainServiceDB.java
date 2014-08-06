@@ -86,6 +86,7 @@ public class MainServiceDB {
     public void makePersistent(Object obj) throws Exception {
     	em.persist(obj);
     	em.flush();
+    
     	
     }
     
@@ -93,6 +94,12 @@ public class MainServiceDB {
     	//em.contains(entity) ? entity : em.merge(entity)
     	em.remove(obj);
     	em.flush();
+    }
+    
+    
+    public Object save(Object obj) throws Exception {
+    	return em.merge(obj);
+    	
     }
     
 	//public EntityTransaction beginTransaction() throws Exception {

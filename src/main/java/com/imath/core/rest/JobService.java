@@ -9,6 +9,7 @@ import javax.ejb.Stateful;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -20,6 +21,7 @@ import javax.ws.rs.core.SecurityContext;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.ArrayList;
@@ -32,7 +34,9 @@ import com.imath.core.model.Job.States;
 import com.imath.core.model.JobResult;
 import com.imath.core.data.MainServiceDB;
 import com.imath.core.service.FileController;
+import com.imath.core.service.JobController;
 import com.imath.core.service.PluginController;
+import com.imath.core.util.PublicResponse;
 import com.imath.core.rest.FileService.FileDTO;
 
 import java.util.logging.Logger;
@@ -49,6 +53,7 @@ public class JobService {
 	@Inject private FileController fc;
 	@Inject private MainServiceDB db;
 	@Inject private Logger LOG;
+	@Inject private JobController jc; 
 	
 	@Inject private PluginController pc;
 	
@@ -116,6 +121,27 @@ public class JobService {
 		}
     }
 	
+	
+	@DELETE
+    @Path("/removeJob/{idJob}")
+    @Produces(MediaType.APPLICATION_OCTET_STREAM)
+    public Response REST_removeJob(@PathParam("idJob") Long idJob, @Context SecurityContext sc) {
+		
+		 try{
+	         Job job = jc.getJobStructure(idJob, sc);
+	         if (job == null) {
+	        	 return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+	         } else {
+	             jc.removeJob(idJob, sc);
+	             return Response.status(Response.Status.OK).build();
+	         }
+		 }
+		 catch (Exception e) {
+				LOG.severe("Error getting job id: "+ idJob + " - " + e.getMessage());
+				return Response.status(Response.Status.NOT_FOUND).build();
+		 }		
+    }
+	
 	private List<JobDTO> prepareJobsToSubmit(List<Job> jobs) throws Exception {
 		List<JobDTO> jobsdto = new ArrayList<JobDTO>();
 		Iterator<Job> it = jobs.iterator();
@@ -152,7 +178,7 @@ public class JobService {
 		jobdto.startDate=job.getStartDate();
 		jobdto.description=job.getDescription();
 		jobdto.state=job.getState();
-		jobdto.jobResult=job.getJobResult();
+		jobdto.jobResult=job.getJobResult();		
 		
 		//To manage the percentages
 		jobdto.pcts = pc.getCompletionPercentages(jobdto.id);
@@ -169,7 +195,7 @@ public class JobService {
 		public Date endDate;
 		public States state;
 		public String description;
-		public JobResult jobResult;
+		public JobResult jobResult;		
 		public PercDTO pcts;
 		public JobDTO(){}
 	}

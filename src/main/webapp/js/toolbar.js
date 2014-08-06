@@ -54,8 +54,15 @@ function executeMenuJob(key, jobId) {
 	console.log("executeMenuJob");
 	console.log(key);
 	switch(key) {
-	case "stop":
-		stopJob(jobId);
+		case "stop":
+			stopJob(jobId);
+			break;
+		case "remove":
+			removeJob(jobId);
+			break;
+		default:
+			console.log("The option to perform over a job is not known");
+			break;
 	}
 }
 

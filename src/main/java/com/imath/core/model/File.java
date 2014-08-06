@@ -42,6 +42,7 @@ public class File implements Serializable, SecurityOwner {
     
     // The jobs in which the file has been part as output file. In principle it should be only one...left it for future versions
     @ManyToMany(mappedBy="outputFiles")
+    //@ManyToMany( fetch = FetchType.LAZY, mappedBy = "outputFiles")//, cascade = CascadeType.ALL) 
     private Set<Job> outputJobs;
     
     // The jobs in which the file has been part as source code

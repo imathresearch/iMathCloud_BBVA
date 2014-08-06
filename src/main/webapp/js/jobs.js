@@ -157,6 +157,25 @@ function stopJob(idJob) {
 }
 
 
+function removeJob(idJob){
+	if (confirm("The job and all its generated files will be deleted. Do you want to continue?")){
+		$.ajax({
+	        url: "rest/job_service/removeJob/" + idJob,
+	        cache: false,
+	        type: "DELETE",
+	        success: function() {
+	        	refreshJobsTable();
+	        	refreshFilesTree();
+	        },
+	        error: function(error) {
+	            console.log("error deleting job - " + error);
+	            console.log(error);
+	        }
+	    });
+	}
+}
+
+
 function showJobDialog(job) {
 	var aux;
 	var startDate = new Date(job['startDate']);

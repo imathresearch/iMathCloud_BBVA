@@ -36,6 +36,7 @@ import com.imath.core.model.Job.States;
 import com.imath.core.model.Session;
 import com.imath.core.service.PluginController.PercDTO;
 import com.imath.core.util.Constants;
+import com.imath.core.util.FileUtils;
 import com.imath.core.data.MainServiceDB;
 import com.imath.core.exception.IMathException;
 
@@ -51,6 +52,7 @@ import java.io.*;
 public class JobController extends AbstractController{
     @Inject private FileController fc;
     @Inject private DeploymentController dc;
+    @Inject private FileUtils fileUtils;
     
     /**
      * Executes a Job to the current interactive math console of the user owner.
@@ -177,7 +179,7 @@ public class JobController extends AbstractController{
     		job.setState(state);
     		job.setEndDate(new Date());
     		
-    		db.makePersistent(jobResult);    		
+    		//db.makePersistent(jobResult);    		
     		job.setJobResult(jobResult);
 
     		if(job.getState()==States.FINISHED_OK && !json.matches(".*error.*")) { // We do nothing if an error was retrieved.
@@ -189,7 +191,8 @@ public class JobController extends AbstractController{
     			for (String dirpath : listdirs){   				
     				String [] parts = dirpath.split("/");
     				File dir = fc.getParentDir(dirpath,userName);
-    				File file = fc.createNewFileInDirectory(dir, parts[parts.length-1], "dir");  				
+    				File file = fc.createNewFileInDirectory(dir, parts[parts.length-1], "dir");
+    				outputFiles.add(file);
     			}
     			
     			for (String filenamepath : listfiles){
@@ -405,6 +408,46 @@ public class JobController extends AbstractController{
         } catch(Exception e) {
             return null;
         }
+    }
+    
+    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+    public void removeJob(Long idJob, SecurityContext sc) throws Exception{
+    	
+    	try{
+	    	Job job = db.getJobDB().findByIdSecured(idJob, sc.getUserPrincipal().getName());
+		    List<File> outputFiles = new ArrayList<File>(job.getOutputFiles());		   
+		    
+		    fileUtils.trashListFiles(outputFiles);
+		    		   
+			db.remove(job);
+    	}
+    	catch(Exception e){
+    		throw e;
+    	}
+    	
+    }
+    
+    
+    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+    public List<Job> getUserJobs(String userName){
+    	List<Job> userJobs = db.getJobDB().getJobsByUser(userName);
+    	return userJobs;
+    }
+    
+    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+    public void removeOutputFileFromJob(Long idJob, Long idFile, String userName) throws Exception{
+    	Job j = db.getJobDB().findByIdSecured(idJob, userName);
+    	
+    	Set<File> outputFiles = j.getOutputFiles();
+    	for (File f : outputFiles){
+    		if (f.getId() == idFile){
+    			File file = db.getFileDB().findByIdSecured(idFile, userName);
+    			outputFiles.remove(file);
+    			j.setOutputFiles(outputFiles);
+    			break;
+    		}
+    	}
+
     }
     
     // REPLICATED from PluginController:

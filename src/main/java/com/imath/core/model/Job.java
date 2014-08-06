@@ -24,7 +24,7 @@ public class Job implements Serializable, SecurityOwner {
 	public static enum States {CREATED, RUNNING, PAUSED, CANCELLED, FINISHED_OK, FINISHED_ERROR};
 	
 	@Id
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="seqJob")
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="seqJob")	
 	private Long id;
 	
 	@ManyToOne(optional=false) 
@@ -43,8 +43,14 @@ public class Job implements Serializable, SecurityOwner {
     @JoinTable(name="file_jobs")
 	private Set<File> files;
 	
-    @ManyToMany
+    //@ManyToMany
     @JoinTable(name="output_file_jobs")
+    @ManyToMany( fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE }  )	
+    //@JoinTable(
+    //        name = "output_file_jobs",
+    //        joinColumns = {@JoinColumn(name = "id_job")},
+    //        inverseJoinColumns = {@JoinColumn(name = "id_file")}
+    //)
 	private Set<File> outputFiles;
     
     @ManyToMany
@@ -62,8 +68,9 @@ public class Job implements Serializable, SecurityOwner {
 	@Column(nullable=false)
 	private States state;
 	
-    @ManyToOne(optional=true) 
-    @JoinColumn(name="idJobResult", nullable=true, updatable=true)
+    //@ManyToOne(optional=true) 	 
+    //@JoinColumn(name="idJobResult", nullable=true, updatable=true)
+	@OneToOne(cascade = CascadeType.ALL)  
 	private JobResult jobResult;
     
 	private static final long serialVersionUID = 1L;
@@ -123,6 +130,7 @@ public class Job implements Serializable, SecurityOwner {
 	public void setDescription(String description) {
 		this.description = description;
 	}
+	
 	
 	public Set<File> getFiles() {
 		return this.files;

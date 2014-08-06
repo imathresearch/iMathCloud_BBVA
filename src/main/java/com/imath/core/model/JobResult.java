@@ -23,7 +23,7 @@ public class JobResult implements Serializable {
 	//@Column (columnDefinition="TEXT")
 	@Column(length=1024)
 	private String json;
-	
+		
 	private static final long serialVersionUID = 1L;
 	
 	public JobResult() {
@@ -44,5 +44,6 @@ public class JobResult implements Serializable {
 
 	public void setJSON(String json) {
 		this.json = json;
-	}      
+	}
+	
 }
