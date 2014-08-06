@@ -39,6 +39,7 @@ function getJobs(b) {
         dataType: "json",
         type: "GET",
         success: function(jobs) {
+        	$( "#jobsTBODY" ).empty();
 			fillJobs(jobs);
 			if (b) {
 				$( "#jobsXML" ).footable();
@@ -50,6 +51,8 @@ function getJobs(b) {
         }
     });
 }
+
+var jobsTable = new Array();
 
 function fillJobs(jobs) {
 	for(var i=0; i<jobs.length; i++) {
@@ -63,20 +66,11 @@ function fillJobs(jobs) {
 		aux = aux + '<td data-value="' + jobPercentCompletion(job) + '">' + jobPercentCompletion(job) + '</td>';
 		aux = aux + "</tr>";
 		$( "#jobsTBODY" ).append(aux);
+		jobsTable[job['id'].toString()] = job['state'];
 		
-		// Now we create the contextual menus
-		$.contextMenu({
-	        selector: '.' + genClassJobContextMenu(job['id']) , 
-	        trigger: 'right',
-	        callback: function(key, options) {
-	        	var a = options.$trigger.attr("id");
-				var b = a.split("__");
-	        	executeMenuJob(key,b[1]);
-	        },
-	        items: getContextMenuJob(job['state'])
-	    });
 	}
 }
+
 
 function genIdJobContextMenu (jobId, state) {
 	return "job__" + jobId;
