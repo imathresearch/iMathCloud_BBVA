@@ -324,18 +324,16 @@ $("#selfButton").click(function() {
 
 $("#changePassButton").click(function() {
 
-    params = ($("div#profile form").serialize());
-    url = "changePassword?" + params;
+    url = "changePassword";
 	$.ajax({
         url: url,
         cache: false,
-        //dataType: "json",
         contentType: "charset=utf-8",
-        //data: $("div#profile form"),//.serialize(),
+        data: JSON.stringify($("div#profile form").serializeObject()),
         type: "POST",
         success: function(data) {
             $("#profileMsg").html("<span style='color:green'>" + data + "</span>");
-            setTimeout("$('#profilePopup').dialog('close')",2000);
+            setTimeout("$('#profilePopup').dialog('close')",1500);
         },
         error: function(data) {
         	$("#profileMsg").html("<span style='color:red'>" + data.responseText + "</span>");

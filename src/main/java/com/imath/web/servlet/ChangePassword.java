@@ -1,5 +1,6 @@
 package com.imath.web.servlet;
 
+import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Writer;
@@ -15,6 +16,8 @@ import javax.ws.rs.core.MediaType;
 
 import com.imath.core.util.Constants;
 import com.imath.core.util.Security;
+import org.json.JSONObject;
+
 
 public class ChangePassword extends HttpServlet {
     
@@ -28,17 +31,14 @@ public class ChangePassword extends HttpServlet {
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         String userName = request.getUserPrincipal().getName();
-        
-        String passwordOld = request.getParameter("passwordOld");
-        String passwordNew = request.getParameter("passwordNew");
-        String passwordNewConf = request.getParameter("passwordNewConf");
-        
-        System.out.println(">>>" + request.getHeaderNames().toString());
-        System.out.println(">>>" + userName);
-        System.out.println(">>>" + passwordOld);
-        System.out.println(">>>" + passwordNew);
-        System.out.println(">>>" + passwordNewConf);
 
+        BufferedReader reader = request.getReader();
+        JSONObject json = new JSONObject(reader.readLine());
+        reader.close();
+
+        String passwordOld = json.getString("passwordOld");
+        String passwordNew = json.getString("passwordNew");
+        String passwordNewConf = json.getString("passwordNewConf");
 
         // To make sure that both new passwords are equals
         if (!passwordNew.equals(passwordNewConf)) {
