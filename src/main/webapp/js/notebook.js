@@ -5,10 +5,12 @@ var MSG_DEFAULT_USER_ENVIRONMENT = "ENV";
 
 function executeInConsole(str) {
 	sendMessage(MSG_EXECUTE_CODE, str);
+    goToConsole();
 }
 
 function executeInConsoleR(str) {
 	sendMessage(MSG_EXECUTE_CODE_R, str);
+    goToConsole();
 }
 
 function setDefaultLanguage(str) {
@@ -26,6 +28,10 @@ function sendMessage(msgType, content) {
 	console.log("sendMessage" + msgType + content);
 	console.log("sendMessage" + urlConsole);
 	win.postMessage(msgType + content, urlConsole);
-	divTabs = iframeObj.parentNode.parentNode;
-	$("#" + divTabs.id + " a")[0].click(); // here we click to the first tab. We guess it is the console always.
+}
+
+function goToConsole() {
+    iframeObj = document.getElementById("interactive_math");
+    divTabs = iframeObj.parentNode.parentNode;
+    $("#" + divTabs.id + " a")[0].click(); // here we click to the first tab. We guess it is the console always.
 }

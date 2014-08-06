@@ -276,7 +276,7 @@
 
 <div id="profilePopup">
 <div id="profile" class="form">
-	<form  action="changePassword" method="post" autocomplete="on"> 
+	<form  action="javascript:void(0);" method="post" autocomplete="off" >
     	<h1> Profile - Change Password </h1> 
     	<p> 
             <label for="passwordsignup" class="youpasswd" data-icon="p">Your current password </label>
@@ -290,17 +290,19 @@
             <label for="passwordsignup_confirm" class="youpasswd" data-icon="p">Please confirm your new password </label>
             <input id="passwordNewConf" name="passwordNewConf" required="required" type="password" placeholder="eg. X8df!90EO"/>
         </p>
-        <p class="signin button"> 
-		<input type="submit" value="Sign up"/> 
+
+        <div id="profileMsg" style="float:left"></div>
+		<div style="float:right"> <input id="changePassButton" type="button" value="Change"/></div>
 	</form>
 </div>
 </div>
 <!-- a href="logoutIMATHCLOUD.jsp">
         			<strong>Logout</strong>
         		</a-->
-<script>
+<script type="text/javascript">
 
 var userName = "<%= request.getUserPrincipal().getName() %>";
+
 
 $("#logoutButton").button({
 	text: false,
@@ -314,8 +316,29 @@ $("#logoutButton").click(function() {
 	window.location.href = "logout";
 });
 
-$("#selfButton").click(function() { 
-	$("#profilePopup").dialog().open();
+$("#selfButton").click(function() {
+	$("#profilePopup").dialog();
+	$("#profilePopup form")[0].reset()
+	$("#profilePopup div#profileMsg").html("");
+});
+
+$("#changePassButton").click(function() {
+
+    url = "changePassword";
+	$.ajax({
+        url: url,
+        cache: false,
+        contentType: "charset=utf-8",
+        data: JSON.stringify($("div#profile form").serializeObject()),
+        type: "POST",
+        success: function(data) {
+            $("#profileMsg").html("<span style='color:green'>" + data + "</span>");
+            setTimeout("$('#profilePopup').dialog('close')",1500);
+        },
+        error: function(data) {
+        	$("#profileMsg").html("<span style='color:red'>" + data.responseText + "</span>");
+        }
+	});
 });
 
 
