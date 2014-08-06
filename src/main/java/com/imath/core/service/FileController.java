@@ -317,7 +317,7 @@ public class FileController extends AbstractController {
             imrType = parts[parts.length-1];
             LOG.info("TYPE: " + imrType);
         }
-        
+   	
         file.setIMR_Type(imrType);
         file.setOwner(rootFile.getOwner());
         file.setName(fileName);
@@ -384,7 +384,6 @@ public class FileController extends AbstractController {
             if (idFile == null) {
                 throw new IMathException(IMathException.IMATH_ERROR.FILE_NOT_FOUND, "data/" + strFile);
             }
-            
             File file = db.getFileDB().findById(idFile);
             if(!this.accessAllowed(sc, file)) {
                 // Error user is not authorized to access the file. Also return false if file is null

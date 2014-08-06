@@ -202,8 +202,13 @@ public class JobPythonController extends AbstractController{
             
             try {
                 // We create the Job with the proper parameters
-                Job job = new Job();
-                job.setDescription(f.getUrl());
+                Job job = new Job();               
+                
+                String description = f.getUrl();                       
+                //IMPORTANT !!! URI PATTER --> URI_HEAD + LOCALHOST_STRING + ROOT_SYSTEM_FILE + USERNAME
+                description = description.replaceAll(Constants.URI_HEAD+Constants.LOCALHOST_String+Constants.ROOT_FILE_SYSTEM+"/"+sc.getUserPrincipal().getName(), "");
+                
+                job.setDescription(description);
                 job.setStartDate(new Date());
                 job.setHosted(host);
                 job.setSession(null);

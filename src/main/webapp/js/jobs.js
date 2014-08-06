@@ -13,13 +13,17 @@ function runJob(idFile){
 	$.ajax({
         url: "rest/jobpython_service/submitJob/" + userName + "/" + idFile ,// + "/" + ParamDTO,// +"/5",
         cache: false,
-        //dataType: "json",
+        dataType: "json",
 		//contentType: "application/json; charset=utf-8",
 		//data : ParamDTO,
         type: "POST",
-        success: function(host) {
+        success: function(job) {
         	refreshJobsTable();
         	refreshFilesTree();
+        	console.log ("Submit job")
+        	console.log (job['id']);
+        	updateJob(job['id']);
+        	
         },
         error: function(error) {
         	refreshJobsTable();
@@ -29,8 +33,6 @@ function runJob(idFile){
 	
 	
 }
-
-
 
 function getJobs(b) {
 	$.ajax({
@@ -50,6 +52,43 @@ function getJobs(b) {
             console.log("error loading files - " + error.status);
         }
     });
+}
+
+function updateJob(idJob){
+	
+	console.log ("update job ");
+	console.log (idJob);
+	
+	$.ajax({
+        url: "rest/job_service/getJob/" + idJob,
+        cache: false,
+        dataType: "json",
+        type: "GET",
+        success: function(job) {
+			processJobState(job);
+        },
+        error: function(error) {
+            console.log("error loading files - " + error.status);
+        }
+    });
+	
+}
+
+function processJobState(job){
+	
+	console.log("Process State");
+	console.log(job['id']);
+	
+	console.log(job['state']);
+	
+	//Polling for the state of the CURRENT execution associated to the service
+	if (job['state'] == "RUNNING" || job['state'] == "PAUSED"){
+		setTimeout(function (){
+			updateJob(job['id']);
+			refreshJobsTable();
+        	refreshFilesTree();
+		}, 10*1000); //ten seconds
+	}
 }
 
 var jobsTable = new Array();

@@ -38,6 +38,9 @@ import com.imath.core.data.MainServiceDB;
 //import com.imath.core.rest.PluginService.ParamDTO;
 
 
+
+
+
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
@@ -54,10 +57,11 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import com.imath.core.model.Job.States;
-
+import com.imath.core.rest.JobService.JobDTO;
 import com.imath.core.security.SecurityManager;
 //Just to check
 import com.imath.core.service.JobController;
+import com.imath.core.service.PluginController;
 import com.imath.core.service.JobController.Pair;
 import com.imath.core.service.JobPythonController;
 import com.imath.core.util.Constants;
@@ -81,6 +85,7 @@ public class JobPythonService {
 	
 	@Inject private JobController jc;
 	@Inject private JobPythonController jpc;
+	@Inject private PluginController pc;
 	
 	@GET
     @Path("/python/exec/{idJob}/{result}")//{result}
@@ -109,7 +114,7 @@ public class JobPythonService {
     @Path("/submitJob/{userName}/{idFile}")
 	//@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-    public PublicResponse.StateDTO REST_submitJob(@PathParam("userName") String userName, @PathParam("idFile") Long idFile, @Context SecurityContext sc) {		
+    public JobDTO REST_submitJob(@PathParam("userName") String userName, @PathParam("idFile") Long idFile, @Context SecurityContext sc) {		
 		
 		Set<File> files = new HashSet<File>(); 
 		
@@ -134,17 +139,19 @@ public class JobPythonService {
             //System.out.println("Extra params " + paramsString);
           
             Pair pair = jpc.callPythonExec(session, paramsString, files);
-           
+                       
             jc.makeAJAXCall(pair);
-            PublicResponse.StateDTO out = PublicResponse.generateStatus(Response.Status.ACCEPTED.getStatusCode(), "exec/" + pair.job.getId(), pair.job.getDescription(), PublicResponse.Status.INPROGRESS); 
+            
+            Job job = pair.job;
+            
+            JobDTO out = prepareJobToSubmit(job);
+            //PublicResponse.StateDTO out = PublicResponse.generateStatus(Response.Status.ACCEPTED.getStatusCode(), "exec/" + pair.job.getId(), pair.job.getDescription(), PublicResponse.Status.INPROGRESS); 
             return out;
            
 		}
 		catch (Exception e) {
 			LOG.severe("Error submitting job for userName: " + userName + " - " + e.getMessage());
-            PublicResponse.StateDTO out = PublicResponse.generateStatus(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(), "", "", PublicResponse.Status.FAIL); 
-            return out;
-			//throw new WebApplicationException(Response.Status.NOT_FOUND);
+			throw new WebApplicationException(Response.Status.NOT_FOUND);			
 		}
     }
 	
@@ -196,6 +203,26 @@ public class JobPythonService {
 	            out = out + assign;
 	        }
 	        return out;
-	    }
+	 }
+	 
+	 
+	 private JobDTO prepareJobToSubmit(Job job) throws Exception {
+			JobDTO jobdto = new JobDTO();
+			jobdto.id = job.getId();
+			jobdto.endDate=job.getEndDate();
+			jobdto.startDate=job.getStartDate();
+			jobdto.description=job.getDescription();
+			jobdto.state=job.getState();
+			jobdto.jobResult=job.getJobResult();		
+			
+			//To manage the percentages
+			jobdto.pcts = pc.getCompletionPercentages(jobdto.id);
+			if(jobdto.pcts.getPerc().isEmpty()){
+				jobdto.pcts.getPerc().add("NO INFO");
+			}
+			
+			return jobdto;
+					
+	 }
 	
 }

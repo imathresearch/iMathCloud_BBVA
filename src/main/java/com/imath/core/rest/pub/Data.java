@@ -388,7 +388,7 @@ public class Data {
     			if (parts.length>1) {
     				imrType = parts[parts.length-1];
     			}
-				file = this.fileController.createNewFileInDirectory(dir,fileName, imrType);           	
+				file = this.fileController.createNewFileInDirectory(dir,fileName, imrType); 
             }
             else{
             	// no directory path has been specified, default storing in the root directory
