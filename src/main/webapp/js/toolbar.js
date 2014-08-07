@@ -51,8 +51,7 @@ function executeMenu(key,id, fileName) {
 }
 
 function executeMenuJob(key, jobId) {
-	console.log("executeMenuJob");
-	console.log(key);
+	
 	switch(key) {
 		case "stop":
 			stopJob(jobId);

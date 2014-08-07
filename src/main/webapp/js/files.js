@@ -240,9 +240,7 @@ function form_tpl_deleteFile() {
 
 
 	funcSuccess = function(dataOrig) {
-		
-		console.log("deleting file funcSucess");
-		
+				
 		return_code = dataOrig['code'];
 		if(return_code == 404){
 			var cause = "Error deleting file ";
@@ -258,7 +256,6 @@ function form_tpl_deleteFile() {
 	};
 
 	funcError = function(error) {
-		console.log("deleting file funcError");
 		var cause = "Error deleting file ";
         showFileErrorDialog(name_file_dir, cause);
 	};

@@ -11,7 +11,9 @@ import java.net.URL;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
@@ -21,6 +23,7 @@ import javax.ejb.Stateful;
 import javax.inject.Inject;
 
 import com.imath.core.exception.IMathException;
+import com.imath.core.rest.FileService.FileDTO;
 import com.sun.jna.Library;
 import com.sun.jna.Native;
 
@@ -415,8 +418,7 @@ public class FileUtils {
     	
     }
     
-    
-    
+  
     public static class SystemUtil {
         // TODO: refactor as soon as possible to use only JNA calls
         //private static CLibrary libc = (CLibrary) Native.loadLibrary("c", CLibrary.class);

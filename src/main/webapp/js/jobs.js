@@ -1,29 +1,15 @@
 function runJob(idFile){
 	
-//	Console.log("Inside runJob");
-	
-	/*
-	if (typeof ParamDTO === "undefined") {
-		ParamDTO = generateEmptyDTO();
-	}*/
-	
-	//ParamDTOS = JSON.stringify(ParamDTO);//(typeof ParamDTO == 'undefined'  || ParamDTO == '') ?  '' : JSON.stringify(ParamDTO);
-	//console.log("ParamDTO: " + ParamDTOS);
-	
 	$.ajax({
-        url: "rest/jobpython_service/submitJob/" + userName + "/" + idFile ,// + "/" + ParamDTO,// +"/5",
+        url: "rest/jobpython_service/submitJob/" + userName + "/" + idFile ,
         cache: false,
         dataType: "json",
-		//contentType: "application/json; charset=utf-8",
-		//data : ParamDTO,
         type: "POST",
-        success: function(job) {
+        success: function(job) {        	
         	refreshJobsTable();
         	refreshFilesTree();
-        	console.log ("Submit job")
-        	console.log (job['id']);
-        	updateJob(job['id']);
-        	
+     
+        	updateJob(job['id']);       	
         },
         error: function(error) {
         	refreshJobsTable();
@@ -55,10 +41,7 @@ function getJobs(b) {
 }
 
 function updateJob(idJob){
-	
-	console.log ("update job ");
-	console.log (idJob);
-	
+
 	$.ajax({
         url: "rest/job_service/getJob/" + idJob,
         cache: false,
@@ -68,26 +51,24 @@ function updateJob(idJob){
 			processJobState(job);
         },
         error: function(error) {
-            console.log("error loading files - " + error.status);
+            console.log("error getting job - " + error.status);
         }
     });
 	
 }
 
 function processJobState(job){
+		
+	if (job['state'] != jobsTable[job['id'].toString()]){
+		refreshJobsTable();
+		refreshFilesTree();
+	}
 	
-	console.log("Process State");
-	console.log(job['id']);
-	
-	console.log(job['state']);
-	
-	//Polling for the state of the CURRENT execution associated to the service
+	//Polling for the state of the job
 	if (job['state'] == "RUNNING" || job['state'] == "PAUSED"){
 		setTimeout(function (){
-			updateJob(job['id']);
-			refreshJobsTable();
-        	refreshFilesTree();
-		}, 10*1000); //ten seconds
+			updateJob(job['id']);		
+		}, 5*1000); //five seconds
 	}
 }
 
@@ -207,8 +188,7 @@ function removeJob(idJob){
 	        	refreshFilesTree();
 	        },
 	        error: function(error) {
-	            console.log("error deleting job - " + error);
-	            console.log(error);
+	            console.log("error deleting job - " + error);	            
 	        }
 	    });
 	}
