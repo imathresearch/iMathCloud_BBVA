@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -18,7 +19,10 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
 
 import com.imath.core.data.MainServiceDB;
+import com.imath.core.model.Job;
+import com.imath.core.model.Job.States;
 import com.imath.core.service.FileController;
+import com.imath.core.service.JobController;
 import com.imath.core.util.FileUtils;
 import com.imath.core.util.PublicResponse;
 
@@ -76,6 +80,7 @@ public class DataUnitTest {
     
     private Data data = new Data();   
     
+    @Mock private JobController jobController;			 // The job Controller bean
 	@Mock private FileController fileController;        // The file Controller bean
     @Mock private MultipartFormDataInput input;         // The html form map
     @Mock private InputPart inputDir;                   // Input section of the html call regarding directories
@@ -115,6 +120,7 @@ public class DataUnitTest {
 	    data.setFileController(fileController);
 	    data.setLOG(LOG);
 	    data.setFileUtils(fileUtils);
+	    data.setJobController(jobController);
     }
 	
 	/*
@@ -1305,6 +1311,7 @@ public class DataUnitTest {
     	 
     }
     
+    
     @Test
     //File IDs are specified in 'idDeletedFile' as part of the inputMap and a exception arises from one of these in getBodyAsString
     public void test_erase_InputList_idFiles()throws Exception{ 
@@ -1315,21 +1322,24 @@ public class DataUnitTest {
     	 
     	 idFiles.add(inputFileId1);
     	 idFiles.add(inputFileId2);
-         // The case when no files are uploaded
+    	 inputMap.put(idDeletedFile, idFiles);
         
     	 IOException e = new IOException();
-         inputMap.put(idDeletedFile, idFiles);
          
+    	 
          when(principal.getName()).thenReturn("userTest");
          when(input.getFormDataMap()).thenReturn(inputMap);
          when(inputFileId1.getBodyAsString()).thenReturn(id_f1);
          when(inputFileId2.getBodyAsString()).thenThrow(e);
+         
          
          PublicResponse.StateDTO response = data.REST_eraseFiles(input, sc);
          verify(inputFileId1, times(1)).getBodyAsString();
          verify(inputFileId2, times(1)).getBodyAsString();
          assertTrue(response.code == Response.Status.NOT_FOUND.getStatusCode());
     }
+    
+    
     
     @Test
     //File paths are specified in 'pathDeletedFile' as part of the inputMap
@@ -1387,6 +1397,7 @@ public class DataUnitTest {
                   
          assertTrue(response.code == Response.Status.NOT_FOUND.getStatusCode());
     }
+    
     
     @Test
     //File paths are specified in 'pathDeletedFile' as part of the inputMap and one of them represents the root =/
@@ -1448,6 +1459,189 @@ public class DataUnitTest {
                   
          assertTrue(response.code == Response.Status.NOT_FOUND.getStatusCode());
     }
+    
+    @Test
+    //File ID is specified in 'idDeletedFile' as part of the inputMap 
+    //The file is an outputfile of a user's job, but the job is running, so the cannot be deleted
+    public void test_erase_InputList_idFiles_outputFile_jobRUNNING()throws Exception{ 
+    	 Map<String, List<InputPart>> inputMap = new HashMap<String, List<InputPart>>();
+    	 
+    	 List<InputPart> idFiles = new ArrayList<InputPart>();
+    	 String id_f1 = new String ("1");
+    	
+    	 
+    	 idFiles.add(inputFileId1);  	 
+         inputMap.put(idDeletedFile, idFiles);
+         
+         //The files associated with inputFileId1 
+         com.imath.core.model.File f1 = new com.imath.core.model.File();       
+         f1.setName("f1_test.txt");
+         f1.setId(Long.valueOf(id_f1));
+    	 
+         List<Job> listJobs = new ArrayList<Job>();
+         Job j1 = new Job();
+         j1.setId(1L);
+         Set<com.imath.core.model.File> outputFiles = new HashSet<com.imath.core.model.File>();
+         outputFiles.add(f1);
+         j1.setOutputFiles(outputFiles);
+         j1.setState(States.RUNNING);
+         listJobs.add(j1);
+         
+         when(principal.getName()).thenReturn("userTest");
+         when(input.getFormDataMap()).thenReturn(inputMap);
+         when(inputFileId1.getBodyAsString()).thenReturn(id_f1);
+         when(fileController.getFile(Long.valueOf(id_f1), "userTest")).thenReturn(f1);
+         when(jobController.getUserJobs("userTest")).thenReturn(listJobs);
+                  
+         PublicResponse.StateDTO response = data.REST_eraseFiles(input, sc);
+         
+         verify(inputFileId1, times(1)).getBodyAsString();
+         verify(fileController, times(1)).getFile(f1.getId(), "userTest");
+         verify(jobController, times(1)).getUserJobs("userTest");
+                  
+         assertTrue(response.code == Response.Status.BAD_REQUEST.getStatusCode());
+    }
+    
+    
+    @Test
+    //File ID is specified in 'idDeletedFile' as part of the inputMap 
+    //The file is an outputfile of a user's job, the job is not active, so the file can be deleted
+    // HAPPY PATH
+    public void test_erase_InputList_idFiles_outputFile_job_NOT_RUNNING()throws Exception{ 
+    	 Map<String, List<InputPart>> inputMap = new HashMap<String, List<InputPart>>();
+    	 
+    	 List<InputPart> idFiles = new ArrayList<InputPart>();
+    	 
+    	 idFiles.add(inputFileId1);  	 
+         inputMap.put(idDeletedFile, idFiles);
+         
+         //The files associated with inputFileId1 
+         com.imath.core.model.File f1 = new com.imath.core.model.File();    
+         String id_f1 = new String ("1");  	 
+         f1.setName("f1_test.txt");
+         f1.setId(Long.valueOf(id_f1));
+    	 
+         List<Job> listJobs = new ArrayList<Job>();
+         Job j1 = new Job();
+         j1.setId(1L);
+         Set<com.imath.core.model.File> outputFiles = new HashSet<com.imath.core.model.File>();
+         outputFiles.add(f1);
+         j1.setOutputFiles(outputFiles);
+         j1.setState(States.FINISHED_OK);
+         listJobs.add(j1);
+         
+         when(principal.getName()).thenReturn("userTest");
+         when(input.getFormDataMap()).thenReturn(inputMap);
+         when(inputFileId1.getBodyAsString()).thenReturn(id_f1);
+         when(fileController.getFile(Long.valueOf(id_f1), "userTest")).thenReturn(f1);
+         when(jobController.getUserJobs("userTest")).thenReturn(listJobs);
+                  
+         PublicResponse.StateDTO response = data.REST_eraseFiles(input, sc);
+         
+         verify(inputFileId1, times(1)).getBodyAsString();
+         verify(fileController, times(1)).getFile(f1.getId(), "userTest");
+         verify(jobController, times(1)).getUserJobs("userTest");
+         verify(jobController, times(1)).removeOutputFileFromJob(j1.getId(), f1.getId(), "userTest");
+         
+         ArgumentCaptor<Set> fileCaptor = ArgumentCaptor.forClass(Set.class);
+         verify(fileController, times(1)).eraseListFiles(fileCaptor.capture(), Matchers.eq(sc));
+         List<Set> captured_idFiles = fileCaptor.getAllValues();
+         Set<String> set_idFiles = (Set<String>)captured_idFiles.get(0);
+         assertTrue(set_idFiles.contains(id_f1));
+                           
+         assertTrue(response.code == Response.Status.ACCEPTED.getStatusCode());
+    }
+    
+    
+    @Test
+    //File path is specified in 'pathDeletedFile' as part of the inputMap
+    //The file is an outputfile of a user's job, but the job is running, so the cannot be deleted
+    public void test_erase_InputList_pathFiles_outputFile_jobRUNNING()throws Exception{ 
+    	 Map<String, List<InputPart>> inputMap = new HashMap<String, List<InputPart>>();
+        
+    	 String path_f1 = new String ("//dir/f3");  	 
+    	 com.imath.core.model.File f1 = new com.imath.core.model.File();
+    	 Long id_f1 = new Long (1L);
+    	 f1.setId(id_f1);
+    	 
+    	 List<InputPart> path_Files = new ArrayList<InputPart>();
+       	 path_Files.add(inputPath1);
+         inputMap.put(pathDeletedFile, path_Files);
+         
+         List<Job> listJobs = new ArrayList<Job>();
+         Job j1 = new Job();
+         j1.setId(1L);
+         Set<com.imath.core.model.File> outputFiles = new HashSet<com.imath.core.model.File>();
+         outputFiles.add(f1);
+         j1.setOutputFiles(outputFiles);
+         j1.setState(States.RUNNING);
+         listJobs.add(j1);
+         
+         when(principal.getName()).thenReturn("userTest");
+         when(input.getFormDataMap()).thenReturn(inputMap);
+         when(inputPath1.getBodyAsString()).thenReturn(path_f1);        
+         when(fileController.checkIfFileExistInUser(path_f1, "userTest")).thenReturn(f1);
+         when(jobController.getUserJobs("userTest")).thenReturn(listJobs);         
+         
+         PublicResponse.StateDTO response = data.REST_eraseFiles(input, sc);
+                 
+         verify(inputPath1, times(1)).getBodyAsString();         
+         verify(fileController, times(1)).checkIfFileExistInUser(path_f1, "userTest");
+         verify(jobController, times(1)).getUserJobs("userTest");
+                  
+         assertTrue(response.code == Response.Status.BAD_REQUEST.getStatusCode());
+    }
+    
+    @Test
+    //File path is specified in 'pathDeletedFile' as part of the inputMap
+    //The file is an outputfile of a user's job, the job is not running, so the file can be deleted
+    // HAPPY PATH
+    public void test_erase_InputList_pathFiles_outputFile_job_NOT_RUNNING()throws Exception{ 
+    	 Map<String, List<InputPart>> inputMap = new HashMap<String, List<InputPart>>();
+        
+    	 String path_f1 = new String ("//dir/f3");  	 
+    	 com.imath.core.model.File f1 = new com.imath.core.model.File();
+    	 Long id_f1 = new Long (1L);
+    	 f1.setId(id_f1);
+    	 
+    	 List<InputPart> path_Files = new ArrayList<InputPart>();
+       	 path_Files.add(inputPath1);
+         inputMap.put(pathDeletedFile, path_Files);
+         
+         List<Job> listJobs = new ArrayList<Job>();
+         Job j1 = new Job();
+         j1.setId(1L);
+         Set<com.imath.core.model.File> outputFiles = new HashSet<com.imath.core.model.File>();
+         outputFiles.add(f1);
+         j1.setOutputFiles(outputFiles);
+         j1.setState(States.FINISHED_OK);
+         listJobs.add(j1);
+         
+         when(principal.getName()).thenReturn("userTest");
+         when(input.getFormDataMap()).thenReturn(inputMap);
+         when(inputPath1.getBodyAsString()).thenReturn(path_f1);        
+         when(fileController.checkIfFileExistInUser(path_f1, "userTest")).thenReturn(f1);
+         when(jobController.getUserJobs("userTest")).thenReturn(listJobs);         
+         
+         PublicResponse.StateDTO response = data.REST_eraseFiles(input, sc);
+                 
+         verify(inputPath1, times(1)).getBodyAsString();         
+         verify(fileController, times(1)).checkIfFileExistInUser(path_f1, "userTest");
+         verify(jobController, times(1)).getUserJobs("userTest");
+         verify(jobController, times(1)).removeOutputFileFromJob(j1.getId(), f1.getId(), "userTest");
+         
+         ArgumentCaptor<Set> fileCaptor = ArgumentCaptor.forClass(Set.class);
+         verify(fileController, times(1)).eraseListFiles(fileCaptor.capture(), Matchers.eq(sc));
+         List<Set> captured_idFiles = fileCaptor.getAllValues();
+         Set<String> set_idFiles = (Set<String>)captured_idFiles.get(0);
+         assertTrue(set_idFiles.contains(String.valueOf(id_f1)));
+                           
+         assertTrue(response.code == Response.Status.ACCEPTED.getStatusCode());
+    }
+    
+   
+    
+    
     
     @Test
     //File IDs are specified in 'idDeletedFile' as part of the inputMap and the files are erased
@@ -1756,6 +1950,7 @@ public class DataUnitTest {
                   
          assertTrue(response.code == Response.Status.ACCEPTED.getStatusCode());
     }
+    
     
     /*
    	 * TEST THE REST CALL TO RENAME A FILE/DIRECTORY

@@ -86,6 +86,8 @@ public class FileControllerUnitTest {
         fileController.setLog(LOG);
     }
     
+    
+    
     @Test
     //Test the normal path of the function when everything is OK
     public void test1_getParentDir() throws Exception {
@@ -430,8 +432,11 @@ public class FileControllerUnitTest {
     	}
     }
     
+    
+    
     @Test
     //Test the case when a file in the set of files cannot be moved to the trash location
+    //In this case trashListFiles throws an exception
     public void test_eraseListFiles_FileNotTrashLocation() throws Exception {
     	
     	Long id_f1 = new Long(1);
@@ -446,6 +451,10 @@ public class FileControllerUnitTest {
     	f1.setOwner(user);
     	f2.setOwner(user);
     	
+    	List<File> listFiles = new ArrayList<File>();
+    	listFiles.add(f1);
+    	listFiles.add(f2);
+    	
     	Set<String> idFiles = new HashSet<String>();
     	idFiles.add(String.valueOf(id_f1));
     	idFiles.add(String.valueOf(id_f2));
@@ -455,6 +464,7 @@ public class FileControllerUnitTest {
     	when(principal.getName()).thenReturn("test_userName");
     	when(fileDB.findById(id_f1)).thenReturn(f1);
     	when(fileDB.findById(id_f2)).thenReturn(f2);
+    	when(fileUtils.trashListFiles(listFiles)).thenThrow(new IMathException(IMathException.IMATH_ERROR.FILE_NOT_FOUND, "data/" + listFiles.get(1).getId()));
     	when(fileUtils.trashFile(f1)).thenReturn(trashLocationF1);
     	when(fileUtils.trashFile(f2)).thenReturn(null);
     	when(fileUtils.restoreFile(f1, trashLocationF1)).thenReturn(true);
@@ -464,13 +474,14 @@ public class FileControllerUnitTest {
     	}
     	catch (IMathException e){    		
     		verify(fileDB, times(1)).findById(id_f1);
-    		verify(fileDB, times(1)).findById(id_f2);
-    		verify(fileUtils, times(1)).trashFile(f2);
+    		verify(fileDB, times(1)).findById(id_f2);    	
     		verify(fileUtils, times(0)).restoreFile(Matchers.eq(f2), (String)Matchers.any());
     		assertEquals(e.getMessage(), "[E0003] - File id: data/2 not found.");
     	}
    	
     }
+    
+    
     
     @Test
     //Test the case when a recover is required after the first move and the recovering of a file fails
@@ -522,6 +533,7 @@ public class FileControllerUnitTest {
     	}
    	
     }  
+    
     
     @Test
     //Test the case erase a file fails and throws an exception and also the recovering of a file also fails.
@@ -599,6 +611,7 @@ public class FileControllerUnitTest {
     	
     	
     }
+    
     
     @Test
     //Test the case erase a file fails and throws an exception
@@ -1569,4 +1582,6 @@ public class FileControllerUnitTest {
              return "";
           }
     }
+    
+    
 }

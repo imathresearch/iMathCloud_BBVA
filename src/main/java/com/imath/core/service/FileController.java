@@ -525,8 +525,9 @@ public class FileController extends AbstractController {
     		Set<File> setFiles = this.getFilesFromString(list_idFiles, sc);   	
     		List<File> listFiles = new ArrayList<File>(setFiles);
     	
-    		List<String> list_trashLocation = fileUtils.trashListFiles(listFiles);
-    		/*boolean recover = false;
+    		System.out.println("before trahslistFiles");
+    		//List<String> list_trashLocation = fileUtils.trashListFiles(listFiles);
+    		boolean recover = false;
     		List<String> list_trashLocation = new ArrayList<String>();
     		int i; 
     		for (i = 0; i < listFiles.size(); i++){
@@ -545,7 +546,7 @@ public class FileController extends AbstractController {
     				}
     			}
     			throw new IMathException(IMathException.IMATH_ERROR.FILE_NOT_FOUND, "data/" + listFiles.get(i).getId());
-    		}*/
+    		}
     		
     		for (File f: listFiles){
     			try{

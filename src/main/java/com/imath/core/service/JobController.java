@@ -212,6 +212,9 @@ public class JobController extends AbstractController{
     				
     			}
     			
+    			for(File f: outputFiles){
+    				System.out.println(f.getId());
+    			}
     			job.setOutputFiles(outputFiles);
     			
     		}
@@ -411,15 +414,18 @@ public class JobController extends AbstractController{
     }
     
     @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
-    public void removeJob(Long idJob, SecurityContext sc) throws Exception{
+    public void removeJob(Long idJob) throws Exception{
     	
     	try{
-	    	Job job = db.getJobDB().findByIdSecured(idJob, sc.getUserPrincipal().getName());
-		    List<File> outputFiles = new ArrayList<File>(job.getOutputFiles());		   
-		    
-		    fileUtils.trashListFiles(outputFiles);
-		    		   
-			db.remove(job);
+	    	Job job = db.getJobDB().findById(idJob);
+	    	if(job != null){
+			    List<File> outputFiles = new ArrayList<File>(job.getOutputFiles());		   			    
+			    fileUtils.trashListFiles(outputFiles);			    		   
+				db.remove(job);
+	    	}
+	    	else{
+	    		throw new IMathException(IMathException.IMATH_ERROR.JOB_NOT_IN_OK_STATE, "" + idJob);
+	    	}
     	}
     	catch(Exception e){
     		throw e;
@@ -435,17 +441,27 @@ public class JobController extends AbstractController{
     }
     
     @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
-    public void removeOutputFileFromJob(Long idJob, Long idFile, String userName) throws Exception{
+    public void removeOutputFileFromJob(Long idJob, Long idFile, String userName) throws IMathException{
     	Job j = db.getJobDB().findByIdSecured(idJob, userName);
     	
-    	Set<File> outputFiles = j.getOutputFiles();
-    	for (File f : outputFiles){
-    		if (f.getId() == idFile){
-    			File file = db.getFileDB().findByIdSecured(idFile, userName);
-    			outputFiles.remove(file);
-    			j.setOutputFiles(outputFiles);
-    			break;
-    		}
+    	if(j != null){
+	    	Set<File> outputFiles = j.getOutputFiles();
+	    	for (File f : outputFiles){
+	    		if (f.getId() == idFile){
+	    			File file = db.getFileDB().findByIdSecured(idFile, userName);
+	    			if(file != null){
+	    				outputFiles.remove(file);
+	    				j.setOutputFiles(outputFiles);
+	    				break;
+	    			}
+	    			else{
+	    				throw new IMathException(IMathException.IMATH_ERROR.FILE_NOT_FOUND, "" + idFile);
+	    			}
+	    		}
+	    	}
+    	}
+    	else{
+    		throw new IMathException(IMathException.IMATH_ERROR.JOB_NOT_IN_OK_STATE, "" + idJob);
     	}
 
     }
@@ -564,6 +580,10 @@ public class JobController extends AbstractController{
     public void setFileController(FileController f){
     	this.fc = f;
     	
+    }
+    
+    public void setFileUtils(FileUtils fileUtils){
+    	this.fileUtils = fileUtils;
     }
     
     

@@ -132,7 +132,7 @@ public class JobService {
 	         if (job == null) {
 	        	 return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
 	         } else {
-	             jc.removeJob(idJob, sc);
+	             jc.removeJob(idJob);
 	             return Response.status(Response.Status.OK).build();
 	         }
 		 }

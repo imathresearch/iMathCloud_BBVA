@@ -524,8 +524,7 @@ public class Data {
        
        String userName = sc.getUserPrincipal().getName(); 
        com.imath.core.model.File f_d = new com.imath.core.model.File();
-       
-       List<com.imath.core.model.File> all_files = new ArrayList<com.imath.core.model.File>();
+            
        
        Set<String> all_idFiles = new HashSet<String>();     
        
@@ -541,7 +540,6 @@ public class Data {
     	   String id_file;
     	   for(InputPart idFile: list_idFiles){
     		   try{
-				
     			   id_file = idFile.getBodyAsString();
     			   com.imath.core.model.File f = this.fileController.getFile(Long.valueOf(id_file), userName);
     			   if(f != null){
@@ -553,12 +551,13 @@ public class Data {
     				  
     				   // We do not allow for deleting a file which is an output file of a job in state running or paused.
     				   for (Job j : user_jobs){
+    					   
     					   Set<com.imath.core.model.File> outputFiles = j.getOutputFiles();    					   
     					   for(com.imath.core.model.File file : outputFiles){
     						   if (file.getId() == Long.valueOf(id_file)){
     							   // The file cannot be deleted because its associated job is still running
     							   if (j.getState() == States.PAUSED || j.getState() == States.RUNNING){
-    								   PublicResponse.StateDTO out = PublicResponse.generateStatus(Response.Status.NOT_FOUND.getStatusCode(), "", "", PublicResponse.Status.NOTFOUND); 
+    								   PublicResponse.StateDTO out = PublicResponse.generateStatus(Response.Status.BAD_REQUEST.getStatusCode(), "", "", PublicResponse.Status.NOTFOUND); 
     		        				   return out;
     							   }
     							   jobController.removeOutputFileFromJob(j.getId(), Long.valueOf(id_file), userName);
@@ -591,7 +590,6 @@ public class Data {
         	   
     		   try{
     			   String path_file = pathFile.getBodyAsString();
-    			   
     			   //SPECIAL CASE: we do not allow for deleting the root directory
         		   if(path_file.equals("/")){
         			   PublicResponse.StateDTO out = PublicResponse.generateStatus(Response.Status.NOT_FOUND.getStatusCode(), "", "", PublicResponse.Status.NOTFOUND); 
@@ -599,7 +597,7 @@ public class Data {
         		   }
         		      			   
     			   f_d = this.fileController.checkIfFileExistInUser(path_file, userName);
-    			   if(f_d != null){   				   
+    			   if(f_d != null){   		
     				   // We do not allow for deleting a file which is an output file of a job in state running or paused.
     				   for (Job j : user_jobs){
     					   Set<com.imath.core.model.File> outputFiles = j.getOutputFiles();
@@ -607,7 +605,7 @@ public class Data {
     						   if (file.getId() == f_d.getId()){
     							   // The file cannot be deleted because its associated job is still running
     							   if (j.getState() == States.PAUSED || j.getState() == States.RUNNING){
-    								   PublicResponse.StateDTO out = PublicResponse.generateStatus(Response.Status.NOT_FOUND.getStatusCode(), "", "", PublicResponse.Status.NOTFOUND); 
+    								   PublicResponse.StateDTO out = PublicResponse.generateStatus(Response.Status.BAD_REQUEST.getStatusCode(), "", "", PublicResponse.Status.NOTFOUND); 
     		        				   return out;
     							   }
     							   jobController.removeOutputFileFromJob(j.getId(),  f_d.getId(), userName);    							   
@@ -1023,5 +1021,9 @@ public class Data {
     
     public void setFileUtils(FileUtils fileUtils) {
         this.fileUtils = fileUtils;
+    }
+    
+    public void setJobController(JobController jobController){
+    	this.jobController = jobController;
     }
 }
