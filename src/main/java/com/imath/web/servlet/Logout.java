@@ -1,6 +1,7 @@
 package com.imath.web.servlet;
 
 import java.io.IOException;
+import java.lang.ProcessBuilder.Redirect;
 import java.util.logging.Logger;
 
 import javax.inject.Inject;
@@ -44,6 +45,21 @@ public class Logout extends HttpServlet{
                 LOG.severe("Error closing session");
                 //throw new ServletException(e.getMessage());
             }
+        }
+        
+        // We get the pids related to the previous call
+        ProcessBuilder pb2 = new ProcessBuilder("./getpids.sh", userName);
+        pb2.redirectInput(Redirect.INHERIT);
+        pb2.redirectOutput(Redirect.INHERIT);
+        pb2.redirectError(Redirect.INHERIT);
+        try {
+            Process p = pb2.start();
+            p.waitFor();
+        } catch (IOException ee) {
+            // TODO Auto-generated catch block
+            ee.printStackTrace();
+        } catch (InterruptedException eee) {
+            eee.printStackTrace();
         }
         
         // we close the interactive console

@@ -9,6 +9,9 @@ import java.net.URLConnection;
 public class Console {
     public static void startConsole(String user, String port, boolean newSession, String host) {
 
+        // we close the interactive console if fore whatever reason it was open.
+        // This is also a security measure!
+        Console.closeConsole(user);
         //String command = "\"/usr/local/bin/ipython notebook --port=" + port + " --ip=* --pylab=inline\"";
         
         // if for whatever reasion the console is alreay up and in the same port, we do not launch it again!
@@ -38,18 +41,6 @@ public class Console {
             } catch (IOException e2) {
                 // TODO Auto-generated catch block
                 e2.printStackTrace();
-            }
-            
-            // We get the pids related to the previous call
-            ProcessBuilder pb2 = new ProcessBuilder("./getpids.sh", user);
-            pb2.redirectInput(Redirect.INHERIT);
-            pb2.redirectOutput(Redirect.INHERIT);
-            pb2.redirectError(Redirect.INHERIT);
-            try {
-                pb2.start();
-            } catch (IOException ee) {
-                // TODO Auto-generated catch block
-                ee.printStackTrace();
             }
         }
     
