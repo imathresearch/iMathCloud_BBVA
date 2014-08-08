@@ -29,6 +29,9 @@
 	<script src="js/flotcharts/jquery.flot.boxplot.js" type="text/javascript"></script>
 	<script src="js/libs/jquery.csv.min.js" type="text/javascript"></script>
 	<script src="js/libs/serializeObject.js" type="text/javascript"></script>
+    <!-- script type="text/javascript" src="js/libs/jquery.tablesorter.min.js"></script-->
+     
+	<!-- script src="http://tablesorter.com/__jquery.tablesorter.js" type="text/javascript"></script-->
 	
 	<!-- Own Libs -->
 	<script src="js/plot/plotCSV.js" type="text/javascript"></script>
@@ -218,6 +221,13 @@
 					<div id="toolbarJobs" class="ui-widget-header ui-corner-all">
 						<small>
 						<button id="refreshJobButton">Refresh jobs list</button>
+						<select id="selectJobState" class="ui-widget ui-state-default ui-corner-all" onchange="filterJobState()">
+  							<option value="ALL">All jobs</option>
+  							<option value="RUNNING">Running</option>  							
+  							<option value="CANCELLED">Cancelled</option>
+  							<option value="FINISHED_OK">Finished OK</option>
+  							<option value="FINISHED_ERROR">Finished ERROR</option>
+						</select>
 						<!-- button id="viewJobButton">View job data</button-->
 						<!-- button id="plotJobButton">Plot job output</button-->
 						<!-- button id="runJobButton">Run job</button-->
@@ -341,6 +351,20 @@ $("#changePassButton").click(function() {
 	});
 });
 
+/*
+$.tablesorter.addParser({
+    id: "orderDate",
+    is: function (s, table, cell) {
+        return false;
+    },
+    format: function (s, table, cell, cellIndex) {
+        return new Date(s).getTime() || '';
+    },
+    type: "numeric"
+});
+
+$.tablesorter.trigger('update');
+*/
 
 </script>
   </body>

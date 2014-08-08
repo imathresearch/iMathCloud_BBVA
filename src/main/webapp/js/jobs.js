@@ -20,6 +20,8 @@ function runJob(idFile){
 	
 }
 
+var lastUpdatedJobs = undefined;
+
 function getJobs(b) {
 	$.ajax({
         url: "rest/job_service/getJobs/" + userName,
@@ -28,7 +30,9 @@ function getJobs(b) {
         type: "GET",
         success: function(jobs) {
         	$( "#jobsTBODY" ).empty();
-			fillJobs(jobs);
+        	lastUpdatedJobs = jobs;
+        	filterJobState();
+			//fillJobs(jobs);
 			if (b) {
 				$( "#jobsXML" ).footable();
 			}
@@ -75,8 +79,10 @@ function processJobState(job){
 var jobsTable = new Array();
 
 function fillJobs(jobs) {
+	
 	for(var i=0; i<jobs.length; i++) {
 		job = jobs[i];
+		console.log(job['startDate']);
 		var date = new Date(job['startDate']);
 		var aux = "<tr id='" + genIdJobContextMenu(job['id'], job['state']) + "' class='" + genClassJobContextMenu(job['id']) + "' >";
 		aux = aux +"<td>" + getImageJobStatus(job['state']) + "</td>";
@@ -194,6 +200,27 @@ function removeJob(idJob){
 	}
 }
 
+
+function filterJobState(){	
+	var state = $("#selectJobState").val();
+		
+	filteredJobs = [];
+	if(state == "ALL"){
+		filteredJobs = lastUpdatedJobs;
+	}
+	else{
+		for(var i=0; i<lastUpdatedJobs.length; i++) {
+			if (lastUpdatedJobs[i]['state'] == state){
+				filteredJobs.push(lastUpdatedJobs[i]);
+			}
+		}
+	}
+	
+	$("#jobsTBODY").remove();
+	var aux = '<tbody id="jobsTBODY"></tbody>';
+	$("#jobsXML").append(aux);
+	fillJobs(filteredJobs);	
+}
 
 function showJobDialog(job) {
 	var aux;
