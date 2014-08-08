@@ -19,6 +19,8 @@ import javax.ws.rs.core.SecurityContext;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
 
+import java.lang.Math;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
@@ -129,12 +131,14 @@ public class FileService {
     @Produces(MediaType.APPLICATION_JSON)
     public Response REST_saveFileContent(@PathParam("userName") String userName, @PathParam("id") Long id, @PathParam("page") Long page, List<String> content, @Context SecurityContext sc) {
         Map<String, String> responseObj = new HashMap<String, String>();
-        responseObj.put("ok","200");
-        Response.ResponseBuilder builder = Response.ok().entity(responseObj);
+        Response.ResponseBuilder builder = null;
         try {
             SecurityManager.secureBasic(userName, sc);
             File file = db.getFileDB().findById(id);
             fc.saveFileContent(userName, file, content, page);
+            int upToPage = (int) Math.ceil((double)content.size()/fc.getPagination());
+            responseObj.put("upToPage", ""+upToPage);
+            builder = Response.ok().entity(responseObj);
         }
         catch (Exception e) {
             LOG.severe("Error saving file id: " + id + " from user: "+ userName);

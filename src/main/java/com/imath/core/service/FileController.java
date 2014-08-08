@@ -69,6 +69,10 @@ public class FileController extends AbstractController {
         this.PAGINATION = pagination;
     }
     
+    public int getPagination() {
+        return this.PAGINATION;
+    }
+    
     /**
      * Retrieve the entire content of a file. It should be only used for source files and small data files.
      * @param String - The authenticated user name of the system. If it is a remote file, might need credentials.
@@ -134,7 +138,6 @@ public class FileController extends AbstractController {
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public void saveFileContent(String userName, File file, List<String> content, Long page) throws Exception{
         //TODO: Test needed!
-        
         if (userName==null || file==null || content ==null || page==null) {
             throw new IMathException(IMathException.IMATH_ERROR.OTHER, "saveFileContent - All parameters must be different than Null");
         }

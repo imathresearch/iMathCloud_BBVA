@@ -770,17 +770,41 @@ function saveFile(idFile, content){
 		dataType: "text json",
 		type: "POST",
 		data: JSON.stringify(content),
+        async: false,
 		success: function(dat) {
-			if (pagination > 0) {
-				// We must reload everything until current page, just to keep the consistency
-				
-			}
+            var cm = getCodeMirrorInstance(idFile);
+           
+            var code="";
+            var cursorAux = cm.getCursor();
+            // We must reload everything until upToPage page.
+            for (i=0; i<dat.upToPage; i++) {
+                $.ajax({
+                data: {page: i+1},
+                url: "rest/file_service/getFileContent/" + userName + "/" + idFile,
+                cache: false,
+                type: "GET",
+                async: false,
+                success: function(fileDTO) {
+                        if (code != "") {
+                            code = '\n' + fileDTO['content'].join('\n');
+                            cm.replaceRange(code, {line: Infinity});
+                        } else {
+                            code = fileDTO['content'].join('\n');
+                            cm.setValue(code);
+                        }
+                        setPaginationFileId(idFile, i+1);
+                },
+                error: function(error) {
+                    console.log("error opening file -" + error.status);
+                }
+                });
+            }
+            cm.setCursor(cursorAux);
 		},
 		error: function(error) {
 			console.log("error saving file -" + error.responseText);
 		}
 	});
-	
 }
 
 
@@ -820,6 +844,7 @@ function loadFileNextPage(idFile, cm) {
 		        cache: false,
 		        dataType: "json",
 		        type: "GET",
+                async: false,
 		        success: function(fileDTO) {
 		        	setPaginationFileId(idFile, pagination+1);
 		        	attachNewData(fileDTO, cm);
