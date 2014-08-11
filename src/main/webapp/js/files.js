@@ -1,4 +1,7 @@
 function fillRemoteFiles(files, treeView, shareZone) {
+	
+	clearFileTree(shareZone);
+	
 	// shareZone = 0 -> owner files. shareZone = 1 -> files from others
 	for(var i=0; i<files.length;i++) {
 		var file = files[i];
@@ -64,6 +67,15 @@ function fillRemoteFiles(files, treeView, shareZone) {
 	}
 }
 
+function clearFileTree(shareZone){
+	if (!shareZone){
+		$( "#remoteTree" ).remove();
+		$( "#remoteTreeContent").append('<ul id="remoteTree" class="filetree"></ul>');
+	}
+	$( "#remoteTreeShared" ).remove();
+	$( "#remoteTreeContent").append('<ul id="remoteTreeShared" class="filetree"></ul>');
+}
+
 function genIdFileContextMenu (fileId, name) {
 	return "file__" + fileId + "__" + name;
 }
@@ -73,10 +85,10 @@ function genClassFileContextMenu(fileId) {
 }
 
 function refreshFilesTree() {
-	$( "#remoteTree" ).remove();
-	$( "#remoteTreeContent").append('<ul id="remoteTree" class="filetree"></ul>');
-	$( "#remoteTreeShared" ).remove();
-	$( "#remoteTreeContent").append('<ul id="remoteTreeShared" class="filetree"></ul>');
+	//$( "#remoteTree" ).remove();
+	//$( "#remoteTreeContent").append('<ul id="remoteTree" class="filetree"></ul>');
+	//$( "#remoteTreeShared" ).remove();
+	//$( "#remoteTreeContent").append('<ul id="remoteTreeShared" class="filetree"></ul>');
 	getFiles(false);
 }
 
@@ -508,7 +520,7 @@ function getFiles(b) {
         type: "GET",
         success: function(files) {
         	//alert(JSON.stringify(files));
-			fillRemoteFiles(files, "#remoteTree",0);
+        	fillRemoteFiles(files, "#remoteTree",0);
 			$( "#remoteTree" ).treeview();
 			$( "#menu_west1" ).accordion({clearStyle: true});
 			$( "#menu_west1" ).accordion("refresh");

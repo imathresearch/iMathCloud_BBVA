@@ -79,7 +79,7 @@ function processJobState(job){
 var jobsTable = new Array();
 
 function fillJobs(jobs) {
-	
+	clearJobTable();
 	for(var i=0; i<jobs.length; i++) {
 		job = jobs[i];
 		console.log(job['startDate']);
@@ -218,10 +218,13 @@ function filterJobState(){
 		}
 	}
 	
+	fillJobs(filteredJobs);	
+}
+
+function clearJobTable(){
 	$("#jobsTBODY").remove();
 	var aux = '<tbody id="jobsTBODY"></tbody>';
 	$("#jobsXML").append(aux);
-	fillJobs(filteredJobs);	
 }
 
 function showJobDialog(job) {
@@ -340,9 +343,6 @@ function plotStatDescriptiveInTab(files,idJob) {
 }
 
 function refreshJobsTable() {
-	$("#jobsTBODY").remove();
-	var aux = '<tbody id="jobsTBODY"></tbody>';
-	$("#jobsXML").append(aux);
 	getJobs(false);
 }
 
