@@ -86,10 +86,10 @@ public class FileControllerUnitTest {
         fileController.setLog(LOG);
     }
     
-    
-    
+    /**
+     * Test the normal path of the function when everything is OK
+     */
     @Test
-    //Test the normal path of the function when everything is OK
     public void test1_getParentDir() throws Exception {
         
     	//The input of the getParentDir function will be
