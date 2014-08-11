@@ -1,0 +1,32 @@
+
+.tablesorter .tablesorter-header {
+	/* black (unsorted) double arrow */
+	background-image: url(data:image/gif;base64,R0lGODlhFQAJAIAAACMtMP///yH5BAEAAAEALAAAAAAVAAkAAAIXjI+AywnaYnhUMoqt3gZXPmVg94yJVQAAOw==);
+	background-repeat: no-repeat;
+	background-position: center right;
+	padding: 4px 18px 4px 4px;
+	white-space: normal;
+	cursor: pointer;
+}
+
+.tablesorter .tablesorter-header.tablesorter-headerAsc {
+	/*background-color: #9fbfdf;*/
+	/* black asc arrow */
+	background-image: url(data:image/gif;base64,R0lGODlhFQAEAIAAACMtMP///yH5BAEAAAEALAAAAAAVAAQAAAINjI8Bya2wnINUMopZAQA7);
+	
+}
+
+
+.tablesorter .tablesorter-header.tablesorter-headerDesc {
+	/*background-color: #8cb3d9;*/
+	/* black desc arrow */
+	background-image: url(data:image/gif;base64,R0lGODlhFQAEAIAAACMtMP///yH5BAEAAAEALAAAAAAVAAQAAAINjB+gC+jP2ptn0WskLQA7);
+	
+}
+
+.tablesorter .header.sorter-false,
+.tablesorter .tablesorter-header.sorter-false {
+    background-image: none;
+    cursor: default;
+}
+}

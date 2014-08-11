@@ -95,6 +95,8 @@ function fillJobs(jobs) {
 		jobsTable[job['id'].toString()] = job['state'];
 		
 	}
+	
+	$("#jobsXML").trigger('update')
 }
 
 

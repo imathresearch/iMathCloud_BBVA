@@ -14,6 +14,7 @@
 	<link href="css/jquery.treeview.css" rel="stylesheet">
 	<link href="css/jquery.contextMenu.css" rel="stylesheet">
 	<link href="css/footable-0.1.css" rel="stylesheet" type="text/css" />
+	<link href="css/table.sorter.css" rel="stylesheet" type="text/css" />
 		
 	<!-- External Libs -->
 	<script src="js/libs/jquery-1.9.0.js" type="text/javascript"></script>
@@ -29,10 +30,8 @@
 	<script src="js/flotcharts/jquery.flot.boxplot.js" type="text/javascript"></script>
 	<script src="js/libs/jquery.csv.min.js" type="text/javascript"></script>
 	<script src="js/libs/serializeObject.js" type="text/javascript"></script>
-    <!-- script type="text/javascript" src="js/libs/jquery.tablesorter.min.js"></script-->
-     
-	<!-- script src="http://tablesorter.com/__jquery.tablesorter.js" type="text/javascript"></script-->
-	
+    <script type="text/javascript" src="js/libs/jquery.tablesorter.min.js"></script>
+     	
 	<!-- Own Libs -->
 	<script src="js/plot/plotCSV.js" type="text/javascript"></script>
 	<script src="js/files.js" type="text/javascript"></script>
@@ -236,7 +235,7 @@
 						<!-- button id="deleteJobButton">Delete job</button-->
 						</small>
 					</div>
-					<table id="jobsXML" class="footable" border="0">
+					<table id="jobsXML" class="footable tablesorter" border="0">
 					<thead>
 						<tr>
 							<th> </th>
@@ -351,20 +350,7 @@ $("#changePassButton").click(function() {
 	});
 });
 
-/*
-$.tablesorter.addParser({
-    id: "orderDate",
-    is: function (s, table, cell) {
-        return false;
-    },
-    format: function (s, table, cell, cellIndex) {
-        return new Date(s).getTime() || '';
-    },
-    type: "numeric"
-});
 
-$.tablesorter.trigger('update');
-*/
 
 </script>
   </body>

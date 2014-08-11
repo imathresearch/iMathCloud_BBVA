@@ -168,16 +168,28 @@ $(document).ready( function() {
     		}
     	});
     	
-    	/*$("#jobsXML").tablesorter({ 
+    	$.tablesorter.addParser({
+    	    id: "orderdate",
+    	    is: function (s, table, cell) {
+    	        return true;
+    	    },
+    	    format: function (s, table, cell, cellIndex) {
+    	    	console.log("RUNNING PARSER");
+    	        return new Date(s).getTime() || '';
+    	    },
+    	    type: "numeric"
+    	});
+    	    	
+    	$("#jobsXML").tablesorter({ 
             // pass the headers argument and assing a object 
             headers: {                
                 0: { sorter: false}, 
                 1: { sorter: false},
                 2: { sorter: false},
-                3: { sorter: 'orderDate'},
+                3: { sorter: 'orderdate'},
                 4: { sorter: false} 
             } 
-        });*/ 
+        });
    	
     	$.contextMenu({
 	        selector: '#jobsTBODY tr', 
