@@ -10,6 +10,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.Set;
 
 import javax.ejb.Stateless;
@@ -21,6 +22,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
 
 import com.imath.core.model.File;
+import com.imath.core.model.File.Sharing;
 import com.imath.core.model.IMR_User;
 import com.imath.core.model.Job;
 import com.imath.core.util.Constants;
@@ -784,6 +786,92 @@ public class FileController extends AbstractController {
     		outputFiles.add(f);
     		j.setOutputFiles(outputFiles);
     	}
+    }
+    
+    /**
+     * Updates the table File with the current physical content of the user's storage
+     * @param userName
+     * @throws Exception
+     */
+    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+    public void updateFilesFromStorage(String userName) throws Exception {
+        IMR_User user = db.getIMR_UserDB().findById(userName);
+        File rootFile = db.getFileDB().findROOTByUserId(userName);
+        Map<java.io.File,java.io.File> dirTree = fileUtils.dirFiles(rootFile.getUrl());
+        List<File> files = db.getFileDB().findAll(userName);
+        Map<String, File> auxMap = new HashMap<String, File>();
+        for (File file:files) {
+            URI u = URI.create(file.getUrl());
+            String path = u.getPath();
+            auxMap.put(path, file);
+        }
+        updateTree(auxMap, dirTree, user);
+    }
+    
+    private void updateTree(Map<String, File> auxMap, Map<java.io.File,java.io.File> dirTree, IMR_User user) {
+        // First, lets add the new files and directories:
+        Set<java.io.File> keySet = dirTree.keySet();
+        Iterator<java.io.File> it = keySet.iterator();
+        Map<String,java.io.File> auxMapReal = new HashMap<String, java.io.File>();
+        while(it.hasNext()) {
+            java.io.File realFile = it.next();
+            String path = realFile.getPath();
+            auxMapReal.put(path, realFile);
+            if (!auxMap.containsKey(path)) {
+                // It means it is a new file or directory
+                addNewFile(auxMap, dirTree, realFile, user);
+            }
+        }
+        // Now we should eliminate the ones that have been removed
+        // first, we wliminate all files (not directories)
+        eraseFiles(auxMap, auxMapReal, true);
+        // Then we eliminate all directories
+        eraseFiles(auxMap,auxMapReal, false);
+    }
+    
+    private void eraseFiles(Map<String, File> auxMap, Map<String,java.io.File> auxMapReal, boolean dir) {
+        Set<String> stringSet = auxMap.keySet();
+        List<String> toErase = new ArrayList<String>();
+        for(String fileInPath:stringSet) {
+            File fileIn = auxMap.get(fileInPath);
+            boolean b = !dir || (dir && !fileIn.getIMR_Type().equals("dir"));
+            if(fileIn.getDir()!=null && b) {
+                if(!auxMapReal.containsKey(fileInPath)) {
+                    toErase.add(fileInPath);
+                    em.remove(fileIn);
+                }
+            }
+        }
+        for(String s:toErase) auxMap.remove(s);
+    }
+    
+    private void addNewFile(Map<String, File> auxMap, Map<java.io.File,java.io.File> dirTree, java.io.File realFile, IMR_User user) {
+        java.io.File parent = dirTree.get(realFile);
+        String pathParent = parent.getPath();
+        // If parent does not exist, we create first the parent
+        if (!auxMap.containsKey(pathParent)) {
+            addNewFile(auxMap, dirTree, parent, user);
+        }
+        File newFile= new File();
+        File parentFile = auxMap.get(pathParent);
+        newFile.setDir(parentFile);
+        newFile.setIMR_Type("");
+        if(realFile.isDirectory()) {
+            newFile.setIMR_Type("dir");
+        } else {
+            String []div = realFile.getName().split("\\.");
+            if(div.length>1) {
+                newFile.setIMR_Type(div[div.length-1]);
+            }
+        }
+        newFile.setName(realFile.getName());
+        newFile.setOwner(user);
+        newFile.setSharingState(Sharing.NO);
+        newFile.setUrl(parentFile.getUrl()+"/" + newFile.getName());
+        em.persist(newFile);
+        URI u = URI.create(newFile.getUrl());
+        String newPath = u.getPath();
+        auxMap.put(newPath, newFile);
     }
     
     private void saveFile(String serName, String uri, List<String> content) throws Exception {

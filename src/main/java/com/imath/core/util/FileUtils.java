@@ -11,8 +11,10 @@ import java.net.URL;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.logging.Logger;
@@ -194,6 +196,29 @@ public class FileUtils {
                 length += dirSizeRec(file);
         }
         return length;
+    }
+    
+    
+    /**
+     * Return the tree files the given directory. If the directory does not exists, it returns an empty map
+     * @param uri
+     * @return
+     */
+    public Map<File,File> dirFiles(String uri) {
+        URI u = URI.create(uri);
+        java.nio.file.Path path = Paths.get(u.getPath());
+        Map<File,File> treeFile = new HashMap<File,File>();
+        File file = new File(path.toString());
+        dirFilesRec(file, treeFile);
+        return treeFile;
+    }
+    
+    private void dirFilesRec(File directory, Map<File,File> treeFile) {
+        for (File file : directory.listFiles()) {
+            treeFile.put(file,  directory);
+            if (file.isDirectory())
+                dirFilesRec(file, treeFile);
+        }
     }
     
     public String trashFile(com.imath.core.model.File file){

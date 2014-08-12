@@ -159,7 +159,14 @@ public class FileService {
         if (sc== null) {
             ret = internalGetFiles(userName, null);
         } else if (sc.getUserPrincipal().getName().equals(userName)) {
-            ret = internalGetFiles(userName, null);
+            try {
+                SecurityManager.secureBasic(userName, sc);
+                fc.updateFilesFromStorage(userName);
+                ret = internalGetFiles(userName, null);
+            } catch (Exception e) {
+                LOG.severe("Error getting files from user: "+ userName + " - " + e.getMessage());
+                throw new WebApplicationException(Response.Status.NOT_FOUND); 
+            }
         }
         return ret;
     }

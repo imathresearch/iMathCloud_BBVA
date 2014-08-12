@@ -64,9 +64,12 @@ public class UserService {
 	public UserStorageDTO REST_getCurrentStorage(@PathParam("id") String userName, @Context SecurityContext sc) {
         try {
             SecurityManager.secureBasic(userName, sc);
-            DecimalFormat df = new DecimalFormat("#.#");
+            DecimalFormat df = new DecimalFormat("0.##");
             UserStorageDTO out = new UserStorageDTO();
-            out.currentStorage = df.format((double)userController.getCurrentStorage(userName) / (double)Constants.MiB);
+            double a = (double)userController.getCurrentStorage(userName);
+            double b = (double)Constants.MiB;
+            double value = a/b;
+            out.currentStorage = df.format(value);
             IMR_User user = db.getIMR_UserDB().findById(userName);
             out.totalStorage = df.format(user.getStorage());
             return out;

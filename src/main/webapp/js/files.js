@@ -79,7 +79,7 @@ function getStorage() {
         success: function(storage) {
         	var curr = parseFloat(storage['currentStorage']);
         	var total = parseFloat(storage["totalStorage"]);
-        	if (curr>total) alert("Your current storage is above your limit. Erase some data or contact info@imathresearch.com to extend your storage limit");
+        	if (curr>total) alert("Your current storage is above your limit. Erase some data or contact info@imathresearch.com to extend your quota");
         	var aux = $("#"+rootElement).html();
         	aux = aux + "<b>(" + storage['currentStorage'] + "MiB of " + storage["totalStorage"] + "MiB)</b>";
         	$("#"+rootElement).html(aux);
