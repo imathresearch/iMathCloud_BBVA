@@ -311,7 +311,7 @@
 <script type="text/javascript">
 
 var userName = "<%= request.getUserPrincipal().getName() %>";
-
+var rootElement = "";
 
 $("#logoutButton").button({
 	text: false,

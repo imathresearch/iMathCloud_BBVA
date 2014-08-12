@@ -172,6 +172,30 @@ public class FileUtils {
 		return list_trashLocation;
     }
     
+    /**
+     * Return the size in bytes of the directory. If the directory does not exists, it returns 0
+     * @param uri
+     * @return
+     */
+    public long dirSize(String uri) {
+        URI u = URI.create(uri);
+        java.nio.file.Path path = Paths.get(u.getPath());
+        
+        File file = new File(path.toString());
+        return dirSizeRec(file);
+    }
+    
+    private long dirSizeRec(File directory) {
+        long length = 0;
+        for (File file : directory.listFiles()) {
+            if (file.isFile())
+                length += file.length();
+            else
+                length += dirSizeRec(file);
+        }
+        return length;
+    }
+    
     public String trashFile(com.imath.core.model.File file){
   		
 		File trashDirectory = new File(Constants.iMathTRASH);

@@ -24,28 +24,28 @@ insert into MathLanguage (id, baseName, version, consoleCode) values (-1, 'Pytho
 insert into MathLanguage (id, baseName, version, consoleCode) values (-2, 'R', '2.15.3','codeR');
 
 --ammartinez
-insert into imr_user (username, email, firstname, lastname, organization, phone1, idrole, idMathLanguage) values ('ammartinez', 'ammartinez@ammartinez.com', 'Andrea', 'Martinez','iMath Research S.L.','610003964',-1,-1);
+insert into imr_user (username, email, firstname, lastname, organization, phone1, idrole, idMathLanguage, storage) values ('ammartinez', 'ammartinez@ammartinez.com', 'Andrea', 'Martinez','iMath Research S.L.','610003964',-1,-1,10);
 --ammartinez
 
 --imath
-insert into imr_user (username, email, firstname, lastname, organization, phone1, idrole, idMathLanguage) values ('imath', 'ammartinez@imathresearch.com', 'Andrea', 'Martinez','iMath Research S.L.','610203964',-1,-1);
-insert into imr_user (username, email, firstname, lastname, organization, phone1, idrole, idMathLanguage) values ('imathTest', 'andrea.mmt84@gmail.com', 'Andrea', 'Martinez','iMath Research S.L.','610244964',-1,-1);
+insert into imr_user (username, email, firstname, lastname, organization, phone1, idrole, idMathLanguage, storage) values ('imath', 'ammartinez@imathresearch.com', 'Andrea', 'Martinez','iMath Research S.L.','610203964',-1,-1,10);
+insert into imr_user (username, email, firstname, lastname, organization, phone1, idrole, idMathLanguage, storage) values ('imathTest', 'andrea.mmt84@gmail.com', 'Andrea', 'Martinez','iMath Research S.L.','610244964',-1,-1,10);
 
 
 -- user52
-insert into imr_user (username, email, firstname, lastname, organization, phone1, idrole, idMathLanguage) values ('user52', 'user@user.com', 'User', 'User','S.L.','111111112',-1,-1);
+insert into imr_user (username, email, firstname, lastname, organization, phone1, idrole, idMathLanguage, storage) values ('user52', 'user@user.com', 'User', 'User','S.L.','111111112',-1,-1,10);
 --insert into imr_user (username, email, firstname, lastname, organization, phone1, idrole, idMathLanguage) values ('conanc', 'conan@user.com', 'Conan', 'conan','S.L.','111111112',-1,-1);
 
-insert into imr_user (username, email, firstname, lastname, organization, phone1, idrole, idMathLanguage) values ('ipinyol', 'ipinyol@imathresearch.com', 'Isaac', 'Pinyol','iMath Research S.L.','636683729',-1,-2);
-insert into imr_user (username, email, firstname, lastname, organization, phone1, idrole, idMathLanguage) values ('ipinyolTest', 'ipinyolTest@imathresearch.com', 'Isaac', 'Pinyol','iMath Research S.L.','555555667',-1,-2);
+insert into imr_user (username, email, firstname, lastname, organization, phone1, idrole, idMathLanguage, storage) values ('ipinyol', 'ipinyol@imathresearch.com', 'Isaac', 'Pinyol','iMath Research S.L.','636683729',-1,-2,10);
+insert into imr_user (username, email, firstname, lastname, organization, phone1, idrole, idMathLanguage, storage) values ('ipinyolTest', 'ipinyolTest@imathresearch.com', 'Isaac', 'Pinyol','iMath Research S.L.','555555667',-1,-2,10);
 
 --conanc
-insert into imr_user (username, email, firstname, lastname, organization, phone1, idrole, idMathLanguage) values ('conanc', 'conan@imathresearch.com', 'conan', 'conan','iMath Research S.L.','636683729',-1,-1);
+insert into imr_user (username, email, firstname, lastname, organization, phone1, idrole, idMathLanguage, storage) values ('conanc', 'conan@imathresearch.com', 'conan', 'conan','iMath Research S.L.','636683729',-1,-1,2);
 
 
 --inavarro
-insert into imr_user (username, email, firstname, lastname, organization, phone1, idrole, idMathLanguage) values ('inavarro', 'inavarro@imathresearch.com', 'Ivan', 'Navarro','iMath Research S.L.','555443322',-1,-1);
-insert into imr_user (username, email, firstname, lastname, organization, phone1, idrole, idMathLanguage) values ('inavarroUser', 'inavarroUser@imathresearch.com', 'Ivan', 'Navarro','iMath Research S.L.','555443322',-1,-2);
+insert into imr_user (username, email, firstname, lastname, organization, phone1, idrole, idMathLanguage, storage) values ('inavarro', 'inavarro@imathresearch.com', 'Ivan', 'Navarro','iMath Research S.L.','555443322',-1,-1,10);
+insert into imr_user (username, email, firstname, lastname, organization, phone1, idrole, idMathLanguage, storage) values ('inavarroUser', 'inavarroUser@imathresearch.com', 'Ivan', 'Navarro','iMath Research S.L.','555443322',-1,-2,10);
 --/inavarro
 
 insert into Host (id, active, alias, console, url) values (-1,true, 'localhost', true, '127.0.0.1');

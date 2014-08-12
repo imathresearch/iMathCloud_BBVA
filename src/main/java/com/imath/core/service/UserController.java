@@ -93,6 +93,11 @@ public class UserController extends AbstractController {
 		return user;
 	}
 	
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+    public long getCurrentStorage(String userName) throws Exception {
+	    File rootFile = db.getFileDB().findROOTByUserId(userName);
+	    return fileUtils.dirSize(rootFile.getUrl());
+	}
 	
 	//TODO: unit tests!
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)

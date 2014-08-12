@@ -18,7 +18,8 @@ import org.hibernate.validator.constraints.NotEmpty;
 @Entity
 @Table(name = "IMR_User", uniqueConstraints = @UniqueConstraint(columnNames = "email"))
 public class IMR_User implements Serializable {
-	   
+	
+    public static long DEFAULT_STORAGE = 10;    // 10 MiB = 10 * 2^20 bytes
 	@Id
 	@NotNull
 	@Size(min = 4, max = 25, message = "4 to 25 letters")
@@ -49,6 +50,9 @@ public class IMR_User implements Serializable {
 	@ManyToOne(optional=false) 
     @JoinColumn(name="idMathLanguage", nullable=false, updatable=true)
 	private MathLanguage mathLanguage;
+	
+	@NotNull
+	private long storage = 10;
 	
 	private static final long serialVersionUID = 1L;
 
@@ -120,5 +124,12 @@ public class IMR_User implements Serializable {
 	public void setMathLanguage(MathLanguage mathLanguage) {
 		this.mathLanguage=mathLanguage;
 	}
+	
+	public long getStorage() {
+	    return this.storage;
+	}
    
+	public void setStorage(long storage) {
+	    this.storage = storage;
+	}
 }

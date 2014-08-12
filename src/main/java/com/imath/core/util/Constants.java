@@ -13,6 +13,7 @@ public class Constants {
     // The root name used to identify the root directories in iMath Cloud cloud
     static public final String rootNAME = "ROOT";
     
+    static public final Long MiB = 1048576L; // bytes: 2^20 
     /*
      * HPC2 - iMath Cloud Connection constants
      */ 

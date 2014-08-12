@@ -35,6 +35,7 @@ function fillRemoteFiles(files, treeView, shareZone) {
 		}
 		
 		if (file['dir']==null) {
+			if (shareZone==0) rootElement = genIdFileContextMenu(file['id'], file['name']);
 			$( treeView ).append(aux);
 			$.contextMenu({
 		        selector: '.' + genClassFileContextMenu(file['id']) , 
@@ -65,7 +66,31 @@ function fillRemoteFiles(files, treeView, shareZone) {
 			$( "#filedir_" + file['dir'] ).append(aux);
 		}
 	}
+	if(shareZone==0) getStorage();
+	
 }
+
+function getStorage() {
+	$.ajax({
+        url: "rest/user_service/getCurrentStorage/"+userName,
+        cache: false,
+        dataType: "json",
+        type: "GET",
+        success: function(storage) {
+        	var curr = parseFloat(storage['currentStorage']);
+        	var total = parseFloat(storage["totalStorage"]);
+        	if (curr>total) alert("Your current storage is above your limit. Erase some data or contact info@imathresearch.com to extend your storage limit");
+        	var aux = $("#"+rootElement).html();
+        	aux = aux + "<b>(" + storage['currentStorage'] + "MiB of " + storage["totalStorage"] + "MiB)</b>";
+        	$("#"+rootElement).html(aux);
+        },
+        error: function(error) {
+        	var cause = "Error retrieving the storage";
+            showFileErrorDialog("", cause);
+        }
+    });
+}
+
 
 function clearFileTree(shareZone){
 	if (!shareZone){

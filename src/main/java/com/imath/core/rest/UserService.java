@@ -24,7 +24,10 @@ import com.imath.core.model.IMR_User;
 import com.imath.core.data.MainServiceDB;
 import com.imath.core.security.SecurityManager;
 import com.imath.core.service.SessionController;
+import com.imath.core.service.UserController;
+import com.imath.core.util.Constants;
 
+import java.text.DecimalFormat;
 import java.util.logging.Logger;
 
 /**
@@ -37,6 +40,7 @@ import java.util.logging.Logger;
 @Stateful
 public class UserService {
 	@Inject private MainServiceDB db;
+	@Inject private UserController userController;
 	@Inject private Logger LOG;
 	
 	@GET
@@ -53,4 +57,29 @@ public class UserService {
 			throw new WebApplicationException(Response.Status.NOT_FOUND);
 		}
     }
+	
+	@GET
+	@Path("/getCurrentStorage/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public UserStorageDTO REST_getCurrentStorage(@PathParam("id") String userName, @Context SecurityContext sc) {
+        try {
+            SecurityManager.secureBasic(userName, sc);
+            DecimalFormat df = new DecimalFormat("#.#");
+            UserStorageDTO out = new UserStorageDTO();
+            out.currentStorage = df.format((double)userController.getCurrentStorage(userName) / (double)Constants.MiB);
+            IMR_User user = db.getIMR_UserDB().findById(userName);
+            out.totalStorage = df.format(user.getStorage());
+            return out;
+        }
+        catch (Exception e) {
+            LOG.severe("Error creating a session for " + userName);
+            throw new WebApplicationException(Response.Status.NOT_FOUND);
+        }
+    }
+	
+	private class UserStorageDTO {
+	    public String currentStorage;
+	    public String totalStorage;
+	}
+    
 }
