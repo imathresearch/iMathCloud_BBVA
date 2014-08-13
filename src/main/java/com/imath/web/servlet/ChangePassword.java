@@ -69,7 +69,7 @@ public class ChangePassword extends HttpServlet {
         }
         
         // Return message if everything was fine;
-        response.setContentType("text/html;charset=UTF-8");
+        response.setContentType("text/html");
         response.setStatus(HttpServletResponse.SC_ACCEPTED);
         Writer w = response.getWriter();
         w.write("Password changed!");

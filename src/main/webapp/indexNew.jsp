@@ -334,10 +334,10 @@ $("#selfButton").click(function() {
 $("#changePassButton").click(function() {
 
     url = "changePassword";
+    $("#profileMsg").html("");
 	$.ajax({
         url: url,
         cache: false,
-        contentType: "charset=utf-8",
         data: JSON.stringify($("div#profile form").serializeObject()),
         type: "POST",
         success: function(data) {
