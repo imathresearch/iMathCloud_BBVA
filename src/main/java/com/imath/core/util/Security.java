@@ -8,9 +8,13 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.lang.ProcessBuilder.Redirect;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Properties;
 
 
 
@@ -22,13 +26,74 @@ import java.lang.ProcessBuilder.Redirect;
 
 public class Security {
     
+    /**
+     * Change or set parameters user=password in JBOSS authentication files.
+     * The generic format for these key - values is:
+     * <userName>=hex(md5(<password>))
+     * Which value password contains the string -> userName:ApplicationRealm:password
+     * The role is static: WebAppUser
+     * @param userName
+     * @param password
+     * @throws Exception
+     */
     public void updateSystemPassword(String userName, String password) throws Exception {
-        //TODO: Refactor as soon as possible!
-        eraseUserLine(Constants.ROLES_DOMAIN_FILE, userName);
-        eraseUserLine(Constants.USERS_DOMAIN_FILE, userName);
-        eraseUserLine(Constants.ROLES_FILE, userName);
-        eraseUserLine(Constants.USERS_FILE, userName);
-        createSystemUser(userName, password, "WebAppUser");
+        
+        String hexPass = generateHexMd5Password(userName, password);
+        
+        // Here the pass in hex(md5) is set as property
+        updateProperty(userName, hexPass.toString(), Constants.USERS_FILE);
+        updateProperty(userName, hexPass.toString(), Constants.USERS_DOMAIN_FILE);
+        
+        // Here the role "WebAppUser" is set as property
+        updateProperty(userName, "WebAppUser", Constants.ROLES_FILE);
+        updateProperty(userName, "WebAppUser", Constants.ROLES_DOMAIN_FILE);
+
+    }
+    
+    /**
+     * Generate the properties that jboss uses to store passwords in its properties files.
+     * The generic format for these key - values is:
+     * <userName>=hex(md5(<password>))
+     * Which value password contains the string -> userName:ApplicationRealm:password
+     * @param userName
+     * @param password
+     * @return the hex(md5) generated from the password
+     * @throws Exception
+     */
+    public static String generateHexMd5Password(String userName, String password) throws Exception {
+       
+        // To generate md5 of password stored in JBOSS' files
+        MessageDigest md = MessageDigest.getInstance("MD5");
+        String concatPass = userName + ":ApplicationRealm:" + password;
+        byte[] md5Pass = md.digest(concatPass.getBytes());
+        
+        //convert the md5 byte to hex format method 1
+        StringBuffer hexPass = new StringBuffer();
+        for (int i=0;i<md5Pass.length;i++) {
+            String hex=Integer.toHexString(0xff & md5Pass[i]);
+            if(hex.length()==1) hexPass.append('0');
+            hexPass.append(hex);
+        }
+        
+        return hexPass.toString();
+    }
+    
+    private void updateProperty(String key, String value, String propertiesPath) {
+        try {
+            // Get property of userName in JBOSS' file
+            FileReader reader = new FileReader(propertiesPath);
+            Properties props = new Properties();
+            props.load(reader);
+            props.setProperty(key, value);
+            
+            // We store the updated value.
+            File f = new File(propertiesPath);
+            OutputStream out = new FileOutputStream( f );
+            props.store(out, "");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     
     public void createLinuxUser(String userName) throws Exception {
@@ -81,7 +146,7 @@ public class Security {
         }
     }
     
-    private static String loadStream(InputStream s) throws Exception
+    /*private static String loadStream(InputStream s) throws Exception
     {
         BufferedReader br = new BufferedReader(new InputStreamReader(s));
         StringBuilder sb = new StringBuilder();
@@ -89,9 +154,9 @@ public class Security {
         while((line=br.readLine()) != null)
             sb.append(line).append("\n");
         return sb.toString();
-    }
+    }*/
     
-    private void eraseUserLine(String fileName, String userName) throws Exception {
+    /*private void eraseUserLine(String fileName, String userName) throws Exception {
         String tempFileName = fileName + ".temp";
         Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(tempFileName, false), "UTF-8"));
         BufferedReader br = new BufferedReader(new FileReader(fileName));
@@ -112,5 +177,5 @@ public class Security {
         File rigthFile = new File(fileName);
         tempFile.renameTo(rigthFile);
         
-    }
+    }*/
 }

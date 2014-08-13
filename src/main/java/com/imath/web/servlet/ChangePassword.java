@@ -81,18 +81,7 @@ public class ChangePassword extends HttpServlet {
         FileReader reader = null;
 
         try {
-            // To generate md5 of password stored in JBOSS' files
-            MessageDigest md = MessageDigest.getInstance("MD5");
-            String concatPass = userName + ":ApplicationRealm:" + password;
-            byte[] md5Pass = md.digest(concatPass.getBytes());
-
-            //convert the md5 byte to hex format method 1
-            StringBuffer hexPass = new StringBuffer();
-            for (int i=0;i<md5Pass .length;i++) {
-                String hex=Integer.toHexString(0xff & md5Pass[i]);
-                if(hex.length()==1) hexPass.append('0');
-                hexPass.append(hex);
-            }
+            String hexPass = Security.generateHexMd5Password(userName, password);
 
             // Get property of userName in JBOSS' file
             reader = new FileReader(Constants.USERS_FILE);
