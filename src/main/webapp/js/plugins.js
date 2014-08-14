@@ -48,8 +48,9 @@ function submitMathFunction(key,idFile,ParamDTO) {
 		contentType: "application/json; charset=utf-8",
 		data : ParamDTOS,
         type: "POST",
-        success: function(host) {
+        success: function(job) {
         	refreshJobsTable();
+        	updateJob(job['id']);  
         },
         error: function(error) {
         	refreshJobsTable();

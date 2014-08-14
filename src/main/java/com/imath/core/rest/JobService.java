@@ -198,6 +198,17 @@ public class JobService {
 		public JobResult jobResult;		
 		public PercDTO pcts;
 		public JobDTO(){}
+		public void jobToJobDTO(Job job) {
+		    this.id = job.getId();
+		    this.endDate=job.getEndDate();
+		    this.startDate=job.getStartDate();
+		    this.description=job.getDescription();
+		    this.state=job.getState();
+		    this.jobResult=job.getJobResult();
+		    this.pcts = new PercDTO();
+		    this.pcts.setPerc(new ArrayList<String>());
+		    this.pcts.getPerc().add("NO INFO");
+		}
 	}
 	
 	

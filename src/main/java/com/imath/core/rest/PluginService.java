@@ -50,6 +50,7 @@ import com.imath.core.model.MathGroup;
 import com.imath.core.model.MathFunction;
 
 import com.imath.core.data.MainServiceDB;
+import com.imath.core.rest.JobService.JobDTO;
 import com.imath.core.security.SecurityManager;
 import com.imath.core.service.PluginController;
 
@@ -138,7 +139,7 @@ public class PluginService {
     @Path("/submitMathFunction/{userName}/{idMath}/{idFile}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-    public void REST_submitMathFunction(@PathParam("userName") String userName, @PathParam("idMath") Long idMath, @PathParam("idFile") Long idFile, ParamDTO paramDTO, @Context SecurityContext sc) {		
+    public Response REST_submitMathFunction(@PathParam("userName") String userName, @PathParam("idMath") Long idMath, @PathParam("idFile") Long idFile, ParamDTO paramDTO, @Context SecurityContext sc) {		
 		try {
 			//TODO: Convert JSON to List
 		    SecurityManager.secureBasic(userName, sc);
@@ -152,10 +153,15 @@ public class PluginService {
 			files.add(file);
 			JobController.Pair pair = pc.callPlugin(idMath, session, params, files);
 			jc.makeAJAXCall(pair);
+			Job job = pair.job;
+            JobDTO out = new JobDTO();
+            out.jobToJobDTO(job);
+            return Response.status(Response.Status.OK).entity(out).build();
 		}
 		catch (Exception e) {
+		    e.printStackTrace();
 			LOG.severe("Error submitting job for userName: " + userName + " - " + e.getMessage());
-			throw new WebApplicationException(Response.Status.NOT_FOUND);
+			return Response.status(Response.Status.BAD_REQUEST).build();
 		}
     }
 	

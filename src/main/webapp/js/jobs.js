@@ -44,6 +44,23 @@ function getJobs(b) {
     });
 }
 
+/*
+function checkJobChangeState(jobs) {
+	var i = 0;
+	var found = false;
+	while (!found && i<jobs.length) {
+		var id = jobs[i]['id'];
+		var state = jobs[i]['state'];
+		
+	}
+	
+	for(var i=0; i<jobs.length; i++) {
+		if (lastUpdatedJobs[i]['state'] == state){
+			filteredJobs.push(lastUpdatedJobs[i]);
+		}
+	}
+}
+*/
 function updateJob(idJob){
 
 	$.ajax({
