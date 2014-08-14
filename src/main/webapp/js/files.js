@@ -102,8 +102,8 @@ function clearFileTree(shareZone){
 		$( "#remoteTree" ).remove();
 		$( "#remoteTreeContent").append('<ul id="remoteTree" class="filetree"></ul>');
 	}
-	$( "#remoteTreeShared" ).remove();
-	$( "#remoteTreeContent").append('<ul id="remoteTreeShared" class="filetree"></ul>');
+	//$( "#remoteTreeShared" ).remove();
+	//$( "#remoteTreeContent").append('<ul id="remoteTreeShared" class="filetree"></ul>');
 }
 
 function genIdFileContextMenu (fileId, name) {
@@ -557,7 +557,7 @@ function getFiles(b) {
 			if (b) {
 				getJobs(true);
         	}
-			getSharedFiles();
+			//getSharedFiles();
         },
         error: function(error) {
             console.log("error loading files - " + error.status);

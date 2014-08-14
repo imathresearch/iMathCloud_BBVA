@@ -108,8 +108,9 @@ function genContextMenu(type, shareZone, sharingState, isRoot) {
 			break;
 		case "dir":
 			if (shareZone==0 && sharingState == 'NO') {
-				out = '{ "share": {"name": "Share Folder", "icon": "ui-icon-image"}, ';
-				out +=' "sep1": "---------", ';
+				//out = '{ "share": {"name": "Share Folder", "icon": "ui-icon-image"}, ';
+				//out +=' "sep1": "---------", ';
+				out = '{';
 				if(isRoot){
 					out +=' "download": {"name": "Download as zip", "icon": "ui-icon-play"},';
 					out += stdDirOperations;			
@@ -120,9 +121,10 @@ function genContextMenu(type, shareZone, sharingState, isRoot) {
 									
 				}
 			} else if(shareZone==0 && sharingState == 'YES') {
-				out = '{ "share": {"name": "Add Users", "icon": "ui-icon-image"},';
-				out += '"share": {"name": "Sharing Options", "icon": "ui-icon-image"},';
-				out +=' "sep1": "---------", ';
+				//out = '{ "share": {"name": "Add Users", "icon": "ui-icon-image"},';
+				//out += '"share": {"name": "Sharing Options", "icon": "ui-icon-image"},';
+				//out +=' "sep1": "---------", ';
+				out = '{';
 				out += '"unshare": {"name": "Unshare Folder", "icon": "ui-icon-image"},';
 				out +=' "sep2": "---------", ';
 				out += stdFileOperations;
