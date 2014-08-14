@@ -153,24 +153,28 @@ public class JobService {
 	}
 	
 	private List<FileDTO> PrepareToSubmitFiles(Set<File> files) {
-		List<FileDTO> ret = new ArrayList<FileDTO>();
-		Iterator<File> it = files.iterator();
-		while(it.hasNext()) {
-			File file = it.next();
-			FileDTO fileDTO = new FileDTO();
-			fileDTO.id = file.getId();
-			fileDTO.name=file.getName();
-			fileDTO.type=file.getIMR_Type();
-			fileDTO.dir = file.getDir().getId();
-			fileDTO.sharingState = file.getSharingState();
-			
-			fileDTO.userNameOwner = file.getOwner().getUserName();
-			
-			ret.add(fileDTO);
-		}
-		return ret;
+	    return PrepareToSubmitFilesStatic(files);
 	}
 	
+	private static List<FileDTO> PrepareToSubmitFilesStatic(Set<File> files) {
+        List<FileDTO> ret = new ArrayList<FileDTO>();
+        if (files==null) return ret;
+        Iterator<File> it = files.iterator();
+        while(it.hasNext()) {
+            File file = it.next();
+            FileDTO fileDTO = new FileDTO();
+            fileDTO.id = file.getId();
+            fileDTO.name=file.getName();
+            fileDTO.type=file.getIMR_Type();
+            fileDTO.dir = file.getDir().getId();
+            fileDTO.sharingState = file.getSharingState();
+            
+            fileDTO.userNameOwner = file.getOwner().getUserName();
+            
+            ret.add(fileDTO);
+        }
+        return ret;
+    }
 	private JobDTO prepareJobToSubmit(Job job) throws Exception {
 		JobDTO jobdto = new JobDTO();
 		jobdto.id = job.getId();
@@ -185,7 +189,7 @@ public class JobService {
 		if(jobdto.pcts.getPerc().isEmpty()){
 			jobdto.pcts.getPerc().add("NO INFO");
 		}
-				
+		jobdto.outputFiles = PrepareToSubmitFilesStatic(job.getOutputFiles()); 
 		return jobdto;
 	}
 	
@@ -197,6 +201,8 @@ public class JobService {
 		public String description;
 		public JobResult jobResult;		
 		public PercDTO pcts;
+		public List<FileDTO> outputFiles;
+		
 		public JobDTO(){}
 		public void jobToJobDTO(Job job) {
 		    this.id = job.getId();
@@ -208,6 +214,7 @@ public class JobService {
 		    this.pcts = new PercDTO();
 		    this.pcts.setPerc(new ArrayList<String>());
 		    this.pcts.getPerc().add("NO INFO");
+		    this.outputFiles = PrepareToSubmitFilesStatic(job.getOutputFiles()); 
 		}
 	}
 	

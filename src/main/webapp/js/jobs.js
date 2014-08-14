@@ -269,9 +269,19 @@ function showJobDialog(job) {
 	}
 	else if (job['jobResult']!=null && job['state']=='FINISHED_OK') {
 		aux += "<hr>";
-		
+		if (job['outputFiles']!=null) {
+			if (job['outputFiles'].length>0) {
+				aux += "<b>Output file/s</b><br>";
+			}
+			for (var i =0; i < job['outputFiles'].length;i++) {
+				file = job['outputFiles'][i];
+				if (i>0) aux+= ", ";
+				aux += file['name'];
+			}
+		}
 		//JSON format {"files":[["", "src", "file1.txt], ["", "file2.txt"]], "dirs": [["", "src"], ["", "src", "new_dir"]]}
 		//JSON.parse can throw an exception
+		/*
 		try{
 			obj = JSON.parse(job['jobResult']['json']);
 			//console.log("JSON parseado: " + obj);
@@ -295,7 +305,7 @@ function showJobDialog(job) {
 		}
 		catch(e){		
 			console.log("Excepcion throw in showJobDialog: " + e.message);
-		}
+		}*/
 		
 		
 		aux += "<hr>";
