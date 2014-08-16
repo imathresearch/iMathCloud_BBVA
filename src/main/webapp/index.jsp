@@ -109,7 +109,15 @@
                         </div>
 						
                     </div>
-                </div>  
+                </div>
+                <p>  
+                	<script type="text/javascript">
+                		var FF = !(window.mozInnerScreenX == null);
+						if (!FF) {
+							document.write("<b>Get a better experience with <a href='http://www.firefox.com'>Mozilla Firefox<a></b>");
+						}                	
+                	</script>
+                </p>
             </section>
         </div>
     </body>
