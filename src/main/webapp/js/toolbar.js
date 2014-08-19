@@ -45,6 +45,17 @@ function executeMenu(key,id, fileName) {
 			subkey = "createFile";
 			prepareFile(id,key);
 			break;
+		case "copy":
+			key = "copy";
+			//prepareFile(id,key);
+			copyItem(id);
+			break;
+		case "paste":
+			key = "paste";
+			//prepareFile(id,key);
+			pasteItem(id);
+			break;
+
 		default:
 			submitMathFunction(key,id);
 	}	
@@ -72,11 +83,14 @@ function genContextMenu(type, shareZone, sharingState, isRoot) {
 	var stdFileOperations = '';
 	stdFileOperations +=' "download": {"name": "Download as zip", "icon": "ui-icon-play"},';
 	stdFileOperations +=' "rename": {"name": "Rename", "icon": "ui-icon-play"},';
+	stdFileOperations +=' "copy": {"name": "Copy", "icon": "ui-icon-play"},';
 	stdFileOperations +=' "delete": {"name": "Delete", "icon": "ui-icon-play"},';
 	
 	var stdDirOperations = "";
 	stdDirOperations += '"newDirectory": {"name": "New directory", "icon": "ui-icon-play"},';
 	stdDirOperations +=' "newFile": {"name": "New file", "icon": "ui-icon-play"},';
+	stdDirOperations +=' "copy": {"name": "Copy", "icon": "ui-icon-play"},';
+	stdDirOperations +=' "paste": {"name": "Paste", "icon": "ui-icon-play"},';
 	stdDirOperations +=' "addFiles": {"name": "Upload files", "icon": "ui-icon-play"}}';
 	
 	var out;

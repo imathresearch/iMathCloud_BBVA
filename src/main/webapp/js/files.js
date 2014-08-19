@@ -515,6 +515,34 @@ function createFile(idParentDir, fileName, funcSuccess, funcError ){
 		});
 	 }
 }
+
+
+function copyItem(id) {
+	console.log("COPY ITEM " + id);
+	itemToCopy = id;
+}
+
+function pasteItem(destiny) {
+    
+    action = "copy";
+	url = "rest/file_service/pasteItem/"+userName + "/" + action + "/" + itemToCopy + "/" + destiny;
+    $.ajax({
+        url: url,
+        cache: false,
+        dataType: "json",
+        type: "POST",
+        async: false,
+        success: function(ans) {
+            console.log(ans);
+        },
+        error: function(error) {
+            console.log("Error on pasting - " + error.status);
+        }
+    });
+
+	console.log("PASTE ITEM " + itemToCopy + " TO " + destiny);
+    refreshFilesTree();
+}
 ///////////////////////////////////////////////////////////////////////////
 
 function getFilesInfo(b, id) {

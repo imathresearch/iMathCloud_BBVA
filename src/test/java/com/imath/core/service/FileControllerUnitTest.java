@@ -42,6 +42,8 @@ import java.net.URI;
 import java.nio.file.Files;
 import java.util.logging.Logger;
 
+import static org.hamcrest.CoreMatchers.*;
+
 public class FileControllerUnitTest {
 
 	// The class that contains the code we want to unit test 
@@ -1583,5 +1585,249 @@ public class FileControllerUnitTest {
           }
     }
     
-    
+    /**
+     * Test paste file/dir action for non valid values
+     */
+    @Test
+    public void pasteItem_nullValuesTest(){
+        String userName = "userName";
+        try {
+            fileController.pasteItem(userName ,"NonValidAction", null, null);
+            fail();
+        } catch (IMathException e) {
+            assertEquals(e.getIMATH_ERROR(),IMathException.IMATH_ERROR.OTHER);  
+        }
+        
+        try {
+            fileController.pasteItem(userName ,"copy", 12L, null);
+            fail();
+        } catch (IMathException e) {
+            assertEquals(e.getIMATH_ERROR(),IMathException.IMATH_ERROR.OTHER);  
+        }
+        
+        try {
+            fileController.pasteItem(userName ,"move", null, 12L);
+            fail();
+        } catch (IMathException e) {
+            assertEquals(e.getIMATH_ERROR(),IMathException.IMATH_ERROR.OTHER);  
+        }
+    }
+
+    /**
+     * Test paste file/dir action for un/authorized Items
+     */
+    @Test
+    public void pasteItem_unauthorizedItems() {
+        // PREPARE
+        String userNotAuth = "userNotAuth";
+        String userAuth = "userAuth";
+
+        Long origin = 1L;
+        Long destiny = 2L;
+        
+        File originFile = new File();
+        File originDir = new File();
+        File destinyFile = new File();
+        File destinyDir = new File();
+
+        originFile.setIMR_Type("py");
+        originDir.setIMR_Type("dir");
+        destinyFile.setIMR_Type("py");
+        destinyDir.setIMR_Type("dir");
+        
+        // ACTION and COMPROVATION: get destiny dir is NOT authorized
+        when(db.getFileDB().findByIdSecured(origin, userAuth)).thenReturn(originFile);
+        when(db.getFileDB().findByIdSecured(destiny, userNotAuth)).thenReturn(null);
+
+      
+        try {
+            fileController.pasteItem(userAuth, "copy", origin, destiny);
+            fail();
+        } catch (IMathException e) {
+            assertEquals(e.getIMATH_ERROR(),IMathException.IMATH_ERROR.OTHER);  
+        }
+
+        // ACTION and COMPROVATION: Trying to copy into a file. Should fail.
+        when(db.getFileDB().findByIdSecured(origin, userAuth)).thenReturn(originFile);
+        when(db.getFileDB().findByIdSecured(destiny, userAuth)).thenReturn(destinyFile);
+
+        try {
+            fileController.pasteItem(userAuth, "copy", origin, destiny);
+            fail();
+        } catch (IMathException e) {
+        }
+    }
+
+    @Test
+    public void pasteItem_copyFileToDestiny() {
+
+        // PREPARE
+        String userAuth = "userAuth";
+        String domain = "file://localhost";
+        String rootDir = "/tmp/iMathCloudTests";
+        //remove tmp dirs
+        try {
+            org.apache.commons.io.FileUtils.deleteDirectory(new java.io.File(rootDir));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        
+        Long origDirId = 1L;
+        String origDirName = "origPath";
+        File origDir = null;
+
+        Long origFileId = 2L;
+        String origFileName = "test.py";
+        String origFileNewName = "test_new.py";
+        File origFile = null;
+
+        Long destDirId = 3L;
+        String destDirName = "destPath";
+        File destDir = null;
+
+        try {
+            origDir = this.createFileToTest(origDirId, origDirName, "dir", domain + rootDir);
+            origFile = this.createFileToTest(origFileId, origFileName, "py", origDir.getUrl());
+            destDir = this.createFileToTest(destDirId, destDirName, "dir", domain + rootDir);
+
+            // ACTION: Copying a file into a folder
+            when(db.getFileDB().findByIdSecured(origFileId, userAuth)).thenReturn(origFile);
+            when(db.getFileDB().findByIdSecured(destDirId, userAuth)).thenReturn(destDir);
+
+            fileController.pasteItem(userAuth, "copy", origFileId, destDirId);
+
+            // COMPROVATION:
+            // Check if the new file was properly created.
+            java.io.File file = new java.io.File(destDir.getPath() + "/" + origFile.getName());
+            assertTrue(file.exists());
+          
+            // ACTION:  Copying a file with existent name into the folder
+            fileController.pasteItem(userAuth, "copy", origFileId, destDirId);
+           
+            java.io.File file_new = new java.io.File(destDir.getPath() + "/" + origFileNewName);
+            assertTrue(file_new.exists());
+
+        } catch (IMathException e) {
+            fail(e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+            fail();
+        } finally {
+            //remove tmp dirs
+            try {
+                org.apache.commons.io.FileUtils.deleteDirectory(new java.io.File(rootDir));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        }
+    }
+
+    @Test
+    public void pasteItem_copyDirToDestiny(){
+
+
+        // PREPARE
+        String userAuth = "userAuth";
+        String domain = "file://localhost";
+        String rootDir = "/tmp/iMathCloudTests";
+        //remove tmp dirs
+        try {
+            org.apache.commons.io.FileUtils.deleteDirectory(new java.io.File(rootDir));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        
+        Long origDirId = 1L;
+        String origDirName = "origPath";
+        String origDirNewName = "origPath_new";
+        File origDir = null;
+
+        Long origFileId = 2L;
+        String origFileName = "test.py";
+        File origFile = null;
+        
+        Long origDir2Id = 3L;
+        String origDir2Name = "origPath2";
+        File origDir2 = null;
+        
+        Long origFile2Id = 4L;
+        String origFile2Name = "test2.py";
+        File origFile2 = null;
+
+        Long destDirId = 5L;
+        String destDirName = "destPath";
+        File destDir = null;
+
+        try {
+            origDir = this.createFileToTest(origDirId, origDirName, "dir", domain + rootDir);
+            origFile = this.createFileToTest(origFileId, origFileName, "py", origDir.getUrl());
+            origDir2 = this.createFileToTest(origDir2Id, origDir2Name, "dir", origDir.getUrl());
+            origFile2 = this.createFileToTest(origFile2Id, origFile2Name, "py", origDir2.getUrl());
+            destDir = this.createFileToTest(destDirId, destDirName, "dir", domain + rootDir);
+
+            // ACTION: Copying a dir into a folder
+            when(db.getFileDB().findByIdSecured(origDirId, userAuth)).thenReturn(origDir);
+            when(db.getFileDB().findByIdSecured(destDirId, userAuth)).thenReturn(destDir);
+
+            fileController.pasteItem(userAuth, "copy", origDirId, destDirId);
+
+            // COMPROVATION:
+            // Check if the new dir was properly created.
+            java.io.File dir = new java.io.File(destDir.getPath() + "/" + origDir.getName());
+            assertTrue(dir.exists());
+            java.io.File dir2 = new java.io.File(destDir.getPath() + "/" + origDir.getName() + "/" + origDir2.getName() );
+            assertTrue(dir2.exists());
+
+
+            // ACTION: Copying a dir into a folder with an existing dir
+            when(db.getFileDB().findByIdSecured(origDirId, userAuth)).thenReturn(origDir);
+            when(db.getFileDB().findByIdSecured(destDirId, userAuth)).thenReturn(destDir);
+
+            fileController.pasteItem(userAuth, "copy", origDirId, destDirId);
+
+            // COMPROVATION:
+            // Check if the new dir was properly created with a new name.
+            java.io.File dirNew = new java.io.File(destDir.getPath() + "/" + origDirNewName);
+            assertTrue(dirNew.exists());
+            java.io.File dir2New = new java.io.File(destDir.getPath() + "/" + origDirNewName + "/" + origDir2.getName() );
+            assertTrue(dir2.exists());
+        } catch (IMathException e) {
+            fail(e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+            fail();
+        } finally {
+            //remove tmp dirs
+            try {
+                org.apache.commons.io.FileUtils.deleteDirectory(new java.io.File(rootDir));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+    }
+
+    private File createFileToTest(Long id, String name, String type, String uri) {
+        File file = new File();
+        file.setIMR_Type(type);
+        file.setId(id);
+        file.setName(name);
+        file.setUrl(uri + "/" + name);
+        try {
+            java.nio.file.Path path = java.nio.file.Paths.get(file.getPath());
+            if (type == "dir") {
+                java.nio.file.Files.createDirectories(path);
+            }
+            else {
+                java.nio.file.Files.createFile(path);
+            }
+        } catch (Exception e) {
+            fail();
+        }
+
+        return file;
+    }
+
 }

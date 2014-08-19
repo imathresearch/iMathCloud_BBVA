@@ -41,6 +41,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.charset.Charset;
+import java.net.URL;
 import java.util.logging.Logger;
 
 import javax.persistence.EntityTransaction;
@@ -58,6 +59,8 @@ public class FileController extends AbstractController {
     private static int PAGINATION_REAL = 200;   
     private int PAGINATION = FileController.PAGINATION_REAL;    // See task #47: Used for pagination when requested a file.   
                                                                 // Page 1 will download from line 0 to PAGINATION-1
+    private String PASTE_ACTION_COPY = "copy";
+    private String PASTE_ACTION_MOVE = "move";
     
 	@Inject private FileUtils fileUtils;
 
@@ -155,6 +158,22 @@ public class FileController extends AbstractController {
             LOG.severe("Error opening the file id: " + file.getId());
             throw e;
         }
+    }
+   
+   
+   /**
+     * Check if a file already exist fisically in a specific directory. 
+     * @param String filename - the name of the file
+	 * @param File dir - the directory to check
+	 * @return boolean - true if the file exist, false in other case
+	 * We suposse that the file and the dir belong to the same user
+     */
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    private boolean checkIfFileExistFisically(String filename, File dir) throws Exception {
+       	
+    	//We have to check if the file already exist fisically inside directory dir
+        java.io.File file = new java.io.File(dir.getPath() + "/" + filename);
+        return file.exists();
     }
     
     /**
@@ -776,6 +795,69 @@ public class FileController extends AbstractController {
     	  	
     }
     
+
+    /**
+     * Paste origin Item (file or directory) to destiny location.
+     * Once an item is copied or cutted this method is in charge of pasting to de "destiny" location.
+     * @param action "copy" or "cut" 
+     * @param origin Identification of the item to be pasted
+     * @param destiny Identification of the final location
+     * @return TODO: id for the new file created
+     * @throws IMathException
+     */
+    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+    public void pasteItem(String userName, String action, Long origin, Long destiny) 
+	    	throws IMathException {
+	Long idOnDestiny = null;
+	if (PASTE_ACTION_COPY.equals(action) || PASTE_ACTION_MOVE.equals(action)) {
+		try {
+			File originFile = getFile(origin, userName);
+			File destinyDir = getFile(destiny, userName);
+
+   			if (destinyDir != null && originFile != null 
+			        && "dir".equals(destinyDir.getIMR_Type())
+			) {
+                // 1) check if exists the same name on destiny path.
+                String fileName = originFile.getName();
+				if (checkIfFileExistFisically(fileName, destinyDir)){
+                    String parts[] = fileName.split("\\.");
+                    if (parts.length>1) {
+                        fileName = parts[parts.length-2] + "_new." + parts[parts.length-1];
+                    } else {
+                        fileName = parts[parts.length-1] + "_new";
+                    }
+                }
+                
+                // 2) Select the action
+                // TODO: "move" action is not developed yet!
+                if (PASTE_ACTION_COPY.equals(action)) {
+                    
+                    java.nio.file.Path originPath = java.nio.file.Paths.get(originFile.getPath());
+                    java.nio.file.Path destinyPath = java.nio.file.Paths.get(destinyDir.getPath() +"/"+ fileName);
+                    if ("dir".equals(originFile.getIMR_Type())) {
+                        java.io.File oFile = new java.io.File(originPath.toString());
+                        java.io.File dFile = new java.io.File(destinyPath.toString());
+                        org.apache.commons.io.FileUtils.copyDirectory(oFile, dFile);
+                    } else {
+                        java.nio.file.Files.copy(originPath, destinyPath);
+                    }
+                }
+                idOnDestiny = 5L;
+			} else {
+				throw new IMathException(IMathException.IMATH_ERROR.OTHER, 
+				"Origin or Destiny locations are wrong.");
+			}
+		} catch (Exception e) {
+			throw new IMathException(IMathException.IMATH_ERROR.OTHER, e.toString());
+		}
+
+	} else {
+		throw new IMathException(IMathException.IMATH_ERROR.OTHER, "Invalid action " + action);
+	}
+	//return idOnDestiny;
+    }
+
+
     @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
     public void recoverOutputFiles(HashMap<Long, Long>outputFileJob){
     	for(Long key : outputFileJob.keySet()){
