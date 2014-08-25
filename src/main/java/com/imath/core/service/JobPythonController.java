@@ -139,7 +139,7 @@ public class JobPythonController extends AbstractController{
           
                 
                 //IMPORTANT !!! URI PATTER --> URI_HEAD + LOCALHOST_STRING + ROOT_SYSTEM_FILE + USERNAME
-                description = description.replaceAll(Constants.URI_HEAD+Constants.LOCALHOST_String+Constants.ROOT_FILE_SYSTEM+"/"+session.getUser().getUserName(), "");
+                description = description.replaceAll(Constants.URI_HEAD+Constants.HOST_STORAGE+Constants.ROOT_FILE_SYSTEM+"/"+session.getUser().getUserName(), "");
                
                 job.setDescription(description);
                 job.setStartDate(new Date());
