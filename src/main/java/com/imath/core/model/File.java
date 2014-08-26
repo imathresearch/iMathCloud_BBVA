@@ -77,7 +77,12 @@ public class File implements Serializable, SecurityOwner {
 
 	public void setUrl(String url) {
 		this.url = url;
-	}   
+	}
+       
+    public String getPath() throws java.net.MalformedURLException {
+		return new java.net.URL(this.url).getPath();
+	}
+
 	public String getIMR_Type() {
 		return this.imr_Type;
 	}
