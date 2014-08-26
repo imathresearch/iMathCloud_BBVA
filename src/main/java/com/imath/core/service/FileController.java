@@ -165,16 +165,16 @@ public class FileController extends AbstractController {
 	 * We suposse that the file and the dir belong to the same user
      */
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
-    public boolean checkIfFileExistInDirectory(String filename, File dir) throws Exception {
-       	
+    public boolean checkIfFileExistInDirectory(String filename, File dir) throws Exception {  	
+    	
     	//We have to check if the file already exist in the DB inside directory dir
-    	List<File> list_files = db.getFileDB().findAllByName(filename, dir.getOwner().getUserName());   	
+    	List<File> list_files = db.getFileDB().findAllByName(filename, dir.getOwner().getUserName());    	
     	for (File f : list_files){
-    		// The file already exists in the DB
-    		if (f.getDir().getId() == dir.getId()){
+    		// The file already exists in the DB    		
+    		if (f.getDir().getId() == dir.getId()){   			
     			return true;
     		}
-    	}    
+    	}        	
     	return false;   	
     }
     
@@ -808,7 +808,7 @@ public class FileController extends AbstractController {
         updateTree(auxMap, dirTree, user);
     }
     
-    private void updateTree(Map<String, File> auxMap, Map<java.io.File,java.io.File> dirTree, IMR_User user) {
+    private void updateTree(Map<String, File> auxMap, Map<java.io.File,java.io.File> dirTree, IMR_User user) throws Exception {
         // First, lets add the new files and directories:
         Set<java.io.File> keySet = dirTree.keySet();
         Iterator<java.io.File> it = keySet.iterator();
@@ -823,7 +823,7 @@ public class FileController extends AbstractController {
             }
         }
         // Now we should eliminate the ones that have been removed
-        // first, we wliminate all files (not directories)
+        // first, we eliminate all files (not directories)
         eraseFiles(auxMap, auxMapReal, true);
         // Then we eliminate all directories
         eraseFiles(auxMap,auxMapReal, false);
@@ -845,7 +845,7 @@ public class FileController extends AbstractController {
         for(String s:toErase) auxMap.remove(s);
     }
     
-    private void addNewFile(Map<String, File> auxMap, Map<java.io.File,java.io.File> dirTree, java.io.File realFile, IMR_User user) {
+    private void addNewFile(Map<String, File> auxMap, Map<java.io.File,java.io.File> dirTree, java.io.File realFile, IMR_User user) throws Exception {
         java.io.File parent = dirTree.get(realFile);
         String pathParent = parent.getPath();
         // If parent does not exist, we create first the parent
@@ -868,7 +868,11 @@ public class FileController extends AbstractController {
         newFile.setOwner(user);
         newFile.setSharingState(Sharing.NO);
         newFile.setUrl(parentFile.getUrl()+"/" + newFile.getName());
-        em.persist(newFile);
+        
+        if(!checkIfFileExistInDirectory(realFile.getName(), parentFile)){
+        	em.persist(newFile);
+        }
+        
         URI u = URI.create(newFile.getUrl());
         String newPath = u.getPath();
         auxMap.put(newPath, newFile);

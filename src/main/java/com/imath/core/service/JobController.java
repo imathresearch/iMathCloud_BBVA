@@ -159,7 +159,7 @@ public class JobController extends AbstractController{
     public void reportJobFinalization(Long idJob, States state, String json) throws Exception {
     	
     	
-    	//System.out.println("JSON: " + json);
+    	//System.out.println("reportJobFinalization JSON: " + json);
     	MyMap <String,List<List<String>>> mm = new MyMap<String, List<List<String>>>();   	
     	mm.jsonToMap(json);
     	
@@ -182,7 +182,7 @@ public class JobController extends AbstractController{
     		//db.makePersistent(jobResult);    		
     		job.setJobResult(jobResult);
 
-    		if(job.getState()==States.FINISHED_OK && !json.matches(".*error.*")) { // We do nothing if an error was retrieved.
+    		if(state==States.FINISHED_OK && !json.matches(".*error.*")) { // We do nothing if an error was retrieved.
     			  
     			Set<File> outputFiles = new HashSet<File>();
     			//String userName = job.getSession().getUser().getUserName();
@@ -212,14 +212,14 @@ public class JobController extends AbstractController{
     				
     			}
     			
-    			for(File f: outputFiles){
+    			/*for(File f: outputFiles){
     				System.out.println(f.getId());
-    			}
+    			}*/
     			job.setOutputFiles(outputFiles);
-    			
+    			    			
     		}
     		else {
-    			job.setState(States.FINISHED_ERROR);
+    			job.setState(States.FINISHED_ERROR);    			
     		}
     		db.makePersistent(job);
     	}

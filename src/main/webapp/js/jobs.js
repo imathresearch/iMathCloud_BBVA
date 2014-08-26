@@ -7,8 +7,7 @@ function runJob(idFile){
         type: "POST",
         success: function(job) {        	
         	refreshJobsTable();
-        	refreshFilesTree();
-     
+        	//refreshFilesTree();    
         	updateJob(job['id']);       	
         },
         error: function(error) {
