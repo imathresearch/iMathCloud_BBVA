@@ -250,6 +250,7 @@ var filesId = new Array();
 var plotMap = new Object();			// The mapping between DOM id and csvplot object...
 var descStatisticsMap = new Object(); // The mapping between DOM id and descStatisticsPlot object
 
+var itemToCopy;				// Item's Id (either file or directory) already copied and to be pasted though the contextual menu.
 
 /**
  * The function that requests a session for the user and initializes the math console 

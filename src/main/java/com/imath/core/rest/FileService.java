@@ -149,6 +149,31 @@ public class FileService {
         //return new Long(1);
         return builder.build();
     }
+
+
+	@POST
+	@Path("pasteItem/{userName}/{action}/{origin}/{destiny}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response REST_pasteItem(@PathParam("userName") String userName, 
+				@PathParam("action") String action,
+				@PathParam("origin") Long origin,
+				@PathParam("destiny") Long destiny,
+				@Context SecurityContext sc) {
+
+        // TODO: Handle Response object properly.
+        Response.ResponseBuilder builder = null;
+		try {
+			SecurityManager.secureBasic(userName, sc);
+			fc.pasteItem(userName, action, origin, destiny);	
+		} catch (Exception e) {
+            e.printStackTrace();
+			LOG.severe("Error for action " + action + " of item " + origin + " to " + destiny + " from user: "+userName + " - " + e.getMessage());
+			throw new WebApplicationException(Response.Status.BAD_REQUEST); 
+		}
+
+        builder = Response.ok();
+        return builder.build();
+	}
    
 	
 	@GET
