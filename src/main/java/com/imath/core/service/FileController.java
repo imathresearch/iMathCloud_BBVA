@@ -5,6 +5,7 @@
 package com.imath.core.service;
 
 import java.util.Arrays;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -27,6 +28,7 @@ import com.imath.core.model.IMR_User;
 import com.imath.core.model.Job;
 import com.imath.core.util.Constants;
 import com.imath.core.util.FileUtils;
+import com.imath.core.util.FileUtils.CopyDirVisitor;
 import com.imath.core.util.PublicResponse;
 import com.imath.core.data.MainServiceDB;
 import com.imath.core.exception.IMathException;
@@ -37,6 +39,7 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.net.URI;
+import java.nio.file.FileVisitOption;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -834,12 +837,16 @@ public class FileController extends AbstractController {
                     
                     java.nio.file.Path originPath = java.nio.file.Paths.get(originFile.getPath());
                     java.nio.file.Path destinyPath = java.nio.file.Paths.get(destinyDir.getPath() +"/"+ fileName);
-                    if ("dir".equals(originFile.getIMR_Type())) {
-                        java.io.File oFile = new java.io.File(originPath.toString());
-                        java.io.File dFile = new java.io.File(destinyPath.toString());
-                        org.apache.commons.io.FileUtils.copyDirectory(oFile, dFile);
+                    if ("dir".equals(originFile.getIMR_Type())) {                      
+                    	//java.io.File oFile = new java.io.File(originPath.toString());
+                        //java.io.File dFile = new java.io.File(destinyPath.toString());
+                        //org.apache.commons.io.FileUtils.copyDirectory(oFile, dFile);                        
+                        CopyDirVisitor dirVisitor = new CopyDirVisitor(originPath, destinyPath);
+                        Files.walkFileTree(originPath, EnumSet.of(FileVisitOption.FOLLOW_LINKS), Integer.MAX_VALUE,
+           				     dirVisitor);
+                        
                     } else {
-                        java.nio.file.Files.copy(originPath, destinyPath);
+                        java.nio.file.Files.copy(originPath, destinyPath, java.nio.file.StandardCopyOption.COPY_ATTRIBUTES);
                     }
                 }
                 idOnDestiny = 5L;

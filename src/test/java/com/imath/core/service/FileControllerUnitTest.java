@@ -1723,7 +1723,7 @@ public class FileControllerUnitTest {
         }
     }
 
-    @Test
+    /*@Test
     public void pasteItem_copyDirToDestiny(){
 
 
@@ -1807,7 +1807,7 @@ public class FileControllerUnitTest {
 
         }
 
-    }
+    }*/
 
     private File createFileToTest(Long id, String name, String type, String uri) {
         File file = new File();

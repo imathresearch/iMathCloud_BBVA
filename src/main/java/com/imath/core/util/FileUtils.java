@@ -8,7 +8,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URL;
+import java.nio.file.FileAlreadyExistsException;
+import java.nio.file.FileVisitResult;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.SimpleFileVisitor;
+import java.nio.file.StandardCopyOption;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -519,4 +526,36 @@ public class FileUtils {
         }
         
     }
+    
+    public static class CopyDirVisitor extends SimpleFileVisitor<Path> {
+	    private Path fromPath;
+	    private Path toPath;
+	    private StandardCopyOption copyOption = java.nio.file.StandardCopyOption.COPY_ATTRIBUTES;
+	    
+	    public CopyDirVisitor(Path from, Path to){
+	    	this.fromPath = from;
+	    	this.toPath = to;	    	
+	    }
+	    
+	    @Override
+	    public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
+	    	Path target = toPath.resolve(fromPath.relativize(dir));
+            try {
+            	System.out.println("s" + dir.toString());
+            	System.out.println("d" + target.toString());
+                Files.copy(dir, target, copyOption);
+            } catch (FileAlreadyExistsException e) {
+                 if (!Files.isDirectory(target))
+                     throw e;
+            }
+            return FileVisitResult.CONTINUE;
+	        		    		        
+	    }
+
+	    @Override
+	    public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+	        Files.copy(file, toPath.resolve(fromPath.relativize(file)), copyOption);
+	        return FileVisitResult.CONTINUE;
+	    }
+	}
 }
