@@ -208,6 +208,10 @@ function generateToolBarFile(idFile) {
 		var str = cmI.getValue();
 		executeInConsole(str);
 	});
+	
+	$("#executeJobFileButton_"+idFile).click(function() { 				
+		runJob(idFile);
+	});
 }
 
 function generateEastButtons(divId, functions) {
