@@ -80,24 +80,28 @@ function executeMenuJob(key, jobId) {
 function genContextMenu(type, shareZone, sharingState, isRoot) {
 	// shareZone= 0-> own files. shareZone=1-> other users files. 
 	// sharingState = {'YES' | 'NO'}
-	var stdFileOperations = '';
-	stdFileOperations +=' "download": {"name": "Download as zip", "icon": "ui-icon-play"},';
+	var stdFileOperations = '';	
 	stdFileOperations +=' "rename": {"name": "Rename", "icon": "ui-icon-play"},';
-	stdFileOperations +=' "copy": {"name": "Copy", "icon": "ui-icon-play"},';
 	stdFileOperations +=' "delete": {"name": "Delete", "icon": "ui-icon-play"},';
+	stdFileOperations +=' "copy": {"name": "Copy", "icon": "ui-icon-play"},';
+	//stdFileOperations +=' "download": {"name": "Download as zip", "icon": "ui-icon-play"},';
+	
 	
 	var stdDirOperations = "";
-	stdDirOperations += '"newDirectory": {"name": "New directory", "icon": "ui-icon-play"},';
-	stdDirOperations +=' "newFile": {"name": "New file", "icon": "ui-icon-play"},';
 	stdDirOperations +=' "copy": {"name": "Copy", "icon": "ui-icon-play"},';
 	stdDirOperations +=' "paste": {"name": "Paste", "icon": "ui-icon-play"},';
-	stdDirOperations +=' "addFiles": {"name": "Upload files", "icon": "ui-icon-play"}}';
+	stdDirOperations += ' "sep1": "---------", ';
+	stdDirOperations += '"newDirectory": {"name": "New directory", "icon": "ui-icon-play"},';
+	stdDirOperations +=' "newFile": {"name": "New file", "icon": "ui-icon-play"},';
+	stdDirOperations += ' "sep2": "---------", ';	
+	stdDirOperations +=' "addFiles": {"name": "Upload files", "icon": "ui-icon-play"},';
 	
 	var out;
 	switch(type) {
 		case "csv":
 			out = '{ "edit": {"name": "Edit", "icon": "edit"}, ';
 			out += stdFileOperations;
+			out += ' "download": {"name": "Download as zip", "icon": "ui-icon-play"},';
 			out += '"plot": {';
 			out += '    "name": "Plot",'; 
 			out += '	"items": {';
@@ -112,6 +116,7 @@ function genContextMenu(type, shareZone, sharingState, isRoot) {
 		case "r":
 			out = '{ "edit": {"name": "Edit", "icon": "edit"}, ';
 			out += stdFileOperations;
+			out += ' "download": {"name": "Download as zip", "icon": "ui-icon-play"},';
 			out +=' "sep1": "---------", ';
 		    out +=' "con": {"name": "Run on Console", "icon": "ui-icon-circle-triangle-e"},';
 		    out +=' "job": {"name": "Run as Job", "icon": "ui-icon-play"} }';
@@ -119,6 +124,7 @@ function genContextMenu(type, shareZone, sharingState, isRoot) {
 		case "svg":
 			out = '{ "descstats": {"name": "Plot", "icon": "ui-icon-image"},';
 			out += stdFileOperations;
+			out += ' "download": {"name": "Download as zip", "icon": "ui-icon-play"},';
 			break;
 		case "dir":
 			if (shareZone==0 && sharingState == 'NO') {
@@ -126,12 +132,14 @@ function genContextMenu(type, shareZone, sharingState, isRoot) {
 				//out +=' "sep1": "---------", ';
 				out = '{';
 				if(isRoot){
-					out +=' "download": {"name": "Download as zip", "icon": "ui-icon-play"},';
-					out += stdDirOperations;			
+					out += stdDirOperations;
+					out +=' "download": {"name": "Download as zip", "icon": "ui-icon-play"}}';
+								
 				}
 				else{
 					out += stdFileOperations;
 					out += stdDirOperations;
+					out +=' "download": {"name": "Download as zip", "icon": "ui-icon-play"}}';
 									
 				}
 			} else if(shareZone==0 && sharingState == 'YES') {
@@ -143,15 +151,18 @@ function genContextMenu(type, shareZone, sharingState, isRoot) {
 				out +=' "sep2": "---------", ';
 				out += stdFileOperations;
 				out += stdDirOperations;
+				out +=' "download": {"name": "Download as zip", "icon": "ui-icon-play"}}';
 			} else if(shareZone == 1) {
 				out = '{ "shareopt": {"name": "Sharing Options", "icon": "ui-icon-image"}}';
 			}
 			break;
 		default:
-			out = '{ "edit": {"name": "Edit", "icon": "edit"}, ';
-			out +=' "download": {"name": "Download as zip", "icon": "ui-icon-play"},';
+			out = '{ "edit": {"name": "Edit", "icon": "edit"}, ';			
 			out +=' "rename": {"name": "Rename", "icon": "ui-icon-play"},';
-			out +=' "delete": {"name": "Delete", "icon": "ui-icon-play"}}';
+			out +=' "delete": {"name": "Delete", "icon": "ui-icon-play"},';
+			out +=' "copy": {"name": "Copy", "icon": "ui-icon-play"},';			
+			out +=' "download": {"name": "Download as zip", "icon": "ui-icon-play"}}';
+			
 	} 
     return JSON.parse(out);
 }
