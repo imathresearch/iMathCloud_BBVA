@@ -1765,10 +1765,7 @@ public class FileControllerUnitTest {
             origDir2 = this.createFileToTest(origDir2Id, origDir2Name, "dir", origDir.getUrl());
             origFile2 = this.createFileToTest(origFile2Id, origFile2Name, "py", origDir2.getUrl());
             destDir = this.createFileToTest(destDirId, destDirName, "dir", domain + rootDir);
-            
-            System.out.println("st " + origDir.getPath());
-            System.out.println("dt " + destDir.getPath());
-            System.out.println("st2 " + origDir2.getPath());
+                      
 
             // ACTION: Copying a dir into a folder
             when(db.getFileDB().findByIdSecured(origDirId, userAuth)).thenReturn(origDir);
@@ -1822,20 +1819,18 @@ public class FileControllerUnitTest {
             fail();
         } finally {
             //remove tmp dirs
-            /*try {
+            try {
                 org.apache.commons.io.FileUtils.deleteDirectory(new java.io.File(rootDir));
             } catch (IOException e) {
                 e.printStackTrace();
-            }*/
+            }
 
         }
 
     }
 
     private File createFileToTest(Long id, String name, String type, String uri) {
-    	
-    	System.out.println("uri " + uri);
-    	
+    	    	
         File file = new File();
         file.setIMR_Type(type);
         file.setId(id);
