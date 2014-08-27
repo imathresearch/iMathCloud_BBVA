@@ -1723,7 +1723,7 @@ public class FileControllerUnitTest {
         }
     }
 
-    /*@Test
+    @Test
     public void pasteItem_copyDirToDestiny(){
 
 
@@ -1765,6 +1765,10 @@ public class FileControllerUnitTest {
             origDir2 = this.createFileToTest(origDir2Id, origDir2Name, "dir", origDir.getUrl());
             origFile2 = this.createFileToTest(origFile2Id, origFile2Name, "py", origDir2.getUrl());
             destDir = this.createFileToTest(destDirId, destDirName, "dir", domain + rootDir);
+            
+            System.out.println("st " + origDir.getPath());
+            System.out.println("dt " + destDir.getPath());
+            System.out.println("st2 " + origDir2.getPath());
 
             // ACTION: Copying a dir into a folder
             when(db.getFileDB().findByIdSecured(origDirId, userAuth)).thenReturn(origDir);
@@ -1791,7 +1795,26 @@ public class FileControllerUnitTest {
             java.io.File dirNew = new java.io.File(destDir.getPath() + "/" + origDirNewName);
             assertTrue(dirNew.exists());
             java.io.File dir2New = new java.io.File(destDir.getPath() + "/" + origDirNewName + "/" + origDir2.getName() );
-            assertTrue(dir2.exists());
+            assertTrue(dir2New.exists());
+            
+            
+            Long destDir2Id = 6L;
+            File destDir2 = this.createFileToTest(destDir2Id, origDir2Name, "dir", domain + destDir.getPath() + "/" + origDir.getName() + "/" + origDir2.getName());           
+            
+            // ACTION: Copying a dir into a folder which is a child of this dir (RECURSIVE COPY, ERROR)
+            // orig -> /tmp/iMathCloudTests/destPath
+            // dest -> /tmp/iMathCloudTests/destPath/origPath/origPath2
+            when(db.getFileDB().findByIdSecured(destDir2Id, userAuth)).thenReturn(destDir2);
+            when(db.getFileDB().findByIdSecured(destDirId, userAuth)).thenReturn(destDir);
+            
+            fileController.pasteItem(userAuth, "copy", destDirId, destDir2Id);
+            
+            // Check that the dir was not created.
+            java.io.File dirError = new java.io.File(destDir.getPath() + "/" + origDir.getName() + "/" + origDir2.getName() + "/" + destDir.getName());
+            System.out.println("direrror " + dirError.getPath() + " " + dirError.exists());
+            assertTrue(!dirError.exists());
+            
+            
         } catch (IMathException e) {
             fail(e.getMessage());
         } catch (Exception e) {
@@ -1799,17 +1822,20 @@ public class FileControllerUnitTest {
             fail();
         } finally {
             //remove tmp dirs
-            try {
+            /*try {
                 org.apache.commons.io.FileUtils.deleteDirectory(new java.io.File(rootDir));
             } catch (IOException e) {
                 e.printStackTrace();
-            }
+            }*/
 
         }
 
-    }*/
+    }
 
     private File createFileToTest(Long id, String name, String type, String uri) {
+    	
+    	System.out.println("uri " + uri);
+    	
         File file = new File();
         file.setIMR_Type(type);
         file.setId(id);

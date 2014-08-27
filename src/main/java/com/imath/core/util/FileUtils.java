@@ -540,16 +540,17 @@ public class FileUtils {
 	    @Override
 	    public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
 	    	Path target = toPath.resolve(fromPath.relativize(dir));
-            try {
-            	System.out.println("s" + dir.toString());
-            	System.out.println("d" + target.toString());
-                Files.copy(dir, target, copyOption);
-            } catch (FileAlreadyExistsException e) {
-                 if (!Files.isDirectory(target))
-                     throw e;
-            }
-            return FileVisitResult.CONTINUE;
-	        		    		        
+	    	if(!target.startsWith(dir)){
+	            try {
+	                Files.copy(dir, target, copyOption);
+	            } catch (FileAlreadyExistsException e) {
+	                 if (!Files.isDirectory(target))
+	                     throw e;
+	            }
+            	return FileVisitResult.CONTINUE;
+	    	}	    	
+	    	return FileVisitResult.TERMINATE;
+	    	
 	    }
 
 	    @Override
