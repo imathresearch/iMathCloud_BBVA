@@ -25,11 +25,17 @@ function fillRemoteFiles(files, treeView, shareZone) {
 		}
 		else {
 			// The case we find a regular file
-			if (file['type'] == 'py') {
-				aux = "<li><span class='file_py'>";
-			} else {
-				aux = "<li><span class='file'>";
+			switch(file['type']) {
+				case 'py':
+					aux = "<li><span class='file_py'>";
+					break;
+				case 'ipynb':
+					aux = "<li><span class='file_ipynb'>";
+					break;
+				default:
+					aux = "<li><span class='file'>";
 			}
+						
 			aux = aux + "<a id = '" + genIdFileContextMenu(file['id'], file['name']) + "' class='" + genClassFileContextMenu(file['id']) + "' href='#'>" +file['name']+ "</a>";
 			aux = aux + "</span></li>";
 		}

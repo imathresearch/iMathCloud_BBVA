@@ -68,7 +68,7 @@
 }
 
 .filetree li { padding: 3px 0 2px 16px; }
-.filetree span.folder_blue, .filetree span.folder, .filetree span.folder_shared, .filetree span.file, .filetree span.file_py { padding: 1px 0 1px 16px; display: block; }
+.filetree span.folder_blue, .filetree span.folder, .filetree span.folder_shared, .filetree span.file, .filetree span.file_py, .filetree span.file_ipynb { padding: 1px 0 1px 16px; display: block; }
 .filetree span.folder { background: url(images/folder.gif) 0 0 no-repeat; }
 .filetree span.folder_blue { background: url(images/folder-blue.ico) 0 0 no-repeat; }
 .filetree span.folder_shared { background: url(images/folder-shared.png) 0 0 no-repeat; }
@@ -80,3 +80,4 @@
 
 .filetree span.file { background: url(images/file.gif) 0 0 no-repeat; }
 .filetree span.file_py { background: url(images/python-icon.png) 0 0 no-repeat; }
+.filetree span.file_ipynb { background: url(images/ipynb_icon.png) 0 0 no-repeat; }
