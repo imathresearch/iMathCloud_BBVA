@@ -158,7 +158,6 @@ public class JobController extends AbstractController{
     @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
     public void reportJobFinalization(Long idJob, States state, String json) throws Exception {
     	
-    	
     	//System.out.println("reportJobFinalization JSON: " + json);
     	MyMap <String,List<List<String>>> mm = new MyMap<String, List<List<String>>>();   	
     	mm.jsonToMap(json);

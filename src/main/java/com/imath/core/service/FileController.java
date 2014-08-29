@@ -47,7 +47,10 @@ import java.nio.charset.Charset;
 import java.net.URL;
 import java.util.logging.Logger;
 
+import javax.persistence.EntityExistsException;
 import javax.persistence.EntityTransaction;
+
+import org.hibernate.exception.ConstraintViolationException;
 
 
 /**
@@ -187,17 +190,19 @@ public class FileController extends AbstractController {
 	 * We suposse that the file and the dir belong to the same user
      */
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
-    public boolean checkIfFileExistInDirectory(String filename, File dir) throws Exception {  	
+    public synchronized File checkIfFileExistInDirectory(String filename, File dir) throws Exception {  	  	
     	
     	//We have to check if the file already exist in the DB inside directory dir
-    	List<File> list_files = db.getFileDB().findAllByName(filename, dir.getOwner().getUserName());    	
+    	List<File> list_files = db.getFileDB().findAllByName(filename, dir.getOwner().getUserName());
+    	    	
     	for (File f : list_files){
     		// The file already exists in the DB    		
-    		if (f.getDir().getId() == dir.getId()){   			
-    			return true;
+    		if (f.getDir().getId() == dir.getId()){
+    			return f;
     		}
     	}        	
-    	return false;   	
+    	
+    	return null;   	
     }
     
     /**
@@ -250,8 +255,8 @@ public class FileController extends AbstractController {
      * @throws Exception 
      */
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
-    public File createNewFileInDirectory(File dir, String filename, String imrType) throws Exception {
-    	
+    public synchronized File createNewFileInDirectory(File dir, String filename, String imrType) throws Exception {
+    	    	
     	File file = new File();
     	file.setDir(dir);
     	file.setIMR_Type(imrType);
@@ -262,12 +267,28 @@ public class FileController extends AbstractController {
     		file.setSharingState(File.Sharing.NO);
     	}
     	
-    	if (!checkIfFileExistInDirectory(filename, dir)){
+    	File f = checkIfFileExistInDirectory(filename, dir);
+    	if (f == null){
     		//the file does not exist
-    		db.makePersistent(file);
+    		try{    			
+    			db.makePersistent(file);  
+    			return file;
+    		}
+    		catch(Exception e){
+    			if(e.getCause() instanceof org.hibernate.exception.ConstraintViolationException){
+    			// if the file was created by other transaction, the file exists in DB but it is not seen by the current transaction
+    			// Therefore, an exception occurs when trying to insert twice the same file
+    			// We return the same file
+    				System.out.println("The file exists, and was created by other transaction");
+    				return file;
+    			}
+    			else{
+    				throw e;   				
+    			}
+    		}    		
     	}
     	
-    	return file;
+    	return f;
     	
     }
     
@@ -350,12 +371,15 @@ public class FileController extends AbstractController {
         file.setName(fileName);
         file.setUrl(rootFile.getUrl()+"/"+fileName);
         
-        if (!checkIfFileExistInDirectory(fileName, rootFile)){
+        File f = checkIfFileExistInDirectory(fileName, rootFile);
+        
+        if (f == null){
     		//the file does not exist
     		db.makePersistent(file);
+    		return file;
     	}
     	
-    	return file;
+    	return f;
               
     }
     
@@ -552,7 +576,6 @@ public class FileController extends AbstractController {
     		Set<File> setFiles = this.getFilesFromString(list_idFiles, sc);   	
     		List<File> listFiles = new ArrayList<File>(setFiles);
     	
-    		System.out.println("before trahslistFiles");
     		//List<String> list_trashLocation = fileUtils.trashListFiles(listFiles);
     		boolean recover = false;
     		List<String> list_trashLocation = new ArrayList<String>();
@@ -658,7 +681,8 @@ public class FileController extends AbstractController {
   
     		//We have to check if a file exists in the parent directory of the file to rename
     		//with the new name
-    		if(!checkIfFileExistInDirectory(newName, parentDir)){
+    		
+    		if(checkIfFileExistInDirectory(newName, parentDir) == null){
     			//Getting the new url
     			String old_name = file_to_rename.getName();
 				String oldUrl = file_to_rename.getUrl();  		
@@ -729,7 +753,7 @@ public class FileController extends AbstractController {
     	if(file_parentDir != null){ 		   	
     		//We have to check if a file/directory exists with the name of the 
     		//directory to be created in the parent directory 
-    		if(!checkIfFileExistInDirectory(dirName, file_parentDir)){			
+    		if(checkIfFileExistInDirectory(dirName, file_parentDir) == null){			
     			String url_newDirectory = file_parentDir.getUrl() + "/" + dirName;
     			//Physically create the directory
     			if(fileUtils.createDirectory(url_newDirectory)){
@@ -772,7 +796,7 @@ public class FileController extends AbstractController {
     	if(file_parentDir != null){ 		   	
     		//We have to check if a file/directory exists with the name of the 
     		//directory to be created in the parent directory 
-    		if(!checkIfFileExistInDirectory(name, file_parentDir)){			
+    		if(checkIfFileExistInDirectory(name, file_parentDir) == null){			
     			//Physically create the file
     			String typeFile = fileUtils.createFile(file_parentDir.getUrl(), name, type);
     			if(typeFile != null){
@@ -941,7 +965,28 @@ public class FileController extends AbstractController {
         if (!auxMap.containsKey(pathParent)) {
             addNewFile(auxMap, dirTree, parent, user);
         }
-        File newFile= new File();
+        
+        File parentFile = auxMap.get(pathParent);
+        String imrType = "";
+        if(realFile.isDirectory()) {
+        	imrType = "dir";
+        } else {
+            String []div = realFile.getName().split("\\.");
+            if(div.length>1) {
+            	imrType = div[div.length-1];
+            }
+        }
+        
+        System.out.println("addNewFile");
+        File newFile = createNewFileInDirectory(parentFile, realFile.getName(), imrType);
+        
+        URI u = URI.create(newFile.getUrl());
+        String newPath = u.getPath();
+        auxMap.put(newPath, newFile);
+        	        	               
+        
+        
+        /*File newFile= new File();
         File parentFile = auxMap.get(pathParent);
         newFile.setDir(parentFile);
         newFile.setIMR_Type("");
@@ -958,13 +1003,16 @@ public class FileController extends AbstractController {
         newFile.setSharingState(Sharing.NO);
         newFile.setUrl(parentFile.getUrl()+"/" + newFile.getName());
         
-        if(!checkIfFileExistInDirectory(realFile.getName(), parentFile)){
+        System.out.println("addNewFile");
+        
+        File f = checkIfFileExistInDirectory(realFile.getName(), parentFile);
+        if(f == null){
         	em.persist(newFile);
         }
         
         URI u = URI.create(newFile.getUrl());
         String newPath = u.getPath();
-        auxMap.put(newPath, newFile);
+        auxMap.put(newPath, newFile);*/
     }
     
     private void saveFile(String serName, String uri, List<String> content) throws Exception {

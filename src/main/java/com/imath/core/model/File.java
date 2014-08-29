@@ -23,6 +23,8 @@ public class File implements Serializable, SecurityOwner {
 	@GeneratedValue
 	private Long id;
 	private String name;
+	
+	@Column(unique=true)
 	private String url;
 	
 	@Column(name="imr_type")

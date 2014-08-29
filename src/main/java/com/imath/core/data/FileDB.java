@@ -5,13 +5,13 @@ package com.imath.core.data;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-
 import java.util.Iterator;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.persistence.LockModeType;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
