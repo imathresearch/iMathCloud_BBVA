@@ -206,7 +206,8 @@ function generateToolBarFile(idFile) {
 		var cmI = getCodeMirrorInstance(idFile);
 		cmI.save();
 		var str = cmI.getValue();
-		executeInConsole(str);
+		var idConsole = getActiveConsole();
+		executeInConsole(str, idConsole);
 	});
 	
 	$("#executeJobFileButton_"+idFile).click(function() { 				

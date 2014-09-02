@@ -17,6 +17,9 @@ public class Console {
         // if for whatever reasion the console is alreay up and in the same port, we do not launch it again!
         boolean start=true;
         try {
+        	
+        	System.out.println("startConsole URL " + Constants.IMATH_HTTP + host+":"+ port);
+        	
             URL url = new URL(Constants.IMATH_HTTP + host+":"+ port);
             HttpURLConnection huc =  (HttpURLConnection) url.openConnection();
             //URLConnection urlConn = url.openConnection();

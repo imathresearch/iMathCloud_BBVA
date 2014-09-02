@@ -977,7 +977,6 @@ public class FileController extends AbstractController {
             }
         }
         
-        System.out.println("addNewFile");
         File newFile = createNewFileInDirectory(parentFile, realFile.getName(), imrType);
         
         URI u = URI.create(newFile.getUrl());

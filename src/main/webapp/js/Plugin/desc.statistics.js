@@ -134,7 +134,7 @@ function descStatisticsPlot(idDescStatistics, files, idJob) {
 	};
 	
 	function plot() {
-		var u = document.getElementById('tabs');
+		var u = document.getElementById('tabsFile');
 		var he = u.offsetHeight;
 		var wi = u.offsetWidth;
 		he = Math.round(he - he*0.6);

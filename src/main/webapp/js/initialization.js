@@ -1,8 +1,8 @@
 $(document).ready( function() {
 		layout = $("body").layout({
-			west__size:			'25%'
-		,	east__size:			'19%'
-		,	center__minWidth:	'56%'
+			west__size:			'20%'
+		,	east__size:			'40%'
+		,	center__minWidth:	'40%'
 		,	spacing_closed:		16
 		,	initClosed:			false
 		,	maskContents:		true // IMPORTANT - enable iframe masking - all panes in this case
@@ -24,8 +24,9 @@ $(document).ready( function() {
 //			  ui.newPanel; // jQuery object, activated content
 //			  ui.oldPanel; // jQuery object, previous content
 //			});
-		layout.close("east");	// We close the east panel since it is not functional now.
-		$( "#tabs" ).tabs();
+		//layout.close("east");	// We close the east panel since it is not functional now.
+		$( "#tabsFile" ).tabs();
+		$( "#tabsConsole" ).tabs();
 		$( "#menu_west1" ).accordion({
         	collapsible: true, active: 0, heightStyle: "fill",  animate: { duration: 100},
         	activate: function(event, ui) { manageWestAccordion(); }
@@ -137,11 +138,16 @@ $(document).ready( function() {
     	$("#refreshJobButton").click(function() { 
     		refreshJobsTable();
     	});
+    	
     	$("#refreshTreeButton").click(function() { 
     		refreshFilesTree();
     	});
     	
-    	$( "#tabs" ).tabs().delegate( "span.ui-icon-close", "click", function() {
+    	$("#newNotebookButton").click(function() { 
+    		newConsole();
+    	});
+    	
+    	$( "#tabsFile" ).tabs().delegate( "span.ui-icon-close", "click", function() {
     		var panelId = $( this ).closest( "li" ).remove().attr( "aria-controls" );
     		var id = $( "#" + panelId ).remove().attr("id");
     		if (id.substring(0,4)==='plot') {
@@ -150,10 +156,10 @@ $(document).ready( function() {
 			else {
 				closeOpenFile(getIdFromTabName(id));
 			}
-    		$( "#tabs" ).tabs().tabs( "refresh" );
+    		$( "#tabsFile" ).tabs().tabs( "refresh" );
     	});
     	
-    	$( "#tabs" ).tabs().bind( "keyup", function( event ) {
+    	$( "#tabsFile" ).tabs().bind( "keyup", function( event ) {
     		if ( event.altKey && event.keyCode === $.ui.keyCode.BACKSPACE ) {
     			var panelId = tabs.find( ".ui-tabs-active" ).remove().attr( "aria-controls" );
     			var id = $( "#" + panelId ).remove().attr("id");
@@ -164,9 +170,32 @@ $(document).ready( function() {
     				closeOpenFile(getIdFromTabName(id));
     			}
         		
-    			$( "#tabs" ).tabs().tabs( "refresh" );
+    			$( "#tabsFile" ).tabs().tabs( "refresh" );
     		}
     	});
+    	
+    	$( "#tabsConsole" ).tabs().delegate( "span.ui-icon-close", "click", function() {
+    		var panelId = $( this ).closest( "li" ).remove().attr( "aria-controls" );
+    		var id = $( "#" + panelId ).remove().attr("id"); 
+    		console.log("TAB TO DELETE");
+    		console.log(id);
+			closeOpenConsole(getIdFromConsoleTabName(id));			
+    		$( "#tabsConsole" ).tabs().tabs( "refresh" );
+    	});
+    	
+    	$( "#tabsConsole" ).tabs().bind( "keyup", function( event ) {
+    		if ( event.altKey && event.keyCode === $.ui.keyCode.BACKSPACE ) {
+    			var panelId = tabs.find( ".ui-tabs-active" ).remove().attr( "aria-controls" );
+    			var id = $( "#" + panelId ).remove().attr("id"); 
+    			onsole.log("TAB TO DELETE");
+        		console.log(id);
+    			closeOpenConsole(getIdFromConsoleTabName(id));    			        	
+    			$( "#tabsConsole" ).tabs().tabs( "refresh" );
+    		}
+    	});
+    	
+    	
+    	
     	
     	$.tablesorter.addParser({
     	    id: "orderdate",
@@ -252,6 +281,11 @@ var descStatisticsMap = new Object(); // The mapping between DOM id and descStat
 
 var itemToCopy;				// Item's Id (either file or directory) already copied and to be pasted though the contextual menu.
 
+var globalTabCountConsole = 0; 		// The global counting tab for indexing consoles
+var globalIdConsole = 0; 			// The id associated to a new console, it must be incremented
+var consolesIdOpenTabIndex = new Array();
+var openConsoles = new Array();
+
 /**
  * The function that requests a session for the user and initializes the math console 
  * and the initial load.
@@ -263,7 +297,7 @@ function requestSession() {
         dataType: "json",
         type: "GET",
         success: function(host) {
-        	conectToConsole(host);
+        	conectToDefaultConsole(host);
         },
         error: function(error) {
             console.log("error updating table -" + error.status);
@@ -274,7 +308,7 @@ function requestSession() {
 // keeps trying to connect to the console every second.
 // When it gets it, stops the deamon.
 // this is done because the console may take some time to start!
-function conectToConsole(host) {
+function conectToDefaultConsole(host) {
 	window.hostGlobal=host;
 }
 var id = setInterval(function() {
@@ -283,15 +317,21 @@ var id = setInterval(function() {
 		urlConsole = 'http://'+host['url']+':' + host['port'];
 		if (isReady(host['url'], host['port'])) {
 			clearInterval(id);
-			$( "#interactive_math" ).attr('src',urlConsole +'/new');
-	    	var u = document.getElementById('tabs');
+			console.log("urlConsole");
+			console.log(urlConsole);
+			$( "#interactive_math-0" ).attr('src',urlConsole +'/new');
+	    	var u = document.getElementById('tabsConsole');
 	    	var he = u.offsetHeight;
-	    	$( "#interactive_math" ).height(he-70);
-	    	mathLanguageCode = host['mathLanguage']['consoleCode'];
+	    	$( "#interactive_math-0" ).height(he-70);
+	    	mathLanguageCode = host['mathLanguage']['consoleCode'];	    	
 			getUserMathFunctions();
-			$('iframe#interactive_math').load(function() {
+			consolesIdOpenTabIndex[globalIdConsole] = globalTabCountConsole;
+			globalIdConsole++;
+			globalTabCountConsole++;
+			$('iframe#interactive_math-0').load(function() {
 				var env_var = "/iMathCloud/" + userName;
-				setEnvironmentVariable(env_var);
+				setEnvironmentVariable(env_var, 0);
+				setDefaultLanguage(mathLanguageCode, 0);
 			});
 		}
 	}
@@ -320,7 +360,7 @@ function manageWestAccordion() {
 	
 	var activeJobs = $( "#menu_west3" ).accordion( "option", "active" );
 	var activeFiles = $( "#menu_west1" ).accordion( "option", "active" );
-	var u = document.getElementById('tabs');
+	var u = document.getElementById('tabsFile');
 	var he = u.offsetHeight;
 	
 	if (activeJobs===0 && activeFiles === false) {

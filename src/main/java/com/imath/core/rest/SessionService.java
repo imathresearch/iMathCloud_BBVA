@@ -86,7 +86,7 @@ public class SessionService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response REST_isConsoleReady(@PathParam("host") String host, @PathParam("port") String port) {
 	    String urlString = "http://" + host + ":" + port;
-	    System.out.println(urlString);
+	    System.out.println("REST_isConsoleReady url " + urlString);
         try {
             URL url = new URL(urlString);
             URLConnection urlConn = url.openConnection();

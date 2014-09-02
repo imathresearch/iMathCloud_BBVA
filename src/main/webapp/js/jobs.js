@@ -35,7 +35,7 @@ function getJobs(b) {
 			if (b) {
 				$( "#jobsXML" ).footable();
 			}
-			setDefaultLanguage(mathLanguageCode);
+			//setDefaultLanguage(mathLanguageCode);
         },
         error: function(error) {
             console.log("error loading files - " + error.status);
@@ -351,7 +351,7 @@ function plotStatDescriptiveInTab(files,idJob) {
 	var id = nameTab;
 	var li = $( tabTemplate.replace( /#\{href\}/g, "#" + id ).replace( /#\{label\}/g, label ) );
 	 
-	var tabs = $( "#tabs" ).tabs();
+	var tabs = $( "#tabsFile" ).tabs();
 	tabs.find( ".ui-tabs-nav" ).append( li );
 
 	tabs.append( "<div id='" + id + "' style='position: relative; width: 100%; height:100%; padding: 0; overflow : auto;'></div>" );
@@ -364,7 +364,7 @@ function plotStatDescriptiveInTab(files,idJob) {
 	
 	globalTabCounting++;
 	//addTabInstancePlot(data['id'],globalTabCounting);
-	$( "#tabs" ).tabs("option", "active", globalTabCounting);
+	$( "#tabsFile" ).tabs("option", "active", globalTabCounting);
 	tabs.tabs( "refresh" );
 }
 

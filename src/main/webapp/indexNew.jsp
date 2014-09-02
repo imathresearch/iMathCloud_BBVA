@@ -160,6 +160,17 @@
 		    float: left;
     		display: block;
 		}
+		
+		/*Background image for the editor*/
+		.bg-image {			
+			background: #fcfdfd url(css/images/bg.png) 50% 50% no-repeat;
+		}
+		
+		/*Background white for each tab of the editor, so the default editor image (above) does not appear*/
+		.ui-tabs .ui-tabs-panel {
+			background: #fcfdfd none;
+		}
+
 	</style>
 	
   </head>
@@ -198,6 +209,7 @@
 					<div id="toolbarFiles" class="ui-widget-header ui-corner-all">
 						<small>
 						<button id="refreshTreeButton">Refresh tree</button>
+						<button id="newNotebookButton" class="ui-widget ui-state-default ui-corner-all">New Notebook</button>
 						<!-- <button id="uploadFileButton">Upload file</button>-->
 						<!-- button id="newDirectoryButton">New directory</button-->
 						<!-- button id="newFileButton">New File</button-->
@@ -255,24 +267,29 @@
 
 <!-- The central panel, which contains tabs, including interactive console-->
 	<div class="ui-layout-center" id="ui-layout-center" style="width: 100%; height:100%;">
-		<div id="tabs" style="position: absolute; width: 100%; height:100%;">
-			<ul>
-				<li><a href="#tabs-1">Interactive Math Console</a></li>
+		<div id="tabsFile" class="bg-image" style="position: absolute; width: 100%; height:100%;">
+			<ul>				
 			</ul>	
-			<div id="tabs-1" style="padding: 0;">
-				<iframe id="interactive_math" class="interactive_math" width="100%" frameborder="0" scrolling="no"></iframe>
-			</div>
+			<!-- > div id="tabsC-0" style="padding: 0;">
+				<iframe id="interactive_math-0" class="interactive_math" width="100%" frameborder="0" scrolling="no"></iframe>
+			</div-->
 		</div>
 	</div>
 
 <!-- The right panel, which contains functionalities. It is empty now-->
 
 	<div class="ui-layout-east" id="ui-layout-east" style="width: 100%; height:100%;">
-		<div id="menu_east1">
-			<h2>Basic Statistics</h2>
-			<div id="basicStatistics" class="ui-corner-all" style="padding: 0;"></div>
+		<div id="tabsConsole" style="position: absolute; width: 100%; height:100%;">
+			<ul>
+				<li><a href="#tabsC-0">Interactive Math Console</a></li>
+			</ul>	
+			<div id="tabsC-0" style="padding: 0;">
+				<iframe id="interactive_math-0" class="interactive_math" width="100%" frameborder="0" scrolling="no"></iframe>
+			</div>
 		</div>
 	</div>
+
+	
 	<!-- The pop up forms -->
 <div id="dialogPopup">
 <div id="contentPopup"></div>

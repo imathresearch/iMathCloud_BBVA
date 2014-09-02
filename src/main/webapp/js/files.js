@@ -937,7 +937,8 @@ function executeFileInConsole(idFile){
 	        	if (fileDTO['type'] == 'r') { 
 	        		executeInConsoleR(code);
 	        	} else {
-	        		executeInConsole(code);
+	        		var idConsole = getActiveConsole();
+	        		executeInConsole(code, idConsole);
 	        	};
 	        },
 	        error: function(error) {
@@ -1102,7 +1103,7 @@ function openCodeFile(data, modeStr) {
 	var id = nameTab;
 	var li = $( tabTemplate.replace( /#\{href\}/g, "#" + id ).replace( /#\{label\}/g, label ) );
 	 
-	var tabs = $( "#tabs" ).tabs();
+	var tabs = $( "#tabsFile" ).tabs();
 	tabs.find( ".ui-tabs-nav" ).append( li );
 	
 	var code="";
@@ -1118,7 +1119,7 @@ function openCodeFile(data, modeStr) {
 	tabs.append( "<div id='" + id + "' style='position: relative; width: 100%; height:100%; padding: 0;'><p>" + htmlButtons + htmlCode + "</p></div>" );
 	generateToolBarFile(data['id']);
 	//var u = document.getElementById("codeDIV_"+nameTab);
-	var u = document.getElementById('tabs');
+	var u = document.getElementById('tabsFile');
 	var he = u.offsetHeight;
 	var x = document.getElementsByName('code_'+nameTab)[0];
 	
@@ -1149,13 +1150,13 @@ function openCodeFile(data, modeStr) {
 	var myCodeMirror = CodeMirror.fromTextArea(x,conf);
 	myCodeMirror.setSize(null,(he-150)+"px");
 	//myCodeMirror.getScrollerElement().style.heigth = he+"px";
-	myCodeMirror.refresh();
-	globalTabCounting++;
+	myCodeMirror.refresh();	
 	addCodeMirrorTabInstance(data['id'],myCodeMirror, globalTabCounting);
+	globalTabCounting++;
 	tabs.tabs( "refresh" );
 	
 	var index = getTabIndex(data['id']);
-	$( "#tabs" ).tabs("option", "active", index );
+	$( "#tabsFile" ).tabs("option", "active", index );
 	tabs.tabs( "refresh" );
 }
 
