@@ -472,6 +472,37 @@ function renameFile(idFile, newName, funcSuccess, funcError) {
 	 }
 }
 
+function renameFileSyn(idFile, newName){
+	
+	var data = new FormData();
+	data.append("idFile", idFile);
+	data.append("newName", newName);
+	
+	var success = false;
+	$.ajax({
+		url : "rest/beta/api/data/rename", // TODO: This URL must be generated instead of hard-coded.
+		cache : false,
+		data : data,
+		dataType : "json",
+		type : "POST",
+		async: false,
+
+		processData : false,
+		contentType : false,
+
+		success: function(data) {    	
+			console.log("on success renameFileSyn");
+	    	success = true;
+	    },
+	    error: function(){
+	    	console.log("on error renameFileSync");    	  
+	    },
+	});
+	
+	return success;
+	
+}
+
 function checkFileName(name){
 	if (name.length == 0 || name.search(/[\/\\\:\*\"\?\>\<\|\ ]/) != -1){
 		return false;
@@ -597,6 +628,26 @@ function getFiles(b) {
             console.log("error loading files - " + error.status);
         }
     });
+}
+
+function getFilesSyn(){
+	
+	var listFiles = null;
+	$.ajax({
+        url: "rest/file_service/getFiles/"+userName,
+        cache: false,
+        dataType: "json",
+        type: "GET",
+        async: false,
+        success: function(files) {
+        	listFiles = files;
+        },
+        error: function(error) {
+            console.log("error loading syn files - " + error.status);
+        }
+    });
+	
+	return listFiles;	
 }
 
 function getSharedFiles() {

@@ -5,7 +5,6 @@ package com.imath.core.rest;
 import javax.ejb.Stateful;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
-
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -29,6 +28,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.List;
 import java.util.logging.Logger;
 
 /**
@@ -100,10 +100,90 @@ public class SessionService {
         }
 	}
 	
+	@GET
+	@Path("/getNotebookList/{host}/{port}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String REST_getNotebookList(@PathParam("host") String host, @PathParam("port") String port){
+		String urlString = "http://" + host + ":" + port + "/notebooks";
+		try {
+            URL url = new URL(urlString);
+            URLConnection urlConn = url.openConnection();
+            urlConn.setUseCaches(false);
+            urlConn.setDoOutput(false);     //Set method to GET
+            urlConn.connect();
+            
+            String result = new String();
+    		BufferedReader rd  = null;
+    	    StringBuilder sb = null;
+    		//read the result from the server
+            rd  = new BufferedReader(new InputStreamReader(urlConn.getInputStream()));
+            sb = new StringBuilder();
+            String line = new String();
+            while ((line = rd.readLine()) != null){
+                  sb.append(line + '\n');
+            }
+            
+            //System.out.println(sb.toString());
+            result = sb.toString();
+            System.out.println("Notebooks result ");
+            System.out.println(result);
+                       
+            
+            return result; //Response.status(Response.Status.OK).build();
+        } catch(Exception e) {
+            e.printStackTrace();
+            return null; //Response.status(Response.Status.BAD_REQUEST).build();
+        }
+	}
+	
+	@GET
+	@Path("/newNotebook/{host}/{port}")
+	@Produces(MediaType.TEXT_PLAIN)
+	public String REST_newNotebook(@PathParam("host") String host, @PathParam("port") String port){
+		String urlString = "http://" + host + ":" + port + "/new";
+		try {
+            URL url = new URL(urlString);
+            URLConnection urlConn = url.openConnection();
+            urlConn.setUseCaches(false);
+            urlConn.setDoOutput(false);     //Set method to GET
+            urlConn.connect();
+            
+            String result = new String();
+    		BufferedReader rd  = null;
+    	    StringBuilder sb = null;
+    		//read the result from the server
+            rd  = new BufferedReader(new InputStreamReader(urlConn.getInputStream()));
+            sb = new StringBuilder();
+            String line = new String();
+            while ((line = rd.readLine()) != null){
+            	if(line.startsWith("<li id=\"print_notebook\">")){
+            		result = line.substring(34,70);
+            		break;
+            	}                
+            }
+            
+            //System.out.println(sb.toString());            
+            System.out.println("New notebook result");
+            System.out.println(result);
+                       
+            
+            return result; //Response.status(Response.Status.OK).build();
+        } catch(Exception e) {
+            e.printStackTrace();
+            return null; //Response.status(Response.Status.BAD_REQUEST).build();
+        }
+	}
+	
 	private class HostDTO {
 		public String url;
 		public MathLanguage mathLanguage;
 		public String port;
 		public HostDTO() {}
+	}
+	
+	private class NotebookDTO{
+		public String id;
+		public String name;
+		public String kernelId;
 	}
 }

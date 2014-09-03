@@ -55,7 +55,9 @@ function executeMenu(key,id, fileName) {
 			//prepareFile(id,key);
 			pasteItem(id);
 			break;
-
+		case "openConsole":
+			openNotebook(id);
+			break;
 		default:
 			submitMathFunction(key,id);
 	}	
@@ -156,6 +158,13 @@ function genContextMenu(type, shareZone, sharingState, isRoot) {
 				out = '{ "shareopt": {"name": "Sharing Options", "icon": "ui-icon-image"}}';
 			}
 			break;
+		case "ipynb":
+			out = '{ "edit": {"name": "Edit", "icon": "edit"}, ';
+			out += stdFileOperations;
+			out += ' "download": {"name": "Download as zip", "icon": "ui-icon-play"},';
+			out +=' "sep1": "---------", ';
+			out += ' "openConsole": {"name": "Open console", "icon": "ui-icon-play"}}';
+			break;			
 		default:
 			out = '{ "edit": {"name": "Edit", "icon": "edit"}, ';			
 			out +=' "rename": {"name": "Rename", "icon": "ui-icon-play"},';

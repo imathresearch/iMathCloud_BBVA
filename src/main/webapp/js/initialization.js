@@ -144,8 +144,9 @@ $(document).ready( function() {
     	});
     	
     	$("#newNotebookButton").click(function() { 
-    		newConsole();
+    		newNotebook();    		
     	});
+    	    	
     	
     	$( "#tabsFile" ).tabs().delegate( "span.ui-icon-close", "click", function() {
     		var panelId = $( this ).closest( "li" ).remove().attr( "aria-controls" );
@@ -176,9 +177,7 @@ $(document).ready( function() {
     	
     	$( "#tabsConsole" ).tabs().delegate( "span.ui-icon-close", "click", function() {
     		var panelId = $( this ).closest( "li" ).remove().attr( "aria-controls" );
-    		var id = $( "#" + panelId ).remove().attr("id"); 
-    		console.log("TAB TO DELETE");
-    		console.log(id);
+    		var id = $( "#" + panelId ).remove().attr("id");    		
 			closeOpenConsole(getIdFromConsoleTabName(id));			
     		$( "#tabsConsole" ).tabs().tabs( "refresh" );
     	});
@@ -186,16 +185,11 @@ $(document).ready( function() {
     	$( "#tabsConsole" ).tabs().bind( "keyup", function( event ) {
     		if ( event.altKey && event.keyCode === $.ui.keyCode.BACKSPACE ) {
     			var panelId = tabs.find( ".ui-tabs-active" ).remove().attr( "aria-controls" );
-    			var id = $( "#" + panelId ).remove().attr("id"); 
-    			onsole.log("TAB TO DELETE");
-        		console.log(id);
+    			var id = $( "#" + panelId ).remove().attr("id");     			
     			closeOpenConsole(getIdFromConsoleTabName(id));    			        	
     			$( "#tabsConsole" ).tabs().tabs( "refresh" );
     		}
-    	});
-    	
-    	
-    	
+    	});  	
     	
     	$.tablesorter.addParser({
     	    id: "orderdate",
@@ -284,7 +278,8 @@ var itemToCopy;				// Item's Id (either file or directory) already copied and to
 var globalTabCountConsole = 0; 		// The global counting tab for indexing consoles
 var globalIdConsole = 0; 			// The id associated to a new console, it must be incremented
 var consolesIdOpenTabIndex = new Array();
-var openConsoles = new Array();
+var openTabIndexIdNotebook = new Array();
+
 
 /**
  * The function that requests a session for the user and initializes the math console 
@@ -317,9 +312,45 @@ var id = setInterval(function() {
 		urlConsole = 'http://'+host['url']+':' + host['port'];
 		if (isReady(host['url'], host['port'])) {
 			clearInterval(id);
+			newDefaultNotebook();
+			/*
+			var notebookId = createNotebook();						
+			var listNotebooks = getNotebookList();			
+			
+			var len = listNotebooks.length;
+			for(var i = 0; i < len; i++){
+				if( notebookId == listNotebooks[i].notebook_id){
+					  break;
+				}  
+			}			
+			var notebookName = listNotebooks[i].name;
+			notebookName = notebookName + ".ipynb";
+			
+			var listFiles = getFilesSyn();
+			
+			len = listFiles.length;
+			for(var i = 0; i < len; i++){
+				if(notebookName == listFiles[i].name){
+					break;
+				}
+			}
+			
+			var notebookFileId = listFiles[i].id;
+			renameFileSyn(notebookFileId, "iMathConsole.ipynb");
+			
+			listNotebooks = getNotebookList();	
+			len = listNotebooks.length;
+			for(var i = 0; i < len; i++){
+				if( "iMathConsole" == listNotebooks[i].name){
+					  break;
+				}  
+			}	
+			
+			notebookId = listNotebooks[i].notebook_id;
+			
 			console.log("urlConsole");
 			console.log(urlConsole);
-			$( "#interactive_math-0" ).attr('src',urlConsole +'/new');
+			$( "#interactive_math-0" ).attr('src',urlConsole +'/' + notebookId);
 	    	var u = document.getElementById('tabsConsole');
 	    	var he = u.offsetHeight;
 	    	$( "#interactive_math-0" ).height(he-70);
@@ -333,6 +364,7 @@ var id = setInterval(function() {
 				setEnvironmentVariable(env_var, 0);
 				setDefaultLanguage(mathLanguageCode, 0);
 			});
+			*/
 		}
 	}
 }, 2000);

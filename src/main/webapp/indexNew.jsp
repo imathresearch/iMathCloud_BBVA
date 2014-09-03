@@ -269,10 +269,7 @@
 	<div class="ui-layout-center" id="ui-layout-center" style="width: 100%; height:100%;">
 		<div id="tabsFile" class="bg-image" style="position: absolute; width: 100%; height:100%;">
 			<ul>				
-			</ul>	
-			<!-- > div id="tabsC-0" style="padding: 0;">
-				<iframe id="interactive_math-0" class="interactive_math" width="100%" frameborder="0" scrolling="no"></iframe>
-			</div-->
+			</ul>				
 		</div>
 	</div>
 
@@ -281,11 +278,11 @@
 	<div class="ui-layout-east" id="ui-layout-east" style="width: 100%; height:100%;">
 		<div id="tabsConsole" style="position: absolute; width: 100%; height:100%;">
 			<ul>
-				<li><a href="#tabsC-0">Interactive Math Console</a></li>
+				<!--li><a href="#tabsC-0">iMathConsole</a></li-->
 			</ul>	
-			<div id="tabsC-0" style="padding: 0;">
+			<!-- div id="tabsC-0" style="padding: 0;">
 				<iframe id="interactive_math-0" class="interactive_math" width="100%" frameborder="0" scrolling="no"></iframe>
-			</div>
+			</div-->
 		</div>
 	</div>
 
