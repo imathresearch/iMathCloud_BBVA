@@ -23,8 +23,6 @@ function setEnvironmentVariable(str, idConsole) {
 }
 
 function sendMessage(msgType, content, idConsole) {
-	console.log("SENDMESSAGE");
-	console.log(idConsole);
 	console.log("sendMessage" + msgType + content);
 	console.log("sendMessage" + urlConsole);
 	iframeObj = document.getElementById("interactive_math-" + idConsole);
@@ -166,14 +164,14 @@ function getNotebookList(){
       type: "GET",
       async: false,
       success: function(notebooks) {    	
-    	  console.log("on success getNotebookList");
+    	  /*console.log("on success getNotebookList");
     	  var len = notebooks.length;
     	  for (var i=0; i<len; i++) {
     		  var notebook_id = notebooks[i].notebook_id;
     		  var nbname = notebooks[i].name;
     		  var kernel = notebooks[i].kernel_id;
     		  console.log("Notebook " + notebook_id + " name " + nbname + " kernel " + kernel);
-    	  }
+    	  }*/
     	  listNotebooks = notebooks;
       },
       error: function(){
