@@ -170,6 +170,10 @@
 		.ui-tabs .ui-tabs-panel {
 			background: #fcfdfd none;
 		}
+		
+		.CodeMirror {
+   			font-size: 10pt;   			
+		} 
 
 	</style>
 	
@@ -209,7 +213,7 @@
 					<div id="toolbarFiles" class="ui-widget-header ui-corner-all">
 						<small>
 						<button id="refreshTreeButton">Refresh tree</button>
-						<button id="newNotebookButton" class="ui-widget ui-state-default ui-corner-all">New Notebook</button>
+						<button id="newNotebookButton" class="ui-widget ui-state-default ui-corner-all">New iMathConsole</button>
 						<!-- <button id="uploadFileButton">Upload file</button>-->
 						<!-- button id="newDirectoryButton">New directory</button-->
 						<!-- button id="newFileButton">New File</button-->
