@@ -41,8 +41,10 @@ public class Register extends HttpServlet {
         Response resp = userM.newUser(userName, newUserDTO);
         if (resp.getStatus() == Response.Status.OK.getStatusCode()) {
             try {
-                Mail mail = new Mail();
-                mail.sendWelcomeMail(eMail, userName);
+            	if (!eMail.trim().equals("")) {
+            		Mail mail = new Mail();
+            		mail.sendWelcomeMail(eMail, userName);
+            	}
             } catch (Exception e) {
                 // Nothing happens so far...
             }

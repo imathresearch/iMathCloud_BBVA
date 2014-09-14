@@ -16,14 +16,14 @@ import org.hibernate.validator.constraints.NotEmpty;
  *
  */
 @Entity
-@Table(name = "IMR_User", uniqueConstraints = @UniqueConstraint(columnNames = "email"))
+@Table(name = "IMR_User")
 public class IMR_User implements Serializable {
 	
     public static long DEFAULT_STORAGE = 10;    // 10 MiB = 10 * 2^20 bytes
 	@Id
 	@NotNull
-	@Size(min = 4, max = 25, message = "4 to 25 letters")
-	@Pattern(regexp = "[A-Za-z]*", message = "Only letters")
+	@Size(min = 4, max = 100, message = "4 to 100 letters")
+	@Pattern(regexp = "[A-Za-z]*", message = "Only letters and _")
 	private String userName;
 	
 	private String lastName;
@@ -31,8 +31,6 @@ public class IMR_User implements Serializable {
 	private String organization;
 	
 	@NotNull
-	@NotEmpty
-	@Email(message = "Invalid format")
 	private String eMail;
 	
 	@Size(min = 9, max = 15, message = "9-15 Numbers")
