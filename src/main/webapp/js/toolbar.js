@@ -182,6 +182,8 @@ function generateHTMLToolBarFile(idFile) {
 	html += '<button id="saveFileButton_' + idFile + '">Save file</button>';
 	html += '<button id="executeConFileButton_' + idFile + '">Execute in console </button>';
 	html += '<button id="executeJobFileButton_' + idFile + '">Execute as a job </button>';
+	//html += '</small>';
+	html += '<div id="saveNotification_' + idFile + '" class="notification ui-widget ui-widget-content ui-corner-all border-box-sizing" style="display: none;"></div>';
 	html += '</small></div>';
 	return html;
 }

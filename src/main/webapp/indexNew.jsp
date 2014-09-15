@@ -174,6 +174,18 @@
 		.CodeMirror {
    			font-size: 10pt;   			
 		} 
+		
+		.notification {
+			background: none #d8dfea;
+			border: 1px solid #000;
+			padding: 3px;
+			font-weight: normal;
+			font-family: "Arial";
+			color: #000;
+			float: right;
+			margin-top: 7px;
+			margin-right: 10px;	
+		}
 
 	</style>
 	
@@ -212,7 +224,7 @@
 				<div id="divRemoteFiles" style="height:300px; overflow:auto">
 					<div id="toolbarFiles" class="ui-widget-header ui-corner-all">
 						<small>
-						<button id="refreshTreeButton">Refresh tree</button>
+						<button id="refreshTreeButton">Refresh tree</button>						
 						<button id="newNotebookButton" class="ui-widget ui-state-default ui-corner-all">New iMathConsole</button>
 						<!-- <button id="uploadFileButton">Upload file</button>-->
 						<!-- button id="newDirectoryButton">New directory</button-->

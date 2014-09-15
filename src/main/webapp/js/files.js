@@ -908,6 +908,8 @@ function saveFile(idFile, content){
                             cm.setValue(code);
                         }
                         setPaginationFileId(idFile, i+1);
+                        showSaveFileNotification(idFile);
+                        
                 },
                 error: function(error) {
                     console.log("error opening file -" + error.status);
@@ -922,6 +924,22 @@ function saveFile(idFile, content){
 	});
 }
 
+
+function showSaveFileNotification (idFile) {
+	
+    
+    var msg = " File saved ";
+    var timeout = 2000;
+    $( "#saveNotification_" +idFile ).text(msg);
+    $( "#saveNotification_" +idFile ).attr("style", "display:inline-block;");
+   
+    if (timeout !== undefined) {
+        this.timeout = setTimeout(function () {
+        	$( "#saveNotification_" +idFile ).text('');
+        	$( "#saveNotification_" +idFile ).attr("style", "display:none;");
+        }, timeout);
+    };
+};
 
 function loadFile(idFile){
 	if(isFileOpen(idFile)) {

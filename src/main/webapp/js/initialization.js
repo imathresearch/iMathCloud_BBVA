@@ -82,7 +82,6 @@ $(document).ready( function() {
 			text: false,
 			icons: { primary: "ui-icon-refresh" }
 		});
-
 		$( "#newDirectoryButton" ).button({
 			text: false,
 			icons: { primary: "ui-icon-folder-collapsed" }
