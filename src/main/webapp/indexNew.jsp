@@ -186,6 +186,12 @@
 			margin-top: 7px;
 			margin-right: 10px;	
 		}
+		
+		.ui-icon-close { 
+			float: left; 
+			/*margin: 0.4em 0.2em 0 0; 
+			cursor: pointer;*/ 
+		}
 
 	</style>
 	
