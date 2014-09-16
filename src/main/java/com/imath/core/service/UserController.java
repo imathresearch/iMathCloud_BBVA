@@ -176,5 +176,11 @@ public class UserController extends AbstractController {
 		return user;
 	}
 	
+	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+	public String getRootName(String userName){
+		IMR_User user = db.getIMR_UserDB().findById(userName);
+		return user.getRootName();
+	}
+	
 	
 }

@@ -1187,6 +1187,9 @@ public class DataUnitTest {
     	com.imath.core.model.File f_d = new com.imath.core.model.File();
     	f_d.setName("file.txt");
     	f_d.setUrl("file://localhost/dir/file.txt");
+    	com.imath.core.model.File parentDir = new com.imath.core.model.File();
+    	parentDir.setName("dir");
+    	f_d.setDir(parentDir);
     	
     	when(principal.getName()).thenReturn(userTest);
     	when(fileController.getFile(idFile, userTest)).thenReturn(f_d);
@@ -1211,6 +1214,9 @@ public class DataUnitTest {
     	com.imath.core.model.File f_d = new com.imath.core.model.File();
     	f_d.setName("file.txt");
     	f_d.setUrl("file://localhost/dir/file.txt");
+    	com.imath.core.model.File parentDir = new com.imath.core.model.File();
+    	parentDir.setName("dir");
+    	f_d.setDir(parentDir);
     	
     	when(principal.getName()).thenReturn(userTest);
     	when(fileController.checkIfFileExistInUser(path_file_directory, userTest)).thenReturn(f_d);
@@ -1237,6 +1243,9 @@ public class DataUnitTest {
     	com.imath.core.model.File f_d = new com.imath.core.model.File();
     	f_d.setName("file.txt");
     	f_d.setUrl("file://localhost/dir/file.txt");
+    	com.imath.core.model.File parentDir = new com.imath.core.model.File();
+    	parentDir.setName("dir");
+    	f_d.setDir(parentDir);
     	
     	when(principal.getName()).thenReturn(userTest);
     	when(fileController.getFile(idFile, userTest)).thenReturn(f_d);
@@ -1261,6 +1270,9 @@ public class DataUnitTest {
     	com.imath.core.model.File f_d = new com.imath.core.model.File();
     	f_d.setName("file.txt");
     	f_d.setUrl("file://localhost/dir/file.txt");
+    	com.imath.core.model.File parentDir = new com.imath.core.model.File();
+    	parentDir.setName("dir");
+    	f_d.setDir(parentDir);
     	
     	when(principal.getName()).thenReturn(userTest);
     	when(fileController.checkIfFileExistInUser(path_file_directory, userTest)).thenReturn(f_d);

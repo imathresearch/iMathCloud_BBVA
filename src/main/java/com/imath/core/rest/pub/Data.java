@@ -33,10 +33,12 @@ import javax.ws.rs.core.SecurityContext;
 
 import com.imath.core.data.MainServiceDB;
 import com.imath.core.exception.IMathException;
+import com.imath.core.model.IMR_User;
 import com.imath.core.model.Job;
 import com.imath.core.model.Job.States;
 import com.imath.core.service.FileController;
 import com.imath.core.service.JobController;
+import com.imath.core.service.UserController;
 import com.imath.core.util.Constants;
 import com.imath.core.util.FileUtils;
 import com.imath.core.util.PublicResponse;
@@ -68,6 +70,7 @@ public class Data {
     @Inject private FileController fileController;
     @Inject private FileUtils fileUtils;
     @Inject private JobController jobController;
+    @Inject private UserController userController;
     
     
     @GET
@@ -463,7 +466,16 @@ public class Data {
     	
     	
     	if(f_d != null){
-    		String nameZipFile = f_d.getName();			
+    		
+    		String nameZipFile;
+    		
+    		if (f_d.getDir() == null){ // Is the root directory, so the nameZipFile is the name of the project
+    			nameZipFile = this.userController.getRootName(userName);
+    		}
+    		else{
+    			nameZipFile = f_d.getName();
+    		}
+    		    					
 			if(zipFile != null){
 				nameZipFile = zipFile;
 			}
