@@ -64,7 +64,7 @@ public class UserManagement {
         
         try {
             userController.createNewUser(userName, newUserDTO.password, newUserDTO.firstName, newUserDTO.lastName, role, 
-                    mathLan, newUserDTO.eMail, newUserDTO.organization, newUserDTO.phone1, newUserDTO.phone2);
+                    mathLan, newUserDTO.eMail, newUserDTO.organization, newUserDTO.phone1, newUserDTO.phone2, newUserDTO.rootName);
         } catch (Exception e) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
@@ -80,5 +80,6 @@ public class UserManagement {
         public String organization;
         public String phone1;
         public String phone2;
+        public String rootName;
     }
 }

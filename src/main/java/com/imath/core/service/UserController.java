@@ -52,7 +52,7 @@ public class UserController extends AbstractController {
      * @throws Exception
      */
 	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
-	public IMR_User createNewUser(String userName, String password, String firstName, String lastName, Role role, MathLanguage math, String eMail, String organization, String phone1, String phone2) throws Exception {
+	public IMR_User createNewUser(String userName, String password, String firstName, String lastName, Role role, MathLanguage math, String eMail, String organization, String phone1, String phone2, String rootName) throws Exception {
 	    System.out.println("***********************");
 	    System.out.println("*********************** " + userName + " " + password);
 		//Create the IMR_User Entity
@@ -66,6 +66,12 @@ public class UserController extends AbstractController {
 		user.setOrganization(organization);
 		user.setPhone1(phone1);
 		user.setPhone2(phone2);
+		if ( rootName == null || rootName.isEmpty()){
+			user.setRootName("ROOT");
+		}
+		else{
+			user.setRootName(rootName);
+		}
 		db.makePersistent(user);
 		
 		// We create the Linux user

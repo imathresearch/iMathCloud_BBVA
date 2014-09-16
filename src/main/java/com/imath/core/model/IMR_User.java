@@ -52,6 +52,9 @@ public class IMR_User implements Serializable {
 	@NotNull
 	private long storage = 10;
 	
+	@NotNull
+	private String rootName;
+	
 	private static final long serialVersionUID = 1L;
 
 	public IMR_User() {
@@ -129,5 +132,13 @@ public class IMR_User implements Serializable {
    
 	public void setStorage(long storage) {
 	    this.storage = storage;
+	}
+	
+	public String getRootName(){
+		return this.rootName;
+	}
+	
+	public void setRootName(String rootName){
+		this.rootName = rootName;
 	}
 }

@@ -19,7 +19,14 @@ function fillRemoteFiles(files, treeView, shareZone) {
 			if (file['sharingState'] == "YES") {
 				classSharing = "folder_shared";
 			}
-			aux = "<li><span id='" + genIdFileContextMenu(file['id'], file['name']) + "' class='" + classSharing + " "+ genClassFileContextMenu(file['id'])  + "'>" + file['name'] + " <i>" + userName + "</i> </span>";
+			
+			if(file['dir'] == null){ //ROOT
+				aux = "<li><span id='" + genIdFileContextMenu(file['id'], file['name']) + "' class='" + classSharing + " "+ genClassFileContextMenu(file['id'])  + "'>" + projectName + " <i>" + userName + "</i> </span>";
+			}
+			else{
+				aux = "<li><span id='" + genIdFileContextMenu(file['id'], file['name']) + "' class='" + classSharing + " "+ genClassFileContextMenu(file['id'])  + "'>" + file['name'] + " <i>" + userName + "</i> </span>";
+			
+			}
 			aux = aux + "<ul id='filedir_" + file['id'] + "'></ul>";
 			aux = aux + "</li>";
 		}
@@ -40,7 +47,7 @@ function fillRemoteFiles(files, treeView, shareZone) {
 			aux = aux + "</span></li>";
 		}
 		
-		if (file['dir']==null) {
+		if (file['dir']==null) { //ROOT
 			if (shareZone==0) rootElement = genIdFileContextMenu(file['id'], file['name']);
 			$( treeView ).append(aux);
 			$.contextMenu({

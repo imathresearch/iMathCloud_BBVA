@@ -5,7 +5,6 @@ package com.imath.core.rest;
 import javax.ejb.Stateful;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
-
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -18,6 +17,7 @@ import javax.ws.rs.core.SecurityContext;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
 
+import com.imath.core.model.FileShared;
 import com.imath.core.model.Session;
 import com.imath.core.model.Host;
 import com.imath.core.model.IMR_User;
@@ -46,11 +46,17 @@ public class UserService {
 	@GET
     @Path("/getUserInfo/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public IMR_User REST_getUserInfo(@PathParam("id") String userName, @Context SecurityContext sc) {
+    public UserDTO REST_getUserInfo(@PathParam("id") String userName, @Context SecurityContext sc) {
 		try {
 		    SecurityManager.secureBasic(userName, sc);
 			IMR_User user = db.getIMR_UserDB().findById(userName);
-			return user;
+			UserDTO out = new UserDTO();
+			out.userName = user.getUserName();
+			out.name = user.getFirstName();
+			out.email = user.getEMail();
+			out.rootName = user.getRootName();
+			return out;
+
 		}
 		catch (Exception e) {
 			LOG.severe("Error creating a session for " + userName);
@@ -83,6 +89,15 @@ public class UserService {
 	private class UserStorageDTO {
 	    public String currentStorage;
 	    public String totalStorage;
+	}
+	
+	private class UserDTO {
+		public String userName;
+		public String name;
+		public String email;
+		public String rootName;
+		public UserDTO() {}
+				
 	}
     
 }

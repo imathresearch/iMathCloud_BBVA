@@ -412,6 +412,7 @@ public class FileService {
 		public String userName;
 		public String name;
 		public String email;
+		public String rootName;
 		public FileShared.Permission permission;
 		public UserDTO() {}
 		

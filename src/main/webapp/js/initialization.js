@@ -279,6 +279,8 @@ var globalIdConsole = 0; 			// The id associated to a new console, it must be in
 var consolesIdOpenTabIndex = new Array();
 var openTabIndexIdNotebook = new Array();
 
+var projectName;
+
 
 /**
  * The function that requests a session for the user and initializes the math console 
@@ -292,11 +294,31 @@ function requestSession() {
         type: "GET",
         success: function(host) {
         	conectToDefaultConsole(host);
+        	getUserInfo();
         },
         error: function(error) {
             console.log("error updating table -" + error.status);
         }
     });
+}
+
+function getUserInfo(){
+	$.ajax({
+        url: "rest/user_service/getUserInfo/"+userName,
+        cache: false,
+        dataType: "json",
+        type: "GET",
+        success: function(user) {
+        	projectName = user['rootName'];
+        	console.log("Project name");
+        	console.log(projectName);
+        },
+        error: function(error) {
+            console.log("error updating table -" + error.status);
+        }
+    });
+	
+	
 }
 
 // keeps trying to connect to the console every second.
