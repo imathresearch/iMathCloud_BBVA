@@ -351,7 +351,7 @@ $("#selfButton").button({
 	text: false,
 	icons: { primary: "ui-icon-person" }
 });
-$("#logoutButton").click(function() { 
+$("#logoutButton").click(function() {
 	window.location.href = "logout";
 });
 

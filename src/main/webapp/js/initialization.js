@@ -436,3 +436,22 @@ function showDialog(content, title, buttons) {
 		});
 	$("#dialogPopup").dialog("open");
 }
+
+window.addEventListener("beforeunload", function (e) {
+	
+	  // Before closing the tab, we call the logout servlet
+	  var urlCall = "logout"; 
+	  $.ajax({
+		  url: urlCall,
+	      type: "get",
+	      async: false,
+	      success: function() {
+	        isValid = true;
+	      },
+	      error: function(){
+	        isValid = false;
+	      }
+	   });	   
+	 
+	  return; // To not show any confirmation message                             
+});

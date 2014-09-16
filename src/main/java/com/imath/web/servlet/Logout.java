@@ -33,6 +33,7 @@ public class Logout extends HttpServlet{
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String userName = request.getUserPrincipal().getName();
         
+        System.out.println("CLOSING SESSION");
         // We close the imath cloud web session
         Session session = db.getSessionDB().findByUser_and_OpenSession(userName);
         if (session == null) {
@@ -67,6 +68,6 @@ public class Logout extends HttpServlet{
         
         // we logout from the system
         request.logout();
-        response.sendRedirect(".");
+        //response.sendRedirect(".");
     }
 }
