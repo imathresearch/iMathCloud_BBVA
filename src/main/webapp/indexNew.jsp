@@ -211,7 +211,7 @@
 
 	<div class="ui-layout-north" id="ui-layout-north">
 		<div class="codrops-top">
-    		<span class="right">
+    		<span class="right">	
     			<button id="selfButton">Profile</button>
     			<button id="logoutButton">Log out</button>
     			<!-- a href="logoutIMATHCLOUD.jsp">
@@ -221,7 +221,7 @@
     		<div class="clr"></div>
     	</div>
 	</div><!--/ Codrops top bar -->
-	
+
 	<!-- The initial filling stuff of the interactive math prototype -->            
 	<!-- The left side panel, which contains file navigation system, team box access, and jobs-->
 	<div class="ui-layout-west" id="ui-layout-west" style="width: 100%; height:100%;">
@@ -289,9 +289,7 @@
 
 <!-- The central panel, which contains tabs, including interactive console-->
 	<div class="ui-layout-center" id="ui-layout-center" style="width: 100%; height:100%;">
-		<div id="tabsFile" class="bg-image" style="position: absolute; width: 100%; height:100%;">
-			<ul>				
-			</ul>				
+		<div id="tabsFile" class="bg-image" style="position: absolute; width: 100%; height:100%;">					
 		</div>
 	</div>
 
@@ -299,12 +297,8 @@
 
 	<div class="ui-layout-east" id="ui-layout-east" style="width: 100%; height:100%;">
 		<div id="tabsConsole" style="position: absolute; width: 100%; height:100%;">
-			<ul>
-				<!--li><a href="#tabsC-0">iMathConsole</a></li-->
-			</ul>	
-			<!-- div id="tabsC-0" style="padding: 0;">
-				<iframe id="interactive_math-0" class="interactive_math" width="100%" frameborder="0" scrolling="no"></iframe>
-			</div-->
+			<ul>				
+			</ul>				
 		</div>
 	</div>
 

@@ -25,6 +25,7 @@ $(document).ready( function() {
 //			  ui.oldPanel; // jQuery object, previous content
 //			});
 		//layout.close("east");	// We close the east panel since it is not functional now.
+		//layout.close("north");
 		$( "#tabsFile" ).tabs();
 		$( "#tabsConsole" ).tabs();
 		$( "#menu_west1" ).accordion({

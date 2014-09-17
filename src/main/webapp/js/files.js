@@ -845,6 +845,14 @@ function closeOpenFile(idFile) {
 		decreaseTabIndex(pivot);
 	}
 	globalTabCounting--;
+	
+	var numOpenTabs = $('.tab-File').length;	
+	if(numOpenTabs == 0){		
+		var tabs = $( "#tabsFile" ).tabs();
+		tabs.tabs( "refresh" );
+		tabs.find( ".ui-tabs-nav" ).remove();		
+		tabs.tabs( "refresh" );
+	}
 }
 
 function closeOpenFilePlot(idFile) {
@@ -861,6 +869,9 @@ function closeOpenFilePlot(idFile) {
 		decreaseTabIndex(pivot);
 	}
 	globalTabCounting--;
+	
+	
+	
 }
 
 function decreaseTabIndex(pivot) {
@@ -1174,12 +1185,18 @@ function attachNewData(data, cm) {
 
 function openCodeFile(data, modeStr) {
 	var nameTab = buildTabName(data['id']);
-	var tabTemplate = "<li><a href='#{href}'>#{label}</a> <span class='ui-icon ui-icon-close' role='presentation'>Remove Tab</span></li>";
+	var tabTemplate = "<li class='tab-File'><a href='#{href}'>#{label}</a> <span class='ui-icon ui-icon-close' role='presentation'>Remove Tab</span></li>";
 	var label = data['name']; 
 	var id = nameTab;
 	var li = $( tabTemplate.replace( /#\{href\}/g, "#" + id ).replace( /#\{label\}/g, label ) );
-	 
+	 		
+	var numOpenTabs = $('.tab-File').length;	
+	if(numOpenTabs == 0){
+		$("#tabsFile").append('<ul></ul>');
+	}
+	
 	var tabs = $( "#tabsFile" ).tabs();
+	tabs.tabs( "refresh" );
 	tabs.find( ".ui-tabs-nav" ).append( li );
 	
 	var code="";
