@@ -97,12 +97,16 @@ public class Security {
     }
     
     public void createLinuxUser(String userName) throws Exception {
+    	// Remove the user from jboss AS
         ProcessBuilder pb = new ProcessBuilder(Constants.ADD_USER_LINUX, "-d",  "/home/" + userName, "-m", userName, "-g", Constants.IMATHSYSTEMGROUP);
         pb.redirectInput(Redirect.INHERIT);
         pb.redirectOutput(Redirect.INHERIT);
         pb.redirectError(Redirect.INHERIT);
         Process p = pb.start();
         p.waitFor();
+        
+        // Remove the user from the linux system
+        
     }
     
     public void createSystemUser(String userName, String password, String role) throws Exception {
@@ -146,36 +150,15 @@ public class Security {
         }
     }
     
-    /*private static String loadStream(InputStream s) throws Exception
-    {
-        BufferedReader br = new BufferedReader(new InputStreamReader(s));
-        StringBuilder sb = new StringBuilder();
-        String line;
-        while((line=br.readLine()) != null)
-            sb.append(line).append("\n");
-        return sb.toString();
-    }*/
-    
-    /*private void eraseUserLine(String fileName, String userName) throws Exception {
-        String tempFileName = fileName + ".temp";
-        Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(tempFileName, false), "UTF-8"));
-        BufferedReader br = new BufferedReader(new FileReader(fileName));
-        String line;
-        while ((line = br.readLine()) != null) {
-            if (line.length() <= userName.length()+1)
-                writer.append(line + "\n");
-            else {
-                String sub = line.substring(0, userName.length()+1);
-                if (!sub.equals(userName+"=")) {
-                    writer.append(line + "\n");
-                }
-            }
-        }
-        writer.close();
-        br.close();
-        File tempFile = new File(tempFileName);
-        File rigthFile = new File(fileName);
-        tempFile.renameTo(rigthFile);
+	public synchronized void removeSystemUser(String userName) throws Exception {
+	  	ProcessBuilder pb = new ProcessBuilder(Constants.REMOVE_USER_CLI, userName);
+	    pb.redirectInput(Redirect.INHERIT);
+	    pb.redirectOutput(Redirect.INHERIT);
+	    pb.redirectError(Redirect.INHERIT);
+	    
+	    Process p = pb.start();
+        p.waitFor();
         
-    }*/
+	}
 }
+    

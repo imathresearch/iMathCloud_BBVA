@@ -50,7 +50,7 @@ public class IMR_User implements Serializable {
 	private MathLanguage mathLanguage;
 	
 	@NotNull
-	private long storage = 10;
+	private long storage = 500;
 	
 	@NotNull
 	private String rootName;

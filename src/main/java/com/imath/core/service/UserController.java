@@ -106,6 +106,13 @@ public class UserController extends AbstractController {
 	    return fileUtils.dirSize(rootFile.getUrl());
 	}
 	
+	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW) 
+	public void removeUser(String userName) throws Exception {
+		IMR_User user = db.getIMR_UserDB().findById(userName);
+		db.remove(user);
+		security.removeSystemUser(userName);
+	}
+	
 	//TODO: unit tests!
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public void addInitialFiles(File root, String userName) {

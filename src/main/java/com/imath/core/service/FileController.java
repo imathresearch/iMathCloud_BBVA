@@ -85,6 +85,20 @@ public class FileController extends AbstractController {
     }
     
     /**
+     * Removes all files of the DB given a userName
+     * @param userName
+     * @throws Exception
+     */
+    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW) 
+    public void removeFiles(String userName) throws Exception {
+    	File root = db.getFileDB().findROOTByUserId(userName);
+    	List<File> files = db.getFileDB().getFilesByDir(root.getId(), true);
+    	for (File file:files) {
+    		db.remove(file);
+    	}
+    }
+    
+    /**
      * Retrieve the entire content of a file. It should be only used for source files and small data files.
      * @param String - The authenticated user name of the system. If it is a remote file, might need credentials.
 	 * @param File - The {@link File}

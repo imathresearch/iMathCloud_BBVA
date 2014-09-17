@@ -54,6 +54,7 @@ public class Constants {
     // System constants
     // IMPORTANT: We assume that JBOSS is launched from JBOSS-HOME/bin
     static public final String ADD_USER_CLI = "./add-user.sh";
+    static public final String REMOVE_USER_CLI = "./remove-user.sh";
     static public final String ADD_USER_LINUX = "useradd";
     
     static public final String ROLES_FILE = "../standalone/configuration/application-roles.properties";

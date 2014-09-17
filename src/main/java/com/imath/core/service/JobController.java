@@ -54,6 +54,20 @@ public class JobController extends AbstractController{
     @Inject private DeploymentController dc;
     @Inject private FileUtils fileUtils;
     
+    
+    /**
+     * Removes all the jobs related to the userName
+     * @param userName
+     * @throws Exception
+     */
+    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+    public void removeJobs(String userName) throws Exception {
+    	List<Job> jobs = this.getUserJobs(userName);
+    	for(Job job:jobs) {
+    		db.remove(job);
+    	}
+    }
+    
     /**
      * Executes a Job to the current interactive math console of the user owner.
      * Jobs in console must have one and only one File to execute. 
