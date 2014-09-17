@@ -311,6 +311,7 @@ function getUserInfo(){
         type: "GET",
         success: function(user) {
         	projectName = user['rootName'];
+        	$("#projectName").text("Project " + projectName);
         	console.log("Project name");
         	console.log(projectName);
         },
@@ -460,6 +461,9 @@ function showDialog(content, title, buttons) {
 	$("#dialogPopup").dialog("open");
 }
 
+
+
+
 window.addEventListener("beforeunload", function (e) {
 	
 	  // Before closing the tab, we call the logout servlet
@@ -476,5 +480,5 @@ window.addEventListener("beforeunload", function (e) {
 	      }
 	   });	   
 	 
-	  return; // To not show any confirmation message                             
+	  //return false; // To not show any confirmation message                             
 });

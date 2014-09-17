@@ -192,6 +192,50 @@
 			/*margin: 0.4em 0.2em 0 0; 
 			cursor: pointer;*/ 
 		}
+		
+		.imath-logo{
+			font-family: Verdana, sans-serif;
+			font-weight: 300;
+			font-size: 22pt;
+			font-style: italic;
+			color: #fff;
+			text-align: center;			
+			/*width: 680px;*/			
+			display: block;			
+			
+		}
+		
+		.imath-logo small  {
+			font-size: 15pt;
+			font-weight: lighter;
+		}
+		
+		h1.imath-logo {
+			margin-left: 20px;
+			margin-top: 8px;
+			margin-bottom: 8px;
+		}
+		
+		h2.imath-logo {
+			font-size: 15pt;			
+			font-style: italic;
+			font-weight: bold;
+			margin-bottom: 8px;
+			margin-right: 120px;
+		}
+		
+		.ui-layout-north {
+			background: none #2191c0;
+		}
+		
+		.ui-layout-north .left {
+			float: left;
+		}
+		.ui-layout-north .right {
+			float: right;
+		}
+		
+				
 
 	</style>
 	
@@ -210,17 +254,23 @@
  
 
 	<div class="ui-layout-north" id="ui-layout-north">
-		<div class="codrops-top">
-    		<span class="right">	
-    			<button id="selfButton">Profile</button>
-    			<button id="logoutButton">Log out</button>
-    			<!-- a href="logoutIMATHCLOUD.jsp">
-        			<strong>Logout</strong>
-        		</a-->
-			</span>
-    		<div class="clr"></div>
-    	</div>
+		<!-- div class="codrops-top"-->
+				<span class="left">		
+					<h1 class="imath-logo">  iMath CLOUD <small>  High Performance Computation in the Cloud</small></h1>
+  				</span>
+  				<span class="right">
+  					<h2 id="projectName" class="imath-logo"></h2>
+  				</span>
+	    		<!-- div class="clr"></div-->
+    		
+    	<!-- /div-->
 	</div><!--/ Codrops top bar -->
+
+<!-- button id="selfButton">Profile</button>
+<button id="logoutButton">Log out</button-->
+<!-- a href="logoutIMATHCLOUD.jsp">
+<strong>Logout</strong>
+</a-->
 
 	<!-- The initial filling stuff of the interactive math prototype -->            
 	<!-- The left side panel, which contains file navigation system, team box access, and jobs-->
