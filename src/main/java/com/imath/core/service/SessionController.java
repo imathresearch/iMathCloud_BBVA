@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 //import java.util.ArrayList;
 
+
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
@@ -13,10 +14,10 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
 import com.imath.core.model.File;
+import com.imath.core.model.Job;
 import com.imath.core.model.Session;
 import com.imath.core.model.IMR_User;
 import com.imath.core.model.Host;
-
 import com.imath.core.data.MainServiceDB;
 
 import java.util.logging.Logger;
@@ -143,6 +144,18 @@ public class SessionController extends AbstractController{
     		LOG.severe("Error retreiving sessions");
     		throw e;
     	}
+    }
+    /**
+     * Removes all the Sessions related to the userName
+     * @param userName
+     * @throws Exception
+     */
+    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+    public void removeSessions(String userName) throws Exception {
+        List<Session> sessions = db.getSessionDB().getAllSessionsByUserName(userName);
+        for(Session session:sessions) {
+            db.remove(session);
+        }
     }
     
     //TODO: Provisional
