@@ -91,6 +91,7 @@ public class UserManagement {
     		
     		return Response.status(Response.Status.OK).build();
     	} catch (Exception e) {
+    	    e.printStackTrace();
     		LOG.severe("Error removing user");
     		return Response.status(Response.Status.BAD_REQUEST).build();
     	}

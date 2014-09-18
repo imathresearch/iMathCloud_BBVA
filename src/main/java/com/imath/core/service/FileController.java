@@ -93,7 +93,8 @@ public class FileController extends AbstractController {
     public void removeFiles(String userName) throws Exception {
     	File root = db.getFileDB().findROOTByUserId(userName);
     	List<File> files = db.getFileDB().getFilesByDir(root.getId(), true);
-    	for (File file:files) {
+    	for (int i=files.size()-1; i>=0; i--) {
+    	    File file = files.get(i);
     		db.remove(file);
     	}
     }
