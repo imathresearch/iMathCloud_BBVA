@@ -24,6 +24,7 @@ import com.imath.core.service.FileController;
 import com.imath.core.service.JobController;
 import com.imath.core.service.MathLanguageController;
 import com.imath.core.service.RoleController;
+import com.imath.core.service.SessionController;
 import com.imath.core.service.UserController;
 import com.imath.core.util.Constants;
 
@@ -45,6 +46,7 @@ public class UserManagement {
     @Inject UserController userController;
     @Inject JobController jobController;
     @Inject FileController fileController;
+    @Inject SessionController sessionController;
     
     @POST
     @Path("/newUser/{username}")
@@ -87,6 +89,7 @@ public class UserManagement {
     		}
     		this.jobController.removeJobs(userName);
     		this.fileController.removeFiles(userName);
+    		this.sessionController.removeSessions(userName);
     		this.userController.removeUser(userName);
     		
     		return Response.status(Response.Status.OK).build();

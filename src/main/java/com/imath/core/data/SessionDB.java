@@ -110,4 +110,13 @@ public class SessionDB {
         criteria.orderBy(cb.desc(job.get("portConsole")));
         return em.createQuery(criteria).getResultList();
     }
+    
+    public List<Session> getAllSessionsByUserName(String userName) {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Session> criteria = cb.createQuery(Session.class);
+        Root<Session> job = criteria.from(Session.class);
+        Predicate p1 = cb.equal(job.get("user").get("userName"), userName);
+        criteria.select(job).where(p1);
+        return em.createQuery(criteria).getResultList();
+    }
 }
