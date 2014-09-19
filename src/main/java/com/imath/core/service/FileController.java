@@ -90,7 +90,7 @@ public class FileController extends AbstractController {
      * @throws Exception
      */
     @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW) 
-    public void removeFiles(String userName) throws Exception {
+    public synchronized void removeFiles(String userName) throws Exception {
     	File root = db.getFileDB().findROOTByUserId(userName);
     	List<File> files = db.getFileDB().getFilesByDir(root.getId(), true);
     	for (int i=files.size()-1; i>=0; i--) {
@@ -583,7 +583,7 @@ public class FileController extends AbstractController {
      * @throws Exception and IMathException
      */
     @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
-    public void eraseListFiles(Set<String> all_idFiles, SecurityContext sc) throws Exception{
+    public synchronized void eraseListFiles(Set<String> all_idFiles, SecurityContext sc) throws Exception{
     	 	
     	if(all_idFiles != null && !all_idFiles.isEmpty()){
     		
@@ -639,7 +639,7 @@ public class FileController extends AbstractController {
      * @throws Exception and IMathException
      */
     @TransactionAttribute(TransactionAttributeType.REQUIRED)   
-    public void eraseFile(File file, SecurityContext sc) throws Exception{
+    public synchronized void eraseFile(File file, SecurityContext sc) throws Exception{
     	
     	if(file != null){
     		//file is a directory
@@ -680,7 +680,7 @@ public class FileController extends AbstractController {
      * @throws Exception and IMathException
      */
     @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
-    public void renameFile(String idFile, String newName, SecurityContext sc) throws Exception{
+    public synchronized void renameFile(String idFile, String newName, SecurityContext sc) throws Exception{
     	
     	if(idFile == null || newName == null){
      		throw new IMathException(IMathException.IMATH_ERROR.OTHER, "Rename File: file or new name is null");
@@ -957,7 +957,7 @@ public class FileController extends AbstractController {
         eraseFiles(auxMap,auxMapReal, false);
     }
     
-    private void eraseFiles(Map<String, File> auxMap, Map<String,java.io.File> auxMapReal, boolean dir) {
+    private synchronized void eraseFiles(Map<String, File> auxMap, Map<String,java.io.File> auxMapReal, boolean dir) {
         Set<String> stringSet = auxMap.keySet();
         List<String> toErase = new ArrayList<String>();
         for(String fileInPath:stringSet) {

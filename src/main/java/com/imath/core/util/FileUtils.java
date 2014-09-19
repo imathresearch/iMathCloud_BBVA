@@ -243,10 +243,7 @@ public class FileUtils {
 				fileName = fileName.concat(uid);
 			}
 			else{
-				trashlocation = Constants.iMathTRASH + "/" + fileName;
-				/*if(!this.moveFile(file, trashlocation, false)){
-					trashlocation = null;
-				}*/
+				trashlocation = Constants.iMathTRASH + "/" + fileName;				
 				if(!this.moveFile(file.getUrl(), trashlocation)){
 					trashlocation = null;
 				}
@@ -257,10 +254,7 @@ public class FileUtils {
     }
     
     public boolean restoreFile(com.imath.core.model.File file, String trashLocation){
-    	
-    	/*if(this.moveFile(file, trashLocation, true)){
-    		return true;
-    	}*/
+    	  	
     	if(this.moveFile(trashLocation, file.getUrl())){
     		return true;
     	}

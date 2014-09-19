@@ -25,6 +25,7 @@ insert into MathLanguage (id, baseName, version, consoleCode) values (-2, 'R', '
 
 --ammartinez
 insert into imr_user (username, email, firstname, lastname, organization, phone1, idrole, idMathLanguage, storage, rootName) values ('ammartinez', 'ammartinez@ammartinez.com', 'Andrea', 'Martinez','iMath Research S.L.','610003964',-1,-1,10, 'ROOT');
+insert into imr_user (username, email, firstname, lastname, organization, phone1, idrole, idMathLanguage, storage, rootName) values ('ddXYZamtTest', '', '', '','','',-1,-1,10, 'dd');
 --ammartinez
 
 --imath
@@ -75,6 +76,8 @@ insert into File (id, imr_type, name, url, id_dir, iduserowner, sharingstate) va
 insert into File (id, imr_type, name, url, id_dir, iduserowner, sharingstate) values (-600,'dir','ROOT','file://localhost/iMathCloud/imathTest',null,'imathTest',0);
 
 --ammartinez
+insert into File (id, imr_type, name, url, id_dir, iduserowner, sharingstate) values (-1000,'dir','ROOT','file://127.0.0.1/iMathCloud/ddXYZamtTest',null,'ddXYZamtTest',0);
+
 insert into File (id, imr_type, name, url, id_dir, iduserowner, sharingstate) values (-200,'dir','ROOT','file://localhost/iMathCloud/ammartinez',null,'ammartinez',0);
 insert into File (id, imr_type, name, url, id_dir, iduserowner, sharingstate) values (-201,'dir','src','file://localhost/iMathCloud/ammartinez/src',-200,'ammartinez',0);
 insert into File (id, imr_type, name, url, id_dir, iduserowner, sharingstate) values (-202,'dir','examples','file://localhost/iMathCloud/ammartinez/src/examples',-201,'ammartinez',0);

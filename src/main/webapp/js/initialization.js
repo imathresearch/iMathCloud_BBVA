@@ -463,8 +463,9 @@ function showDialog(content, title, buttons) {
 
 
 
-
 window.addEventListener("beforeunload", function (e) {
+	
+	  console.log("BEFOREUNLOAD");
 	
 	  // Before closing the tab, we call the logout servlet
 	  var urlCall = "logout"; 
@@ -480,5 +481,5 @@ window.addEventListener("beforeunload", function (e) {
 	      }
 	   });	   
 	 
-	  //return false; // To not show any confirmation message                             
+	  return; // To not show any confirmation message                             
 });

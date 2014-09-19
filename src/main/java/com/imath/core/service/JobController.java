@@ -427,7 +427,7 @@ public class JobController extends AbstractController{
     }
     
     @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
-    public void removeJob(Long idJob) throws Exception{
+    public synchronized void removeJob(Long idJob) throws Exception{
     	
     	try{
 	    	Job job = db.getJobDB().findById(idJob);
