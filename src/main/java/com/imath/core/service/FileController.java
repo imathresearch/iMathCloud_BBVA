@@ -14,6 +14,8 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.Set;
 
+import javax.annotation.Resource;
+import javax.ejb.EJBContext;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
@@ -69,6 +71,7 @@ public class FileController extends AbstractController {
     private String PASTE_ACTION_MOVE = "move";
     
 	@Inject private FileUtils fileUtils;
+	@Resource private EJBContext ejb;
 
 	// For testing purposes only, to simulate injection
     public void setFileUtils(FileUtils fu) {
@@ -607,9 +610,11 @@ public class FileController extends AbstractController {
     		if(recover){
     			for(int j = 0; j < list_trashLocation.size(); j++){
     				if(!this.fileUtils.restoreFile(listFiles.get(j), list_trashLocation.get(j))){
+    					ejb.setRollbackOnly();
     					throw new IMathException(IMathException.IMATH_ERROR.RECOVER_PROBLEM, "data/" + listFiles.get(j).getId()); 
     				}
     			}
+    			ejb.setRollbackOnly();
     			throw new IMathException(IMathException.IMATH_ERROR.FILE_NOT_FOUND, "data/" + listFiles.get(i).getId());
     		}
     		
@@ -620,14 +625,17 @@ public class FileController extends AbstractController {
     			catch(Exception e){
     				for (int j = 0; j < listFiles.size(); j++){
     					if(!this.fileUtils.restoreFile(listFiles.get(j), list_trashLocation.get(j))){
+    						ejb.setRollbackOnly();
     						throw new IMathException(IMathException.IMATH_ERROR.RECOVER_PROBLEM, "data/" + listFiles.get(j).getId()); 
     					}
     				}
+    				ejb.setRollbackOnly();
     				throw new IMathException(IMathException.IMATH_ERROR.FILE_NOT_FOUND, "data/" + f.getId());
     			}
     		}
     	}
     	else{
+    		ejb.setRollbackOnly();
     		throw new IMathException(IMathException.IMATH_ERROR.FILE_NOT_FOUND, "data/empty");
     	}
     }
@@ -652,6 +660,7 @@ public class FileController extends AbstractController {
     					db.remove(subfiles.get(i));
     				}
     				else{
+    					ejb.setRollbackOnly();
     					throw new IMathException(IMathException.IMATH_ERROR.NO_AUTHORIZATION, "No authorised access");
     				}
     			}
@@ -662,11 +671,13 @@ public class FileController extends AbstractController {
     				db.remove(file);
     			}
     			else{
+    				ejb.setRollbackOnly();
     				throw new IMathException(IMathException.IMATH_ERROR.NO_AUTHORIZATION, "No authorised access");
     			}
     		}
     	}
     	else{
+    		ejb.setRollbackOnly();
     		throw new IMathException(IMathException.IMATH_ERROR.FILE_NOT_FOUND, "data/null");
     	}
     	
@@ -734,14 +745,17 @@ public class FileController extends AbstractController {
 	    			}
 				}
 				else{
+					ejb.setRollbackOnly();
 					throw new IMathException(IMathException.IMATH_ERROR.OTHER, "System file error");
 				}			
     		}
     		else{
+    			ejb.setRollbackOnly();
     			throw new IMathException(IMathException.IMATH_ERROR.OTHER, "A file with the same name already exists in the directory");
     		}   		
     	}
     	else{
+    		ejb.setRollbackOnly();
     		throw new IMathException(IMathException.IMATH_ERROR.FILE_NOT_FOUND, "data/" + idFile);
     	}
     	
@@ -777,14 +791,17 @@ public class FileController extends AbstractController {
     				fileUtils.protectDirectory(newDir.getUrl(), userName);
     			}
     			else{
+    				ejb.setRollbackOnly();
     				throw new IMathException(IMathException.IMATH_ERROR.OTHER, "The directory " + dirName + " cannot be created");
     			}						
     		}
     		else{
+    			ejb.setRollbackOnly();
     			throw new IMathException(IMathException.IMATH_ERROR.OTHER, "A file with the same name already exists in the parent directory");
     		}
     	}
     	else{
+    		ejb.setRollbackOnly();
     		throw new IMathException(IMathException.IMATH_ERROR.FILE_NOT_FOUND, "data/" + idParentDir);    	 		
     	}
     	  	
@@ -824,14 +841,17 @@ public class FileController extends AbstractController {
     				}
     			}
     			else{
+    				ejb.setRollbackOnly();
     				throw new IMathException(IMathException.IMATH_ERROR.OTHER, "The file " + name + " cannot be created");
     			}						
     		}
     		else{
+    			ejb.setRollbackOnly();
     			throw new IMathException(IMathException.IMATH_ERROR.OTHER, "A file with the same name already exists in the parent directory");
     		}
     	}
     	else{
+    		ejb.setRollbackOnly();
     		throw new IMathException(IMathException.IMATH_ERROR.FILE_NOT_FOUND, "data/" + idParentDir);    	 		
     	}
     	  	
@@ -890,14 +910,17 @@ public class FileController extends AbstractController {
                 }
                 idOnDestiny = 5L;
 			} else {
+				ejb.setRollbackOnly();
 				throw new IMathException(IMathException.IMATH_ERROR.OTHER, 
 				"Origin or Destiny locations are wrong.");
 			}
 		} catch (Exception e) {
+			ejb.setRollbackOnly();
 			throw new IMathException(IMathException.IMATH_ERROR.OTHER, e.toString());
 		}
 
 	} else {
+		ejb.setRollbackOnly();
 		throw new IMathException(IMathException.IMATH_ERROR.OTHER, "Invalid action " + action);
 	}
 	//return idOnDestiny;
@@ -1169,5 +1192,9 @@ public class FileController extends AbstractController {
     	}
     }
     
+    // For testing purposes only
+    public void setEJB(EJBContext ejb) {
+    	this.ejb = ejb;
+    }
     
 }

@@ -14,6 +14,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.ejb.EJBContext;
 import javax.persistence.EntityManager;
 import javax.ws.rs.core.SecurityContext;
 
@@ -69,6 +70,7 @@ public class FileControllerUnitTest {
     
     @Mock private SecurityContext sc;                   // The security context
     @Mock private Principal principal;                  // It contains logged info user
+    @Mock EJBContext ejb;
     
     @Before
     public void setUp() throws Exception {
@@ -86,6 +88,7 @@ public class FileControllerUnitTest {
         fileController.setMainServiceDB(db);
         fileController.setFileUtils(fileUtils);
         fileController.setLog(LOG);
+        fileController.setEJB(ejb);
     }
     
     /**

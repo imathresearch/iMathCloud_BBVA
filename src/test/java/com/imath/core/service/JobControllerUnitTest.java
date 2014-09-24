@@ -1,9 +1,7 @@
 package com.imath.core.service;
 
 import org.junit.matchers.JUnitMatchers;
-import org.junit.matchers.JUnitMatchers.*;
 
-import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
@@ -14,10 +12,10 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
 
+import javax.ejb.EJBContext;
 import javax.persistence.EntityManager;
 import javax.ws.rs.core.SecurityContext;
 
-import org.hamcrest.CoreMatchers;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -74,6 +72,9 @@ public class JobControllerUnitTest {
     @Mock 
     private Principal principal;                  // It contains logged info user
 
+    @Mock
+    private EJBContext ejb;
+    
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
@@ -93,6 +94,7 @@ public class JobControllerUnitTest {
         jobController.setFileController(fc);
         jobController.setLog(LOG);
         jobController.setFileUtils(fileUtils);
+        jobController.setEJB(ejb);
         
     }
 

@@ -7,6 +7,8 @@ import java.util.List;
 //import java.util.ArrayList;
 
 
+import javax.annotation.Resource;
+import javax.ejb.EJBContext;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
@@ -39,11 +41,9 @@ import com.imath.core.util.Mail;
 @Stateless
 @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 public class SessionController extends AbstractController{
-    @Inject
-    UserController uc;
-    
-    @Inject 
-    FileController fc;
+    @Inject UserController uc;
+    @Inject FileController fc;
+    @Resource private EJBContext ejb;
     /**
      * It closes down the open session of the user. 
      * @param String - The authenticated user name of the system. It must be a valid {@link User} id.
@@ -127,6 +127,7 @@ public class SessionController extends AbstractController{
         			db.makePersistent(session);
         		}
         		catch (Exception e) {
+        			ejb.setRollbackOnly();
         			LOG.severe("Error saving session: " + e.getMessage());
         			throw e;
         		}
@@ -141,6 +142,7 @@ public class SessionController extends AbstractController{
     	}
     	catch (Exception e) {
     	    e.printStackTrace();
+    	    ejb.setRollbackOnly();
     		LOG.severe("Error retreiving sessions");
     		throw e;
     	}

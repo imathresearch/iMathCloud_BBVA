@@ -53,8 +53,7 @@ public class UserController extends AbstractController {
      */
 	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 	public IMR_User createNewUser(String userName, String password, String firstName, String lastName, Role role, MathLanguage math, String eMail, String organization, String phone1, String phone2, String rootName) throws Exception {
-	    System.out.println("***********************");
-	    System.out.println("*********************** " + userName + " " + password);
+		LOG.info("[IMATH][CLOUD][newUser]:" + userName + ", " + eMail);
 		//Create the IMR_User Entity
 	    IMR_User user = new IMR_User();
 		user.setUserName(userName);
@@ -150,6 +149,7 @@ public class UserController extends AbstractController {
 	        }
 	        br.close();
 	    } catch (Exception e) {
+	    	// We do not do a explicit rollback. 
 	        e.printStackTrace();
 	    }
 	}

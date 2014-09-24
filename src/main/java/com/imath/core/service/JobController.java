@@ -15,6 +15,8 @@ import java.util.Set;
 import java.util.List;
 import java.util.Date;
 
+import javax.annotation.Resource;
+import javax.ejb.EJBContext;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
@@ -54,7 +56,7 @@ public class JobController extends AbstractController{
     @Inject private DeploymentController dc;
     @Inject private FileUtils fileUtils;
     
-    
+	@Resource private EJBContext ejb;
     /**
      * Removes all the jobs related to the userName
      * @param userName
@@ -429,21 +431,15 @@ public class JobController extends AbstractController{
     @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
     public synchronized void removeJob(Long idJob) throws Exception{
     	
-    	try{
-	    	Job job = db.getJobDB().findById(idJob);
-	    	if(job != null){
-			    List<File> outputFiles = new ArrayList<File>(job.getOutputFiles());		   			    
-			    fileUtils.trashListFiles(outputFiles);			    		   
-				db.remove(job);
-	    	}
-	    	else{
-	    		throw new IMathException(IMathException.IMATH_ERROR.JOB_NOT_IN_OK_STATE, "" + idJob);
-	    	}
+    	Job job = db.getJobDB().findById(idJob);
+    	if(job != null){
+		    List<File> outputFiles = new ArrayList<File>(job.getOutputFiles());		   			    
+		    fileUtils.trashListFiles(outputFiles);			    		   
+			db.remove(job);
     	}
-    	catch(Exception e){
-    		throw e;
+    	else{
+    		throw new IMathException(IMathException.IMATH_ERROR.JOB_NOT_IN_OK_STATE, "" + idJob);
     	}
-    	
     }
     
     
@@ -468,6 +464,7 @@ public class JobController extends AbstractController{
 	    				break;
 	    			}
 	    			else{
+	    				ejb.setRollbackOnly();
 	    				throw new IMathException(IMathException.IMATH_ERROR.FILE_NOT_FOUND, "" + idFile);
 	    			}
 	    		}
@@ -599,6 +596,9 @@ public class JobController extends AbstractController{
     	this.fileUtils = fileUtils;
     }
     
+    public void setEJB(EJBContext ejb) {
+    	this.ejb = ejb;
+    }
     
     
 }
