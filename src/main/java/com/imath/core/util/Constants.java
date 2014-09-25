@@ -68,4 +68,6 @@ public class Constants {
     static public final String INITIAL_FILE_CONFIGURATION = "examplesFiles.txt";    // The file name containing the initial files to be included when registered
     static public final String IGNORE_LINE = "--"; // The characters that at the initial of the line in the configuration file, make the line to be ignored
     static public final String WELLCOME_TEMPLATE = "welcomeTemplate.html"; // The html template for wellcome email  
+    
+    static public final String LOG_PREFIX_SYSTEM = "[IMATH][CLOUD]";    // The prefix of the system
 }

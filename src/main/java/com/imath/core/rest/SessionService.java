@@ -23,6 +23,7 @@ import com.imath.core.model.Host;
 import com.imath.core.data.MainServiceDB;
 import com.imath.core.security.SecurityManager;
 import com.imath.core.service.SessionController;
+import com.imath.core.util.Constants;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -44,13 +45,14 @@ public class SessionService {
 	@Inject private MainServiceDB db;
 	@Inject private Logger LOG;
 	
+	private static String LOG_PRE = Constants.LOG_PREFIX_SYSTEM + "[SessionService]";
+	
 	@GET
     @Path("/newSession/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public HostDTO REST_requestWebSession(@PathParam("id") String userName, @Context SecurityContext sec) {
-		//TODO: Authenticate the call. Make sure that it is done from index.html
-		// and that the user is authenticated
-		//System.out.println("Creating new session");
+	    LOG.info(LOG_PRE + "[newSession]" + userName);
+
 		Session session;
 		try {
 		    SecurityManager.secureBasic(userName, sec);
@@ -71,6 +73,7 @@ public class SessionService {
     @Path("/closeSession/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public void REST_closeSession(@PathParam("id") String userName, @Context SecurityContext sec) {
+	    LOG.info(LOG_PRE + "[closeSession]" + userName);
 		try {
 		    SecurityManager.secureBasic(userName, sec);
 			sc.closeSession(userName);
@@ -85,6 +88,7 @@ public class SessionService {
 	@Path("/isConsoleReady/{host}/{port}") 
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response REST_isConsoleReady(@PathParam("host") String host, @PathParam("port") String port) {
+	    LOG.info(LOG_PRE + "[isConsoleReady]" + host + " " + port);
 	    String urlString = "http://" + host + ":" + port;
 	    System.out.println("REST_isConsoleReady url " + urlString);
         try {
@@ -104,6 +108,7 @@ public class SessionService {
 	@Path("/getNotebookList/{host}/{port}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String REST_getNotebookList(@PathParam("host") String host, @PathParam("port") String port){
+	    LOG.info(LOG_PRE + "[getNotebookList]" + host + " " + port);
 		String urlString = "http://" + host + ":" + port + "/notebooks";
 		try {
             URL url = new URL(urlString);
@@ -140,6 +145,7 @@ public class SessionService {
 	@Path("/newNotebook/{host}/{port}")
 	@Produces(MediaType.TEXT_PLAIN)
 	public String REST_newNotebook(@PathParam("host") String host, @PathParam("port") String port){
+	    LOG.info(LOG_PRE + "[newNotebook]" + host + " " + port);
 		String urlString = "http://" + host + ":" + port + "/new";
 		try {
             URL url = new URL(urlString);

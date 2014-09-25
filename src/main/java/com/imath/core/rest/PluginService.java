@@ -7,7 +7,6 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
-
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -40,6 +39,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 //import org.codehaus.jackson.map.annotate.JsonDeserialize;
 //import org.codehaus.jackson.type.TypeReference;
 
+
 import com.imath.core.model.File;
 import com.imath.core.model.Job;
 import com.imath.core.model.Session;
@@ -48,7 +48,6 @@ import com.imath.core.model.JobResult;
 import com.imath.core.model.IMR_User;
 import com.imath.core.model.MathGroup;
 import com.imath.core.model.MathFunction;
-
 import com.imath.core.data.MainServiceDB;
 import com.imath.core.rest.JobService.JobDTO;
 import com.imath.core.security.SecurityManager;
@@ -68,8 +67,10 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+
 // Just to check
 import com.imath.core.service.JobController;
+import com.imath.core.util.Constants;
 
 import java.util.logging.Logger;
 
@@ -89,12 +90,14 @@ public class PluginService {
 	@Inject private JobController jc;
 	@Inject private PluginController pc;
 	
+	private static String LOG_PRE = Constants.LOG_PREFIX_SYSTEM + "[PluginService]";
+	   
 	@GET
     @Path("/output/{idJob}/{result}")
     @Produces(MediaType.APPLICATION_JSON)
     public void REST_placeOutput(@PathParam("idJob") Long idJob, @PathParam("result") String result) {		
+	    LOG.info(LOG_PRE + "[output]" + idJob.toString() + " " + result );
 		try {
-			LOG.info(result);
 			States state = States.FINISHED_OK;
 			if (result==null) { // TODO: We should establish an error codification, and messaging...
 				state = States.FINISHED_ERROR;
@@ -113,6 +116,7 @@ public class PluginService {
     @Produces(MediaType.APPLICATION_JSON)
 	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
     public List<MathFunctionDTO> REST_getMathFunctions(@PathParam("userName") String userName, @Context SecurityContext sc) {		
+	    LOG.info(LOG_PRE + "[getMathFunctions]" + userName );
 		try {
 		    SecurityManager.secureBasic(userName, sc);
 			IMR_User user = db.getIMR_UserDB().findById(userName);
@@ -139,7 +143,8 @@ public class PluginService {
     @Path("/submitMathFunction/{userName}/{idMath}/{idFile}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-    public Response REST_submitMathFunction(@PathParam("userName") String userName, @PathParam("idMath") Long idMath, @PathParam("idFile") Long idFile, ParamDTO paramDTO, @Context SecurityContext sc) {		
+    public Response REST_submitMathFunction(@PathParam("userName") String userName, @PathParam("idMath") Long idMath, @PathParam("idFile") Long idFile, ParamDTO paramDTO, @Context SecurityContext sc) {
+	    LOG.info(LOG_PRE + "[submitMathFunction]" + userName + " " + idMath.toString() + " " + idFile.toString());
 		try {
 			//TODO: Convert JSON to List
 		    SecurityManager.secureBasic(userName, sc);

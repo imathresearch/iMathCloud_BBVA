@@ -36,6 +36,7 @@ import com.imath.core.data.MainServiceDB;
 import com.imath.core.service.FileController;
 import com.imath.core.service.JobController;
 import com.imath.core.service.PluginController;
+import com.imath.core.util.Constants;
 import com.imath.core.util.PublicResponse;
 import com.imath.core.rest.FileService.FileDTO;
 
@@ -57,10 +58,13 @@ public class JobService {
 	
 	@Inject private PluginController pc;
 	
+	private static String LOG_PRE = Constants.LOG_PREFIX_SYSTEM + "[JobService]";
+	
 	@GET
     @Path("/getJobsRunning/{userName}")
     @Produces(MediaType.APPLICATION_JSON)
     public List<JobDTO> REST_getJobs(@PathParam("userName") String userName, @Context SecurityContext sc) {
+	    LOG.info(LOG_PRE + "[getJobsRunning]" +userName);
 		try {
 		    SecurityManager.secureBasic(userName, sc);
 			List<Job> jobs = db.getJobDB().getJobsByUser_and_State(userName, Job.States.RUNNING);
@@ -80,6 +84,7 @@ public class JobService {
 		//TODO: Authenticate the call. Make sure that it is done from index.html
 		// and that the user is authenticated
 		//System.out.println("GETTING JOBS");
+        LOG.info(LOG_PRE + "[getJobs]" +userName);
 		try {
 		    SecurityManager.secureBasic(userName, sc);
 			List<Job> jobs =  db.getJobDB().getJobsByUser(userName);
@@ -95,6 +100,7 @@ public class JobService {
     @Path("/getJob/{idJob}")
     @Produces(MediaType.APPLICATION_JSON)
     public JobDTO REST_getJob(@PathParam("idJob") Long idJob, @Context SecurityContext sc) {
+	    LOG.info(LOG_PRE + "[getJobs]" + idJob.toString());
 		try {
 		    Job job = db.getJobDB().findByIdSecured(idJob, sc.getUserPrincipal().getName());
 			//Job job =  db.getJobDB().findById(idJob);
@@ -110,6 +116,7 @@ public class JobService {
     @Path("/getJobOutputFiles/{idJob}")
     @Produces(MediaType.APPLICATION_JSON)
     public List<FileDTO> REST_getJobOutputFiles(@PathParam("idJob") Long idJob, @Context SecurityContext sc) {
+	    LOG.info(LOG_PRE + "[getJobOutputFiles]" + idJob.toString());
 		try {
 		    Job job = db.getJobDB().findByIdSecured(idJob, sc.getUserPrincipal().getName());
 			//Job job =  db.getJobDB().findById(idJob);
@@ -126,20 +133,20 @@ public class JobService {
     @Path("/removeJob/{idJob}")
     @Produces(MediaType.APPLICATION_OCTET_STREAM)
     public Response REST_removeJob(@PathParam("idJob") Long idJob, @Context SecurityContext sc) {
-		
-		 try{
-	         Job job = jc.getJobStructure(idJob, sc);
-	         if (job == null) {
-	        	 return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
-	         } else {
-	             jc.removeJob(idJob);
-	             return Response.status(Response.Status.OK).build();
-	         }
-		 }
-		 catch (Exception e) {
-				LOG.severe("Error getting job id: "+ idJob + " - " + e.getMessage());
-				return Response.status(Response.Status.NOT_FOUND).build();
-		 }		
+	    LOG.info(LOG_PRE + "[removeJob]" + idJob.toString());
+        try{
+            Job job = jc.getJobStructure(idJob, sc);
+            if (job == null) {
+           	 return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+            } else {
+                jc.removeJob(idJob);
+                return Response.status(Response.Status.OK).build();
+            }
+        }
+        catch (Exception e) {
+        	LOG.severe("Error getting job id: "+ idJob + " - " + e.getMessage());
+        	return Response.status(Response.Status.NOT_FOUND).build();
+        }		
     }
 	
 	private List<JobDTO> prepareJobsToSubmit(List<Job> jobs) throws Exception {

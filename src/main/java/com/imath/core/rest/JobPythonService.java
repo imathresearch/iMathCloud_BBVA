@@ -41,6 +41,7 @@ import com.imath.core.data.MainServiceDB;
 
 
 
+
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
@@ -87,10 +88,13 @@ public class JobPythonService {
 	@Inject private JobPythonController jpc;
 	@Inject private PluginController pc;
 	
+	private static String LOG_PRE = Constants.LOG_PREFIX_SYSTEM + "[JobPythonService]";
+	
 	@GET
     @Path("/python/exec/{idJob}/{result}")//{result}
     @Produces(MediaType.APPLICATION_JSON)
     public void REST_placeOutputPythonJob(@PathParam("idJob") Long idJob,  @PathParam("result") String result) {		
+	    LOG.info(LOG_PRE + "[python/exec]" + idJob.toString() + " " + result);
 		try {
 			//LOG.info("EN LA LLAMADA RES");
 			//LOG.info(result);
@@ -115,7 +119,7 @@ public class JobPythonService {
 	//@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
     public JobDTO REST_submitJob(@PathParam("userName") String userName, @PathParam("idFile") Long idFile, @Context SecurityContext sc) {		
-		
+	    LOG.info(LOG_PRE + "[submitJob]" +userName + " " + idFile.toString());
 		Set<File> files = new HashSet<File>(); 
 		
 		try {
