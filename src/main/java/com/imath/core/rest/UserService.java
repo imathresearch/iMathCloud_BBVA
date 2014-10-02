@@ -43,10 +43,13 @@ public class UserService {
 	@Inject private UserController userController;
 	@Inject private Logger LOG;
 	
+	private static String LOG_PRE = Constants.LOG_PREFIX_SYSTEM + "[UserService]";
+	   
 	@GET
     @Path("/getUserInfo/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public UserDTO REST_getUserInfo(@PathParam("id") String userName, @Context SecurityContext sc) {
+	    LOG.info(LOG_PRE + "[getUserInfo]" + userName);
 		try {
 		    SecurityManager.secureBasic(userName, sc);
 			IMR_User user = db.getIMR_UserDB().findById(userName);
@@ -68,6 +71,7 @@ public class UserService {
 	@Path("/getCurrentStorage/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public UserStorageDTO REST_getCurrentStorage(@PathParam("id") String userName, @Context SecurityContext sc) {
+	    LOG.info(LOG_PRE + "[getCurrentStorage]" + userName);
         try {
             SecurityManager.secureBasic(userName, sc);
             DecimalFormat df = new DecimalFormat("0.##");

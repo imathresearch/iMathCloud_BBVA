@@ -20,7 +20,6 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
 
 import java.lang.Math;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
@@ -32,8 +31,10 @@ import com.imath.core.model.FileShared;
 import com.imath.core.model.IMR_User;
 import com.imath.core.data.MainServiceDB;
 import com.imath.core.service.FileController;
+import com.imath.core.util.Constants;
 import com.imath.core.util.FileUtils;
 import com.imath.core.security.SecurityManager;
+
 import java.util.logging.Logger;
 
 /**
@@ -49,11 +50,14 @@ public class FileService {
 	@Inject private MainServiceDB db;
 	@Inject private Logger LOG;
 	
+	private static String LOG_PRE = Constants.LOG_PREFIX_SYSTEM + "[FileService]";
+	
 	@GET
     @Path("/getFileContent/{userName}/{id}")
 	//@Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public FileContentDTO REST_getFileContent(@PathParam("userName") String userName, @PathParam("id") Long id, @QueryParam("page") Integer page, @Context SecurityContext sc){
+	    LOG.info(LOG_PRE + "[getFileContent]" + userName + " " + id.toString() + " " + page.toString() );
 		try { 
 		    SecurityManager.secureBasic(userName, sc);
 			FileContentDTO out = new FileContentDTO();
@@ -79,6 +83,7 @@ public class FileService {
 	//@Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public FileDTO REST_getFile(@PathParam("userName") String userName, @PathParam("id") Long id, @Context SecurityContext sc){
+	    LOG.info(LOG_PRE + "[getFile]" + userName + " " + id.toString());
 		//TODO: Test needed!!
 		try { 
 		    SecurityManager.secureBasic(userName, sc);
@@ -107,6 +112,7 @@ public class FileService {
 	@Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response REST_saveFileContent(@PathParam("userName") String userName, @PathParam("id") Long id, List<String> content, @Context SecurityContext sc) {
+	    LOG.info(LOG_PRE + "[saveFileContent]" + userName + " " + id.toString());
 		Map<String, String> responseObj = new HashMap<String, String>();
 		responseObj.put("ok","200");
 		Response.ResponseBuilder builder = Response.ok().entity(responseObj);
@@ -130,6 +136,7 @@ public class FileService {
 	@Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response REST_saveFileContent(@PathParam("userName") String userName, @PathParam("id") Long id, @PathParam("page") Long page, List<String> content, @Context SecurityContext sc) {
+	    LOG.info(LOG_PRE + "[saveFileContent]" + userName + " " + id.toString() + " " + page.toString());
         Map<String, String> responseObj = new HashMap<String, String>();
         Response.ResponseBuilder builder = null;
         try {
@@ -159,7 +166,8 @@ public class FileService {
 				@PathParam("origin") Long origin,
 				@PathParam("destiny") Long destiny,
 				@Context SecurityContext sc) {
-
+	    
+	    LOG.info(LOG_PRE + "[pasteItem]" + userName + " " + action + " " + origin.toString() + " " + destiny.toString());
         // TODO: Handle Response object properly.
         Response.ResponseBuilder builder = null;
 		try {
@@ -180,6 +188,7 @@ public class FileService {
     @Path("/getFiles/{userName}")
     @Produces(MediaType.APPLICATION_JSON)
     public List<FileDTO> REST_getFiles(@PathParam("userName") String userName, @Context SecurityContext sc) {
+	    LOG.info(LOG_PRE + "[getFiles]" + userName);
         List<FileDTO> ret = null;
         if (sc== null) {
             ret = internalGetFiles(userName, null);
@@ -201,6 +210,7 @@ public class FileService {
     @Path("/getFiles/{userName}/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public List<FileDTO> REST_getFiles(@PathParam("userName") String userName, @PathParam("id") Long id, @Context SecurityContext sc) {
+        LOG.info(LOG_PRE + "[getFiles]" + userName);
         List<FileDTO> ret = null;
         if (sc== null) {
             ret = internalGetFiles(userName, id);
@@ -244,6 +254,7 @@ public class FileService {
 		//TODO: Test needed!!
 		//TODO: Authenticate the call. Make sure that it is done from index.html
 		// and that the user is authenticated
+	    LOG.info(LOG_PRE + "[getSharedFiles]" + userName);
 		try {
 		    SecurityManager.secureBasic(userName, sc);
 			List<FileShared> filesShared = db.getFileSharedDB().getFilesSharedByUser(userName);
@@ -293,6 +304,7 @@ public class FileService {
 		//TODO: Test needed!!
 		//TODO: Authenticate the call. Make sure that it is done from index.html
 		// and that the user is authenticated
+	    LOG.info(LOG_PRE + "[getUsersShared]" + idFile.toString());
 		try {
 			List<FileShared> filesShared = db.getFileSharedDB().getFilesSharedByFile(idFile);
 			List<UserDTO> out = new ArrayList<UserDTO>();
@@ -324,6 +336,7 @@ public class FileService {
 		//TODO:Error logs more accurate
 		//TODO: Important: If a parent folder is already shared, then it should not be allowed.
 		//TODO: Important: All son folders that are already shared should become unshared.
+	    LOG.info(LOG_PRE + "[addUserShared]" + idFile.toString() + " " + user);
 		try {
 			UserDTO out = new UserDTO();
 			IMR_User userObj = null;
@@ -375,6 +388,7 @@ public class FileService {
 		//TODO: Authenticate the call. Make sure that it is done from index.html
 		// and that the user is authenticated
 		// Error logs more accurate
+	    LOG.info(LOG_PRE + "[removeUserShared]" + idFile.toString() + " " + userName);
 		try {
 			List<FileShared> filesShared = db.getFileSharedDB().getFileShared(idFile, userName);
 			if (filesShared != null) {
