@@ -57,7 +57,7 @@ public class FileService {
 	//@Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public FileContentDTO REST_getFileContent(@PathParam("userName") String userName, @PathParam("id") Long id, @QueryParam("page") Integer page, @Context SecurityContext sc){
-	    LOG.info(LOG_PRE + "[getFileContent]" + userName + " " + id.toString() + " " + page.toString() );
+	    LOG.info(LOG_PRE + "[getFileContent]" + userName + " " + id.toString() );
 		try { 
 		    SecurityManager.secureBasic(userName, sc);
 			FileContentDTO out = new FileContentDTO();
