@@ -112,19 +112,10 @@ public class Security {
     public void createSystemUser(String userName, String password, String role) throws Exception {
         // We add the system user
         //Process p = Runtime.getRuntime().exec(Constants.ADD_USER_CLI + " -a " + userName + " " + password + " > /dev/tty");
-        ProcessBuilder pb = new ProcessBuilder(Constants.ADD_USER_CLI, "-a",  userName, password);
+        //ProcessBuilder pb = new ProcessBuilder(Constants.ADD_USER_CLI, "-a",  userName, password);
+               
         
         /*
-        File commands = new File("/home/andrea/workspace/AddUserJboss/src/Commands.txt");
-		File output = new File("/home/andrea/workspace/AddUserJboss/src/ProcessLog.txt");
-		File errors = new File("/home/andrea/workspace/AddUserJboss/src/ErrorLog.txt");
-		 
-		pb.redirectInput(commands);
-		pb.redirectError(errors);
-		pb.redirectOutput(output);
-        */
-        
-        
         pb.redirectInput(Redirect.INHERIT);
         pb.redirectOutput(Redirect.INHERIT);
         pb.redirectError(Redirect.INHERIT);
@@ -140,6 +131,13 @@ public class Security {
         int signal = p.waitFor();
         
         System.out.println("SIGNAL " + signal);
+        */
+    	
+    	String hexPass = generateHexMd5Password(userName, password);
+        
+        // Here the pass in hex(md5) is set as property
+        updateProperty(userName, hexPass.toString(), Constants.USERS_FILE);
+        updateProperty(userName, hexPass.toString(), Constants.USERS_DOMAIN_FILE);
         
         // We add the role of the user if role is not null
         if (role != null) {
