@@ -12,4 +12,6 @@ userdel $1
 
 rm -R /iMathCloud/$1
 
+rm -R /iMathCloud/exec_dir/$1
+
 rm -R /home/$1
