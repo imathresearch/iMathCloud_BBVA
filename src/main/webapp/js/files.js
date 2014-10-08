@@ -870,7 +870,13 @@ function closeOpenFilePlot(idFile) {
 	}
 	globalTabCounting--;
 	
-	
+	var numOpenTabs = $('.tab-File').length;	
+	if(numOpenTabs == 0){		
+		var tabs = $( "#tabsFile" ).tabs();
+		tabs.tabs( "refresh" );
+		tabs.find( ".ui-tabs-nav" ).remove();		
+		tabs.tabs( "refresh" );
+	}
 	
 }
 
@@ -962,7 +968,7 @@ function showSaveFileNotification (idFile) {
 function loadFile(idFile){
 	if(isFileOpen(idFile)) {
 		var index = getTabIndex(idFile);
-		$( "#tabs" ).tabs("option", "active", index );
+		$( "#tabsFile" ).tabs("option", "active", index );
 	}
 	else {
 		if(isFile(idFile)){
@@ -1039,7 +1045,7 @@ function executeFileInConsole(idFile){
 function plotFile(idFile){
 	if(isFileOpenPlot(idFile)) {
 		var index = getTabIndexPlot(idFile);
-		$( "#tabs" ).tabs("option", "active", index );
+		$( "#tabsFile" ).tabs("option", "active", index );
 	}
 	else {
 		$.ajax({
@@ -1115,18 +1121,24 @@ function plotInTab(data){
 	}
 	
 	var nameTab = buildTabPlotName(data['id']);
-	var tabTemplate = "<li><a href='#{href}'>#{label}</a> <span class='ui-icon ui-icon-close' role='presentation'>Remove Tab</span></li>";
+	var tabTemplate = "<li class='tab-File'><a href='#{href}'>#{label}</a> <span class='ui-icon ui-icon-close' role='presentation'>Remove Tab</span></li>";
 	var label = 'plot_'+data['name']; 
 	var id = nameTab;
 	var li = $( tabTemplate.replace( /#\{href\}/g, "#" + id ).replace( /#\{label\}/g, label ) );
+	
+	var numOpenTabs = $('.tab-File').length;	
+	if(numOpenTabs == 0){
+		$("#tabsFile").append('<ul></ul>');
+	}
 	 
-	var tabs = $( "#tabs" ).tabs();
+	var tabs = $( "#tabsFile" ).tabs();
+	tabs.tabs( "refresh" );
 	tabs.find( ".ui-tabs-nav" ).append( li );
 
-	var u = document.getElementById('tabs');
+	var u = document.getElementById('tabsFile');
 	var he = u.offsetHeight;
 	var wi = u.offsetWidth;
-	he =Math.round(he - he*0.4);
+	he = Math.round(he - he*0.4);
 	wi = Math.round(wi - wi*0.1);
 	
 	htmlCode = "<div class=\"flot-container\" style=\"width:" + wi + "px;height:" + he + "px;\">";
@@ -1147,10 +1159,17 @@ function plotInTab(data){
 			$('#plotDIV_' + nameTab).html(content);
 	}
 	
-	globalTabCounting++;
+	
+	
 	addTabInstancePlot(data['id'],globalTabCounting);
-	$( "#tabs" ).tabs("option", "active", globalTabCounting);
+	globalTabCounting++;
 	tabs.tabs( "refresh" );
+	var index = getTabIndexPlot(data['id']);
+	$( "#tabsFile" ).tabs("option", "active", index);
+	tabs.tabs( "refresh" );
+	
+    
+
 }
 
 function buildTabName(idFile) {

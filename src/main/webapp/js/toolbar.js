@@ -107,8 +107,8 @@ function genContextMenu(type, shareZone, sharingState, isRoot) {
 			out += '"plot": {';
 			out += '    "name": "Plot",'; 
 			out += '	"items": {';
-			out += '		"descstats": {"name": "Descriptive Statistics", "icon": "ui-icon-cancel"},';
-			out += '		"linreg": {"name": "Linear Regression", "icon": "ui-icon-image"}';
+			out += '		"descstats": {"name": "Descriptive Statistics", "icon": "ui-icon-cancel"}';
+			//out += '		"linreg": {"name": "Linear Regression", "icon": "ui-icon-image"}';
 			out += '	}';
 			out += '},';
 		    out +=' "sep1": "---------", ';
