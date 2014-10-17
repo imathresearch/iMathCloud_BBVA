@@ -2,6 +2,7 @@ var MSG_EXECUTE_CODE = "EXE";
 var MSG_EXECUTE_CODE_R = "EXR";		// message to execute the sent code to R console
 var MSG_DEFAULT_LANGUAGE = "LAN";
 var MSG_DEFAULT_USER_ENVIRONMENT = "ENV";
+var MSG_URLCONSOLE = "URL";
 
 function executeInConsole(str, idConsole) {
 	sendMessage(MSG_EXECUTE_CODE, str, idConsole);
@@ -20,6 +21,10 @@ function setDefaultLanguage(str, idConsole) {
 function setEnvironmentVariable(str, idConsole) {
 	console.log("setEnvironmentVariable " + str);
 	sendMessage(MSG_DEFAULT_USER_ENVIRONMENT, str + ";" + userName, idConsole);
+}
+
+function setURLConsole(idConsole){
+	sendMessage(MSG_URLCONSOLE, urlConsole, idConsole);
 }
 
 function sendMessage(msgType, content, idConsole) {
@@ -78,6 +83,7 @@ function newConsole(notebookId, notebookName){
 			var env_var = "/iMathCloud/" + userName;
 			setEnvironmentVariable(env_var, idConsole);
 			setDefaultLanguage(mathLanguageCode, idConsole);
+			setURLConsole(idConsole);
 		});
 				
 	}
