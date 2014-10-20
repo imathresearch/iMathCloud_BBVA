@@ -16,7 +16,6 @@
       <javaee:url-pattern>/rest/beta/api/data/*</javaee:url-pattern>
       <javaee:url-pattern>/rest/beta/api/exec/*</javaee:url-pattern>
       <javaee:url-pattern>/changePassword</javaee:url-pattern>
-      <javaee:url-pattern>/logout</javaee:url-pattern>
       <javaee:url-pattern>/rest/beta/api/user/removeUser/*</javaee:url-pattern>
     </javaee:web-resource-collection>
     <javaee:auth-constraint>
