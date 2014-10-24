@@ -15,7 +15,7 @@ function fillRemoteFiles(files, treeView, shareZone) {
 				if(file['dir']==-100000) {
 					userName = " @" + file['userNameOwner'];
 				}
-			}
+			}			
 			if (file['sharingState'] == "YES") {
 				classSharing = "folder_shared";
 			}
@@ -480,7 +480,7 @@ function renameFile(idFile, newName, funcSuccess, funcError) {
 }
 
 function renameFileSyn(idFile, newName){
-	
+	console.log("On renameFileSyn");
 	var data = new FormData();
 	data.append("idFile", idFile);
 	data.append("newName", newName);
