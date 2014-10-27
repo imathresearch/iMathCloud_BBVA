@@ -3,7 +3,9 @@ package com.imath.core.rest;
 import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.logging.Logger;
 
+import javax.inject.Inject;
 import javax.websocket.CloseReason;
 import javax.websocket.OnClose;
 import javax.websocket.OnError;
@@ -13,6 +15,7 @@ import javax.websocket.Session;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 
+import com.imath.core.util.Constants;
 import com.imath.core.util.WebSocketClientConnection;
 
 @ServerEndpoint(value="/websocket/{kernel-id}/{opt}/{ipython-port}")
@@ -22,12 +25,16 @@ public class WebsocketService {
 	private String option;
 	private JavaReminder reminderBeep;
 	private boolean ping;
+		
+	private Logger LOG = Logger.getAnonymousLogger();
+	
+	private static String LOG_PRE = Constants.LOG_PREFIX_SYSTEM + "[WebsocketService]";
 			
 	@OnOpen
     public void onOpen(Session session, @PathParam("kernel-id") String kernelId, @PathParam("opt") String opt, @PathParam("ipython-port") String portIpython) {
-        
-        System.out.println("OPEN WEBSOCKET");
-        System.out.println("Connected from: " + session.getRequestURI());
+		LOG.info(LOG_PRE + "[onOpen]" + opt);
+        //System.out.println("OPEN WEBSOCKET");
+        //System.out.println("Connected from: " + session.getRequestURI());
         
         // Connection to IPython server
         this.wcc = new WebSocketClientConnection();
@@ -42,12 +49,13 @@ public class WebsocketService {
     }
     
     @OnMessage
-    public void echoText(String name) {
-    	System.out.println("["+this.option+"] Server receiving " + name);
+    public void OnMessage(String name) {
+    	LOG.info(LOG_PRE + "[OnMessage]" + this.option);
+    	//System.out.println("["+this.option+"] Server receiving " + name);
     	
     	//It is a ping message
     	if(name.equals("[IMATH]Ping")){
-    		System.out.println("["+this.option+"] Server receiving PING" );
+    		//System.out.println("["+this.option+"] Server receiving PING" );
     		return;
     	}    
         
@@ -67,8 +75,9 @@ public class WebsocketService {
     
 	@OnClose
     public void onClose(Session session, CloseReason reason) {
-        System.out.println("["+option+"] Closing server");
-        System.out.println("CLOSED: " + reason.getCloseCode() + ", " + reason.getReasonPhrase());
+		LOG.info(LOG_PRE + "[onClose]" + this.option);
+        //System.out.println("["+option+"] Closing server");
+        //System.out.println("CLOSED: " + reason.getCloseCode() + ", " + reason.getReasonPhrase());
         
         try {
 			wcc.session.close();
@@ -83,8 +92,9 @@ public class WebsocketService {
 		
 	@OnError
     public void onError(Throwable t) {
-        System.out.println("["+option+"] ERROR server");    
-        System.out.println(t.getMessage());
+		LOG.info(LOG_PRE + "[onError]" + this.option);
+        //System.out.println("["+option+"] ERROR server");    
+        //System.out.println(t.getMessage());
         reminderBeep.timer.cancel();
     }
 	
@@ -100,7 +110,7 @@ public class WebsocketService {
 
 	        @Override
 	        public void run() {
-	            System.out.println("ReminderTask is completed by Java timer");
+	            //System.out.println("ReminderTask is completed by Java timer");
 	            try {	            		                                    	
 	               wcc.sessionServer.getBasicRemote().sendText("{\"ping\":\"[IMATH]Ping\"}");	                				
 				} catch (Exception e) {

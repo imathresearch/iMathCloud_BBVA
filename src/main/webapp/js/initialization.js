@@ -312,8 +312,8 @@ function getUserInfo(){
         success: function(user) {
         	projectName = user['rootName'];
         	$("#projectName").text("Project " + projectName);
-        	console.log("Project name");
-        	console.log(projectName);
+        	//console.log("Project name");
+        	//console.log(projectName);
         },
         error: function(error) {
             console.log("error updating table -" + error.status);

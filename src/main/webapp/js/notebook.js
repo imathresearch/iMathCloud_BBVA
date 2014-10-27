@@ -19,7 +19,7 @@ function setDefaultLanguage(str, idConsole) {
 }
 
 function setEnvironmentVariable(str, idConsole) {
-	console.log("setEnvironmentVariable " + str);
+	//console.log("setEnvironmentVariable " + str);
 	sendMessage(MSG_DEFAULT_USER_ENVIRONMENT, str + ";" + userName, idConsole);
 }
 
@@ -28,8 +28,8 @@ function setPORTConsole(idConsole){
 }
 
 function sendMessage(msgType, content, idConsole) {
-	console.log("sendMessage" + msgType + content);
-	console.log("sendMessage" + urlConsole);
+	//console.log("sendMessage" + msgType + content);
+	//console.log("sendMessage" + urlConsole);
 	iframeObj = document.getElementById("interactive_math-" + idConsole);
 	var win = iframeObj.contentWindow;
 	
@@ -46,7 +46,7 @@ function goToConsole(idConsole) {
 
 function newConsole(notebookId, notebookName){
 	
-	console.log("New console");
+	//console.log("New console");
 	
 	if(!isNotebookOpen(notebookId)){
 		var idConsole = globalIdConsole;	
@@ -249,8 +249,8 @@ function newDefaultNotebook(){
 	}	
 		
 	if (found){ // 2. The default notebook exists, so a console is open using it
-		console.log("The notebook exists");
-		console.log("Name " + notebookName);
+		//console.log("The notebook exists");
+		//console.log("Name " + notebookName);
 		newConsole(notebookId, notebookName);
 	}
 	else{ // 3. The default notebook does not exist
