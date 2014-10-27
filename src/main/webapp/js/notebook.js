@@ -3,6 +3,7 @@ var MSG_EXECUTE_CODE_R = "EXR";		// message to execute the sent code to R consol
 var MSG_DEFAULT_LANGUAGE = "LAN";
 var MSG_DEFAULT_USER_ENVIRONMENT = "ENV";
 var MSG_PORTCONSOLE = "PRT";
+var IMATH_PORT = "8080";
 
 function executeInConsole(str, idConsole) {
 	sendMessage(MSG_EXECUTE_CODE, str, idConsole);
@@ -33,7 +34,7 @@ function sendMessage(msgType, content, idConsole) {
 	iframeObj = document.getElementById("interactive_math-" + idConsole);
 	var win = iframeObj.contentWindow;
 	
-	var destination = 'http://' + host['url'] + ":8080";
+	var destination = 'http://' + host['url'] + ":" + IMATH_PORT;
 	win.postMessage(msgType + content, destination);
 	//win.postMessage(msgType + content, urlConsole);
 }

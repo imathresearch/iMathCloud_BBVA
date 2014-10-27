@@ -480,7 +480,7 @@ function renameFile(idFile, newName, funcSuccess, funcError) {
 }
 
 function renameFileSyn(idFile, newName){
-	console.log("On renameFileSyn");
+	//console.log("On renameFileSyn");
 	var data = new FormData();
 	data.append("idFile", idFile);
 	data.append("newName", newName);
@@ -498,7 +498,7 @@ function renameFileSyn(idFile, newName){
 		contentType : false,
 
 		success: function(data) {    	
-			console.log("on success renameFileSyn");
+			//console.log("on success renameFileSyn");
 	    	success = true;
 	    },
 	    error: function(){
