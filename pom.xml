@@ -265,13 +265,11 @@
 		    <scope>provided</scope>
 		</dependency>
 
-		<dependency>
+		<!-- dependency>
             <groupId>org.jboss.web</groupId>
             <artifactId>jbossweb</artifactId>
-            <scope>provided</scope>
-            <!-- TODO: don't hard code this -->
             <version>7.0.16.Final</version>
-        </dependency>
+        </dependency-->
              
         <dependency>
             <groupId>org.jboss.spec.javax.servlet</groupId>
