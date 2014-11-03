@@ -2,6 +2,8 @@ var MSG_EXECUTE_CODE = "EXE";
 var MSG_EXECUTE_CODE_R = "EXR";		// message to execute the sent code to R console
 var MSG_DEFAULT_LANGUAGE = "LAN";
 var MSG_DEFAULT_USER_ENVIRONMENT = "ENV";
+var MSG_PORTCONSOLE = "PRT";
+var IMATH_PORT = "8080";
 
 function executeInConsole(str, idConsole) {
 	sendMessage(MSG_EXECUTE_CODE, str, idConsole);
@@ -18,17 +20,23 @@ function setDefaultLanguage(str, idConsole) {
 }
 
 function setEnvironmentVariable(str, idConsole) {
-	console.log("setEnvironmentVariable " + str);
+	//console.log("setEnvironmentVariable " + str);
 	sendMessage(MSG_DEFAULT_USER_ENVIRONMENT, str + ";" + userName, idConsole);
 }
 
+function setPORTConsole(idConsole){
+	sendMessage(MSG_PORTCONSOLE, host['port'], idConsole);
+}
+
 function sendMessage(msgType, content, idConsole) {
-	console.log("sendMessage" + msgType + content);
-	console.log("sendMessage" + urlConsole);
+	//console.log("sendMessage" + msgType + content);
+	//console.log("sendMessage" + urlConsole);
 	iframeObj = document.getElementById("interactive_math-" + idConsole);
 	var win = iframeObj.contentWindow;
 	
-	win.postMessage(msgType + content, urlConsole);
+	var destination = 'http://' + host['url'] + ":" + IMATH_PORT;
+	win.postMessage(msgType + content, destination);
+	//win.postMessage(msgType + content, urlConsole);
 }
 
 function goToConsole(idConsole) {
@@ -39,6 +47,7 @@ function goToConsole(idConsole) {
 
 function newConsole(notebookId, notebookName){
 	
+	//console.log("New console");
 	
 	if(!isNotebookOpen(notebookId)){
 		var idConsole = globalIdConsole;	
@@ -66,8 +75,12 @@ function newConsole(notebookId, notebookName){
 		
 		tabs.tabs( "refresh" );
 		$( "#tabsConsole" ).tabs("option", "active",consolesIdOpenTabIndex[idConsole] );
-						
-		$( "#interactive_math-" + idConsole).attr('src',urlConsole +'/' + notebookId);
+		
+		
+		var callBE = 'http://' + host['url'] + ":8080"+ '/iMathCloud/rest/notebook_service/getNotebook/' + notebookId + "/" + host['port'];
+		$( "#interactive_math-" + idConsole).attr('src', callBE);
+		//$( "#interactive_math-" + idConsole).attr('src',urlConsole +'/' + notebookId);								
+		
 		var u = document.getElementById('tabsConsole');
 		var he = u.offsetHeight;
 		$( "#interactive_math-" + idConsole).height(he-70);
@@ -78,6 +91,7 @@ function newConsole(notebookId, notebookName){
 			var env_var = "/iMathCloud/" + userName;
 			setEnvironmentVariable(env_var, idConsole);
 			setDefaultLanguage(mathLanguageCode, idConsole);
+			setPORTConsole(idConsole);
 		});
 				
 	}
@@ -160,7 +174,7 @@ function getNotebookList(){
     var listNotebooks = null;
     
     $.ajax({
-      url: "rest/session_service/getNotebookList/"+host['url']+"/"+host['port'],
+      url: "rest/notebook_service/getNotebookList/"+host['url']+"/"+host['port'],
       type: "GET",
       async: false,
       success: function(notebooks) {    	
@@ -187,7 +201,7 @@ function createNotebook(){
     var notebookId = null;
     
     $.ajax({
-      url: "rest/session_service/newNotebook/"+host['url']+"/"+host['port'] ,
+      url: "rest/notebook_service/newNotebook/"+host['url']+"/"+host['port'] ,
       type: "GET",
       async: false,
       success: function(data) {    	   	  
@@ -236,6 +250,8 @@ function newDefaultNotebook(){
 	}	
 		
 	if (found){ // 2. The default notebook exists, so a console is open using it
+		//console.log("The notebook exists");
+		//console.log("Name " + notebookName);
 		newConsole(notebookId, notebookName);
 	}
 	else{ // 3. The default notebook does not exist

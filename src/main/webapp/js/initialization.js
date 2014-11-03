@@ -312,8 +312,8 @@ function getUserInfo(){
         success: function(user) {
         	projectName = user['rootName'];
         	$("#projectName").text("Project " + projectName);
-        	console.log("Project name");
-        	console.log(projectName);
+        	//console.log("Project name");
+        	//console.log(projectName);
         },
         error: function(error) {
             console.log("error updating table -" + error.status);
@@ -332,7 +332,7 @@ function conectToDefaultConsole(host) {
 var id = setInterval(function() {
 	if (! (typeof window.hostGlobal=== 'undefined')) {
 		host = window.hostGlobal;
-		urlConsole = 'http://'+host['url']+':' + host['port'];
+		urlConsole = 'http://'+host['url']+':' + host['port'];		
 		if (isReady(host['url'], host['port'])) {
 			clearInterval(id);
 			newDefaultNotebook();

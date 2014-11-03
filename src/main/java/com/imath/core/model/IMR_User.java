@@ -23,7 +23,7 @@ public class IMR_User implements Serializable {
 	@Id
 	@NotNull
 	@Size(min = 4, max = 100, message = "4 to 100 letters")
-	@Pattern(regexp = "[A-Za-z]*", message = "Only letters and _")
+	@Pattern(regexp = "[A-Za-z]*", message = "Only letters")
 	private String userName;
 	
 	private String lastName;
