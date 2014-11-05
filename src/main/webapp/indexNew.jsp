@@ -154,17 +154,6 @@
         
         <div class="wrapper row-offcanvas row-offcanvas-left">
             <!-- Right side column. Contains the navbar and content of the page -->
-            <aside class="right-side">
-                <!-- Content Header (Page header) -->
-                <section class="content-header">
-                    <h1 class="imath-title-menu">
-                    </h1>
-                    <ol class="breadcrumb">
-                        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-                        <li class="active">Dashboard</li>
-                    </ol>
-                </section>
-
                 <!-- Main content -->
                 <section class="content">
 
@@ -177,7 +166,7 @@
                                     <h3 class="box-title"><i class="fa fa-bar-chart-o"></i>&nbsp;&nbsp;&nbsp; Files</h3>
                                     <div class="box-tools pull-right">
 										<div class="btn-group" data-toggle="btn-toggle">
-											<button id="imath-id-new-project-button-dashboard" type="button" class="btn btn-primary active">New</button>
+											<button id="imath-id-new-project-button-dashboard" type="button" class="btn btn-primary active"><i class="fa fa-refresh"></i></button>
 										</div>
 									</div>
                                 </div><!-- /.box-header -->
@@ -203,6 +192,11 @@
                             <div class="box imath-waiting-own-instances">
                                 <div class="box-header">
                                     <h3 class="box-title"><i class="fa fa-cog"></i>&nbsp;&nbsp;&nbsp; File Editor</h3>
+                                    <div class="box-tools pull-right">
+										<div class="btn-group" data-toggle="btn-toggle">
+											<button id="imath-id-new-project-button-dashboard" type="button" class="btn btn-primary active"><i class="fa fa-plus"></i> Console</button>
+										</div>
+									</div>
                                 </div><!-- /.box-header -->
                                 <div class="box-body">
                                     <table class="table table-bordered imath-own-instances">
@@ -223,9 +217,7 @@
                             </div><!-- /.box public instances-->
  						</section>
                    	</div><!-- /.row (main row) -->
-
                 </section><!-- /.content -->
-            </aside><!-- /.right-side -->
         </div><!-- ./wrapper -->
 
 		<!-- COMPOSE MESSAGE MODAL FOR CONFIRMATIONS-->
@@ -291,12 +283,21 @@
 		<script src="js/plugins/ionslider/ion.rangeSlider.min.js" type="text/javascript"></script>
         <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
         <script src="js/AdminLTE/dashboard.js" type="text/javascript"></script>
-
-        <!-- AdminLTE for demo purposes -->
         <script src="js/AdminLTE/demo.js" type="text/javascript"></script>
+
+		<!-- iMath JS files -->        
+        <script src="js/imath/initialization.js" type="text/javascript"></script>
+        
 		<script type="text/javascript">
 			var userName = "<%= request.getUserPrincipal().getName() %>";
-			alert(userName);
+			/*
+			var aux = userName.split("XYZ");
+			var projName = userName;
+			if (aux.length == 2) {
+				projName=aux[0];
+			}
+			$("#projectname").html(projName);
+			*/
 		</script>
 
     </body>
