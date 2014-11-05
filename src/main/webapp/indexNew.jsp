@@ -129,7 +129,7 @@
                         <!-- Project Account: style can be found in dropdown.less -->
                         <li class="dropdown user user-menu">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                <i class="glyphicon glyphicon-user"></i>
+                                <i class="glyphicon glyphicon-signal"></i>
                                 <span class="projectname"></span> <i class="caret"></i>
                             </a>
                             <ul class="dropdown-menu">

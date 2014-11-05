@@ -60,7 +60,6 @@ function getUserInfo(){
         type: "GET",
         success: function(user) {
         	projectName = user['rootName'];
-        	alert(projectName);
         	$(".projectname").html(projectName);
         },
         error: function(error) {
