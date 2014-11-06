@@ -78,6 +78,36 @@ function executeMenuJob(key, jobId) {
 	}
 }
 
+function getContextMenuJobs() {
+	$.contextMenu({
+        selector: '#jobsTBODY tr', 
+        callback: function(key, options) {
+        	var a = options.$trigger.attr("id");
+        	var b = a.split("__");
+        	executeMenuJob(key,b[1]);
+        	console.log("after executeMenuJob");		          
+        	//var m = "clicked: " + key + ". No ID found.";
+        	//if (b[1])
+        	//	m = "clicked: " + key + ". With ID: " + b[1] + ".";
+            //	window.console && console.log(m) || alert(m); 
+        },
+        items: {
+          "stop": {name: "Terminate", disabled: function(key, options)  {
+	          var a = options.$trigger.attr("id");
+		      var id_job = a.split("__")[1];
+		      return !(jobsTable[id_job.toString()] == "RUNNING" || jobsTable[id_job.toString()] == "PAUSED");
+	            
+	          }},
+          "remove": {name: "Delete", disabled: function(key, options)  {
+        	  var a = options.$trigger.attr("id");
+	          var id_job = a.split("__")[1];
+	          return (jobsTable[id_job.toString()] == "RUNNING" || jobsTable[id_job.toString()] == "PAUSED");
+            
+          }},
+           
+        }
+    });
+}
 
 function genContextMenu(type, shareZone, sharingState, isRoot) {
 	// shareZone= 0-> own files. shareZone=1-> other users files. 

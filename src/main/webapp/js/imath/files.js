@@ -615,6 +615,7 @@ function getFilesInfo(b, id) {
 
 
 function ajaxGetFiles() {
+	placeWaiting("imath-waiting-files");
 	$.ajax({
         url: "rest/file_service/getFiles/"+userName,
         cache: false,
@@ -624,11 +625,19 @@ function ajaxGetFiles() {
         	//alert(JSON.stringify(files));
         	fillRemoteFiles(files, "#remoteTree",0);
 			$( "#remoteTree" ).treeview();
+			unplaceWaiting("imath-waiting-files");
         },
         error: function(error) {
+        	unplaceWaiting("imath-waiting-files");
             console.log("error loading files - " + error.status);
         }
     });
+}
+
+
+// for legacy
+function getFiles() {
+	ajaxGetFiles();
 }
 
 function getFilesSyn(){

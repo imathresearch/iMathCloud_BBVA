@@ -182,13 +182,40 @@
                                 </div><!-- /.box-body -->
                             </div><!-- /.box Own projects-->
                             
-                            <!-- Box Collaborative projects -->
-                            <div class="box imath-waiting-col-projects">
+                            <!-- Box Jobs -->
+                            <div class="box imath-waiting-jobs">
                                 <div class="box-header">
                                     <h3 class="box-title"><i class="fa fa-bar-chart-o"></i>&nbsp;&nbsp;&nbsp; Jobs</h3>
+                                    <div class="box-tools pull-right">
+	                                    <div class="btn-group" data-toggle="btn-toggle">
+											<button id="imath-id-refresh-jobs" type="button" class="btn btn-primary active"><i class="fa fa-refresh"></i></button>
+										</div>
+									</div>
                                 </div><!-- /.box-header -->
                                 <div class="box-body">
-                                    <table class="table table-bordered imath-collaborations">
+                                	<form role="form">
+	                                	<div class="form-group">
+		                                	<select id="selectJobState" class="form-control" onchange="filterJobState()">
+						  						<option value="ALL">All jobs</option>
+						  						<option value="RUNNING">Running</option>  							
+						  						<option value="CANCELLED">Cancelled</option>
+						  						<option value="FINISHED_OK">Finished OK</option>
+						  						<option value="FINISHED_ERROR">Finished ERROR</option>
+											</select>
+										</div>
+									</form>
+                                   	<table id="jobsXML" class="table table-bordered imath-collaborations">
+                                    	<thead>
+											<tr>
+												<th> </th>
+												<th>Job#</th>
+												<th>Description</th>
+												<th>Started</th>
+												<th>% Compl.</th>
+											</tr>
+										</thead>
+										<tbody id="jobsTBODY">
+					 					</tbody>
                                     </table>
                                 </div><!-- /.box-body -->
                             </div><!-- /.box collaborations-->
@@ -297,6 +324,7 @@
 		<script src="js/libs/jquery.treeview.edit.js" type="text/javascript"></script>
 		<!-- iMath JS files -->
 		<script src="js/imath/files.js" type="text/javascript"></script>
+		<script src="js/imath/jobs.js" type="text/javascript"></script>
 		<script src="js/imath/toolbar.js" type="text/javascript"></script>
 		<script src="js/imath/plugins.js" type="text/javascript"></script>
         <script src="js/imath/initialization.js" type="text/javascript"></script>

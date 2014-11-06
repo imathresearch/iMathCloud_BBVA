@@ -1,6 +1,9 @@
 window.onload = function() {
+	assignEvents();
+	getContextMenuJobs();
 	ajaxRequestSession();
 };
+
 
 //Global variables
 var mathLanguageCode;				// Default math language of the user
@@ -33,10 +36,30 @@ var openTabIndexIdNotebook = new Array();
 
 var projectName;
 
+
+function assignEvents() {
+	$("#imath-id-refresh-files").click(function () {
+		ajaxGetFiles();
+	});
+	
+	$("#imath-id-refresh-jobs").click(function () {
+		ajaxGetJobs();
+	});
+}
+
+function placeWaiting(classid) {
+	$("."+ classid).append("<div class='overlay " + classid+"X" + "'></div><div class='loading-img " + classid+"X" + "'></div>");
+}
+
+function unplaceWaiting(classid) {
+	$("." + classid+"X").remove();
+}
+
 /**
  * The function that requests a session for the user and initializes the math console 
  * and the initial load.
  */
+
 function ajaxRequestSession() {
 	$.ajax({
         url: "rest/session_service/newSession/"+userName,
@@ -46,6 +69,7 @@ function ajaxRequestSession() {
         success: function(host) {
         	ajaxGetUserInfo();
         	ajaxGetUserMathFunctions();
+        	ajaxGetJobs();
         },
         error: function(error) {
             console.log("error requestion for a new session -" + error.status);
