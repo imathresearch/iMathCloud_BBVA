@@ -173,7 +173,6 @@ function genContextMenu(type, shareZone, sharingState, isRoot) {
 			out +=' "download": {"name": "Download as zip", "icon": "ui-icon-play"}}';
 			
 	} 
-	alert(out);
     return JSON.parse(out);
 }
 

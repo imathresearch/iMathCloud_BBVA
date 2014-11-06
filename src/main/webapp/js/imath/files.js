@@ -614,7 +614,7 @@ function getFilesInfo(b, id) {
 }
 
 
-function getFiles(b) {
+function ajaxGetFiles() {
 	$.ajax({
         url: "rest/file_service/getFiles/"+userName,
         cache: false,
@@ -624,12 +624,6 @@ function getFiles(b) {
         	//alert(JSON.stringify(files));
         	fillRemoteFiles(files, "#remoteTree",0);
 			$( "#remoteTree" ).treeview();
-			$( "#menu_west1" ).accordion({clearStyle: true});
-			$( "#menu_west1" ).accordion("refresh");
-			if (b) {
-				getJobs(true);
-        	}
-			//getSharedFiles();
         },
         error: function(error) {
             console.log("error loading files - " + error.status);

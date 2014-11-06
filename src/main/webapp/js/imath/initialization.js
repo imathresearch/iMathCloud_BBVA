@@ -1,5 +1,5 @@
 window.onload = function() {
-	requestSession();
+	ajaxRequestSession();
 };
 
 //Global variables
@@ -37,14 +37,15 @@ var projectName;
  * The function that requests a session for the user and initializes the math console 
  * and the initial load.
  */
-function requestSession() {
+function ajaxRequestSession() {
 	$.ajax({
         url: "rest/session_service/newSession/"+userName,
         cache: false,
         dataType: "json",
         type: "GET",
         success: function(host) {
-        	getUserInfo();
+        	ajaxGetUserInfo();
+        	ajaxGetUserMathFunctions();
         },
         error: function(error) {
             console.log("error requestion for a new session -" + error.status);
@@ -52,7 +53,7 @@ function requestSession() {
     });
 }
 
-function getUserInfo(){
+function ajaxGetUserInfo(){
 	$.ajax({
         url: "rest/user_service/getUserInfo/"+userName,
         cache: false,
