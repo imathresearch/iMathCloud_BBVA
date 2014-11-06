@@ -222,14 +222,12 @@
  						</section> 
  						<section class="col-lg-7 connectedSortable">
  						    <!-- Box Own instances -->
-                            <div class="box imath-waiting-own-instances">
-                                <div class="box-header">
-                                    <h3 class="box-title"><i class="fa fa-cog"></i>&nbsp;&nbsp;&nbsp; File Editor</h3>
-                                </div><!-- /.box-header -->
-                                <div class="box-body">
-                                    <table class="table table-bordered imath-own-instances">
-                                    </table>
-                                </div><!-- /.box-body -->
+                            <div class="nav-tabs-custom">
+	                            <ul id="id-imath-headTabsFile" class="nav nav-tabs pull-right">
+	                            	<li class="pull-left header"><i class="fa fa-th"></i>Editor</li>
+    	                        </ul>
+                                <div id="tabsFile" class="tab-content">
+                                </div>
                             </div><!-- /.box Own Instances-->
  						 
  							<!-- Box public instances -->
@@ -322,6 +320,7 @@
 		<script src="js/libs/jquery.contextMenu.js" type="text/javascript"></script>
 		<script src="js/libs/jquery.treeview.js" type="text/javascript"></script>
 		<script src="js/libs/jquery.treeview.edit.js" type="text/javascript"></script>
+		<script src="js/libs/codemirror.js" type="text/javascript"></script>
 		<!-- iMath JS files -->
 		<script src="js/imath/files.js" type="text/javascript"></script>
 		<script src="js/imath/jobs.js" type="text/javascript"></script>

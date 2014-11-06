@@ -1208,19 +1208,22 @@ function attachNewData(data, cm) {
 
 function openCodeFile(data, modeStr) {
 	var nameTab = buildTabName(data['id']);
-	var tabTemplate = "<li class='tab-File'><a href='#{href}'>#{label}</a> <span class='ui-icon ui-icon-close' role='presentation'>Remove Tab</span></li>";
+	var tabTemplate = "<li class='active tab-File'><a href='#{href}'>#{label}</a> <span class='close'><i class='fa fa-minus-square-o'></i></span></li>";
 	var label = data['name']; 
 	var id = nameTab;
 	var li = $( tabTemplate.replace( /#\{href\}/g, "#" + id ).replace( /#\{label\}/g, label ) );
-	 		
-	var numOpenTabs = $('.tab-File').length;	
-	if(numOpenTabs == 0){
-		$("#tabsFile").append('<ul></ul>');
-	}
 	
-	var tabs = $( "#tabsFile" ).tabs();
-	tabs.tabs( "refresh" );
-	tabs.find( ".ui-tabs-nav" ).append( li );
+	
+	$('.tab-File').removeClass("active");
+	var numOpenTabs = $('.tab-File').length;	
+	//if(numOpenTabs == 0){
+	//	$("#tabsFile").append('<ul></ul>');
+	//}
+	$('#id-imath-headTabsFile').append(li);
+	
+	//var tabs = $( "#tabsFile" ).tabs();
+	//tabs.tabs( "refresh" );
+	//tabs.find( ".ui-tabs-nav" ).append( li );
 	
 	var code="";
 	for(var i=0; i<data['content'].length;i++) {
@@ -1230,9 +1233,10 @@ function openCodeFile(data, modeStr) {
 		code = code + data['content'][i];
 	}
 	//alert(code);
-	htmlCode = "<div id=\"codeDIV_" + nameTab + "\" style=\"width:100%; height:100%;\"><textarea name=\"code_" + nameTab + "\">" + code + "</textarea></div>";
+	htmlCode = "<div id=\"codeDIV_" + nameTab + "\"><textarea name=\"code_" + nameTab + "\">" + code + "</textarea></div>";
 	htmlButtons = generateHTMLToolBarFile(data['id']);
-	tabs.append( "<div id='" + id + "' style='position: relative; width: 100%; height:100%; padding: 0;'><p>" + htmlButtons + htmlCode + "</p></div>" );
+	$("#tabsFile").append("<div id='" + id + "' style='position: relative; padding: 0;'><p>" + htmlButtons + htmlCode + "</p></div>");
+	//tabs.append( "<div id='" + id + "' style='position: relative; width: 100%; height:100%; padding: 0;'><p>" + htmlButtons + htmlCode + "</p></div>" );
 	generateToolBarFile(data['id']);
 	//var u = document.getElementById("codeDIV_"+nameTab);
 	var u = document.getElementById('tabsFile');
@@ -1269,11 +1273,11 @@ function openCodeFile(data, modeStr) {
 	myCodeMirror.refresh();	
 	addCodeMirrorTabInstance(data['id'],myCodeMirror, globalTabCounting);
 	globalTabCounting++;
-	tabs.tabs( "refresh" );
+	//tabs.tabs( "refresh" );
 	
-	var index = getTabIndex(data['id']);
-	$( "#tabsFile" ).tabs("option", "active", index );
-	tabs.tabs( "refresh" );
+	//var index = getTabIndex(data['id']);
+	//$( "#tabsFile" ).tabs("option", "active", index );
+	//tabs.tabs( "refresh" );
 }
 
 
