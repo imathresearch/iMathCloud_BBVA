@@ -851,12 +851,13 @@ function closeOpenFile(idFile) {
 	globalTabCounting--;
 	
 	var numOpenTabs = $('.tab-File').length;	
+	/*
 	if(numOpenTabs == 0){		
 		var tabs = $( "#tabsFile" ).tabs();
 		tabs.tabs( "refresh" );
 		tabs.find( ".ui-tabs-nav" ).remove();		
 		tabs.tabs( "refresh" );
-	}
+	}*/
 }
 
 function closeOpenFilePlot(idFile) {
@@ -875,12 +876,13 @@ function closeOpenFilePlot(idFile) {
 	globalTabCounting--;
 	
 	var numOpenTabs = $('.tab-File').length;	
+	/*
 	if(numOpenTabs == 0){		
 		var tabs = $( "#tabsFile" ).tabs();
 		tabs.tabs( "refresh" );
 		tabs.find( ".ui-tabs-nav" ).remove();		
 		tabs.tabs( "refresh" );
-	}
+	}*/
 	
 }
 
@@ -969,10 +971,19 @@ function showSaveFileNotification (idFile) {
     };
 };
 
+function getTabIdByIndex(index, selector) {
+	var tabb = $(selector).eq(index);
+	var tabId = tabb.attr("href");
+	return tabId.substring(1);
+}
+
 function loadFile(idFile){
 	if(isFileOpen(idFile)) {
+		//showTab(idFile);
 		var index = getTabIndex(idFile);
-		$( "#tabsFile" ).tabs("option", "active", index );
+		var tabId = getTabIdByIndex(index, '.tab-File a');
+		showTab(tabId);
+		//$( "#tabsFile" ).tabs("option", "active", index );
 	}
 	else {
 		if(isFile(idFile)){
@@ -1208,13 +1219,13 @@ function attachNewData(data, cm) {
 
 function openCodeFile(data, modeStr) {
 	var nameTab = buildTabName(data['id']);
-	var tabTemplate = "<li class='active tab-File'><a href='#{href}'>#{label}</a> <span class='close'><i class='fa fa-minus-square-o'></i></span></li>";
+	var tabTemplate = "<li class='tab-File'><a href='#{href}'> <button class='close closeTab'> x</button> #{label}</a></li>";
 	var label = data['name']; 
 	var id = nameTab;
 	var li = $( tabTemplate.replace( /#\{href\}/g, "#" + id ).replace( /#\{label\}/g, label ) );
 	
 	
-	$('.tab-File').removeClass("active");
+	//$('.tab-File').removeClass("active");
 	var numOpenTabs = $('.tab-File').length;	
 	//if(numOpenTabs == 0){
 	//	$("#tabsFile").append('<ul></ul>');
@@ -1232,10 +1243,10 @@ function openCodeFile(data, modeStr) {
 		}
 		code = code + data['content'][i];
 	}
-	//alert(code);
+	
 	htmlCode = "<div id=\"codeDIV_" + nameTab + "\"><textarea name=\"code_" + nameTab + "\">" + code + "</textarea></div>";
 	htmlButtons = generateHTMLToolBarFile(data['id']);
-	$("#tabsFile").append("<div id='" + id + "' style='position: relative; padding: 0;'><p>" + htmlButtons + htmlCode + "</p></div>");
+	$("#tabsFile").append("<div id='" + id + "' class='tab-pane' style='position: relative; padding: 0;'><p>" + htmlButtons + htmlCode + "</p></div>");
 	//tabs.append( "<div id='" + id + "' style='position: relative; width: 100%; height:100%; padding: 0;'><p>" + htmlButtons + htmlCode + "</p></div>" );
 	generateToolBarFile(data['id']);
 	//var u = document.getElementById("codeDIV_"+nameTab);
@@ -1267,17 +1278,53 @@ function openCodeFile(data, modeStr) {
 				//TODO
 			}
 	};
+	
+	showTab(id);
+    registerCloseEvent();
+    
 	var myCodeMirror = CodeMirror.fromTextArea(x,conf);
 	myCodeMirror.setSize(null,(he-150)+"px");
-	//myCodeMirror.getScrollerElement().style.heigth = he+"px";
+	myCodeMirror.getScrollerElement().style.heigth = he+"px";
 	myCodeMirror.refresh();	
 	addCodeMirrorTabInstance(data['id'],myCodeMirror, globalTabCounting);
 	globalTabCounting++;
+    
 	//tabs.tabs( "refresh" );
 	
 	//var index = getTabIndex(data['id']);
 	//$( "#tabsFile" ).tabs("option", "active", index );
 	//tabs.tabs( "refresh" );
+}
+
+function registerCloseEvent() {
+
+    $(".closeTab").click(function () {
+        //there are multiple elements which has .closeTab icon so close the tab whose close icon is clicked
+        var tabContentId = $(this).parent().attr("href");
+        $(this).parent().parent().remove(); //remove li of tab
+        
+        if ($('#id-imath-headTabsFile a:last').length>0){
+        	$('#id-imath-headTabsFile a:last').tab('show'); 
+        }
+        
+        $(tabContentId).remove(); //remove respective tab content
+        var id = tabContentId.substring(1);
+        if (id.substring(0,4)==='plot') {
+			closeOpenFilePlot(getIdFromTabPlotName(id));
+		}
+		else {
+			closeOpenFile(getIdFromTabName(id));
+		}
+    });
+}
+
+//shows the tab with passed content div id..paramter tabid indicates the div where the content resides
+function showTab(tabId) {
+    $('#id-imath-headTabsFile a[href="#' + tabId + '"]').tab('show');
+}
+//return current active tab
+function getCurrentTab() {
+    return currentTab;
 }
 
 

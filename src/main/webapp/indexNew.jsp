@@ -28,6 +28,10 @@
 		
 		<link href="css/jquery.treeview.css" rel="stylesheet">
 		<link href="css/jquery.contextMenu.css" rel="stylesheet"> 
+		<link rel='stylesheet' href='css/codemirror.css'></link>
+  		<link rel='stylesheet' href='css/eclipse.css'></link>
+  		<link href="css/start/jquery-ui-1.10.0.custom.css" rel="stylesheet">
+  		
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
         <!--[if lt IE 9]>
@@ -226,7 +230,7 @@
 	                            <ul id="id-imath-headTabsFile" class="nav nav-tabs pull-right">
 	                            	<li class="pull-left header"><i class="fa fa-th"></i>Editor</li>
     	                        </ul>
-                                <div id="tabsFile" class="tab-content">
+                                <div id="tabsFile" class="tab-content span4">
                                 </div>
                             </div><!-- /.box Own Instances-->
  						 
@@ -318,9 +322,12 @@
 
 		<!-- External libs -->
 		<script src="js/libs/jquery.contextMenu.js" type="text/javascript"></script>
+		<script src="js/libs/jquery-ui-1.10.0.custom.min.js" type="text/javascript"></script>
 		<script src="js/libs/jquery.treeview.js" type="text/javascript"></script>
 		<script src="js/libs/jquery.treeview.edit.js" type="text/javascript"></script>
 		<script src="js/libs/codemirror.js" type="text/javascript"></script>
+		<script src='js/libs/python.js'></script>
+  		<script src='js/libs/r.js'></script>
 		<!-- iMath JS files -->
 		<script src="js/imath/files.js" type="text/javascript"></script>
 		<script src="js/imath/jobs.js" type="text/javascript"></script>

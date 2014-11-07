@@ -207,6 +207,14 @@ function genContextMenu(type, shareZone, sharingState, isRoot) {
 }
 
 function generateHTMLToolBarFile(idFile) {
+	var html = '<div id="toolbarFile_' + idFile + 'class="btn-group">';
+	html += '<button id="saveFileButton_' + idFile + '" type="button" class="btn btn-default"><i class="fa fa-save"></i></button>';
+	html += '<button id="executeConFileButton_' + idFile + '" type="button" class="btn btn-default"><i class="fa fa-play"></i></button>';
+    html += '<button id="executeJobFileButton_' + idFile + '" type="button" class="btn btn-default"><i class="fa fa-play-circle"></i></button>';
+    html += '<div id="saveNotification_' + idFile + '" class="notification ui-widget ui-widget-content ui-corner-all border-box-sizing" style="display: none;"></div>';
+    html += '</div>';
+
+    /*
 	var html = '<div id="toolbarFile_' + idFile + '" class="ui-widget-header ui-corner-all">';
 	html += '<small>';
 	html += '<button id="saveFileButton_' + idFile + '">Save file</button>';
@@ -215,22 +223,11 @@ function generateHTMLToolBarFile(idFile) {
 	//html += '</small>';
 	html += '<div id="saveNotification_' + idFile + '" class="notification ui-widget ui-widget-content ui-corner-all border-box-sizing" style="display: none;"></div>';
 	html += '</small></div>';
+	*/
 	return html;
 }
 
 function generateToolBarFile(idFile) {
-	$( "#saveFileButton_"+idFile).button({
-		text: false,
-		icons: { primary: "ui-icon-disk" }
-	});
-	$( "#executeConFileButton_"+idFile).button({
-		text: false,
-		icons: { primary: "ui-icon-play" }
-	});
-	$( "#executeJobFileButton_"+idFile).button({
-		text: false,
-		icons: { primary: "ui-icon-circle-triangle-e" }
-	});
 	$("#saveFileButton_"+idFile).click(function() { 
 		var content = new Array();
 		var nameTab = buildTabName(idFile);
