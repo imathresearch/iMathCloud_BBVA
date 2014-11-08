@@ -1297,7 +1297,7 @@ function openCodeFile(data, modeStr) {
 }
 
 function registerCloseEvent() {
-
+	$(".closeTab").unbind( "click" );
     $(".closeTab").click(function () {
         //there are multiple elements which has .closeTab icon so close the tab whose close icon is clicked
         var tabContentId = $(this).parent().attr("href");
