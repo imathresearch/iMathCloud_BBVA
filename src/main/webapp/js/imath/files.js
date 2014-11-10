@@ -1136,32 +1136,39 @@ function plotInTab(data){
 	}
 	
 	var nameTab = buildTabPlotName(data['id']);
-	var tabTemplate = "<li class='tab-File'><a href='#{href}'>#{label}</a> <span class='ui-icon ui-icon-close' role='presentation'>Remove Tab</span></li>";
+	//var tabTemplate = "<li class='tab-File'><a href='#{href}'>#{label}</a> <span class='ui-icon ui-icon-close' role='presentation'>Remove Tab</span></li>";
+	var tabTemplate = "<li class='tab-File'><a href='#{href}'> <button class='close closeTab'> x</button> #{label}</a></li>";
 	var label = 'plot_'+data['name']; 
 	var id = nameTab;
 	var li = $( tabTemplate.replace( /#\{href\}/g, "#" + id ).replace( /#\{label\}/g, label ) );
 	
 	var numOpenTabs = $('.tab-File').length;	
-	if(numOpenTabs == 0){
-		$("#tabsFile").append('<ul></ul>');
-	}
-	 
-	var tabs = $( "#tabsFile" ).tabs();
-	tabs.tabs( "refresh" );
-	tabs.find( ".ui-tabs-nav" ).append( li );
+	//if(numOpenTabs == 0){
+	//	$("#tabsFile").append('<ul></ul>');
+	//}
+	$('#id-imath-headTabsFile').append(li);
+	//var tabs = $( "#tabsFile" ).tabs();
+	//tabs.tabs( "refresh" );
+	//tabs.find( ".ui-tabs-nav" ).append( li );
 
 	var u = document.getElementById('tabsFile');
 	var he = u.offsetHeight;
 	var wi = u.offsetWidth;
 	he = Math.round(he - he*0.4);
-	wi = Math.round(wi - wi*0.1);
+	wi = Math.round(wi);
 	
+	//htmlCode = "<div class=\"flot-container\" style=\"width:" + wi + "px;height:" + he + "px;\">";
+	//htmlCode += "<div class=\"flot-placeholder\" id=\"plotDIV_" + nameTab + "\" style=\"width:" + wi + "px;height:" + he + "px;\"></div>";
+	//htmlCode += "<div id=\"options_plotDIV_" + nameTab + "\"></div></div>";
+	//tabs.append( "<div id='" + id + "' style='position: relative; width: 100%; height:100%; padding: 0;'><p>" + htmlCode + "</p></div>" );
+	
+	he = 400;
 	htmlCode = "<div class=\"flot-container\" style=\"width:" + wi + "px;height:" + he + "px;\">";
 	htmlCode += "<div class=\"flot-placeholder\" id=\"plotDIV_" + nameTab + "\" style=\"width:" + wi + "px;height:" + he + "px;\"></div>";
 	htmlCode += "<div id=\"options_plotDIV_" + nameTab + "\"></div></div>";
-	tabs.append( "<div id='" + id + "' style='position: relative; width: 100%; height:100%; padding: 0;'><p>" + htmlCode + "</p></div>" );
 	
-	tabs.tabs( "refresh" );
+	$("#tabsFile").append( "<div id='" + id + "' class='tab-pane' style='padding: 0;'><p>" + htmlCode + "</p></div>" );
+	//tabs.tabs( "refresh" );
 	
 	switch(data['type']){
 		case "csv":
@@ -1175,13 +1182,14 @@ function plotInTab(data){
 	}
 	
 	
-	
 	addTabInstancePlot(data['id'],globalTabCounting);
+	showTab(id);
+    registerCloseEvent();
 	globalTabCounting++;
-	tabs.tabs( "refresh" );
+	//tabs.tabs( "refresh" );
 	var index = getTabIndexPlot(data['id']);
-	$( "#tabsFile" ).tabs("option", "active", index);
-	tabs.tabs( "refresh" );
+	//$( "#tabsFile" ).tabs("option", "active", index);
+	//tabs.tabs( "refresh" );
 	
     
 

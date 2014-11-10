@@ -328,11 +328,17 @@
 		<script src="js/libs/codemirror.js" type="text/javascript"></script>
 		<script src='js/libs/python.js'></script>
   		<script src='js/libs/r.js'></script>
+  		<script src="js/flotcharts/jquery.flot.js" type="text/javascript"></script>
+		<script src="js/flotcharts/jquery.flot.errorbars.js" type="text/javascript"></script>
+		<script src="js/flotcharts/jquery.flot.boxplot.js" type="text/javascript"></script>
+		<script src="js/libs/jquery.csv.min.js" type="text/javascript"></script>
+		<script src="js/libs/serializeObject.js" type="text/javascript"></script>
 		<!-- iMath JS files -->
 		<script src="js/imath/files.js" type="text/javascript"></script>
 		<script src="js/imath/jobs.js" type="text/javascript"></script>
 		<script src="js/imath/toolbar.js" type="text/javascript"></script>
 		<script src="js/imath/plugins.js" type="text/javascript"></script>
+		<script src="js/imath/plotCSV.js" type="text/javascript"></script>
         <script src="js/imath/initialization.js" type="text/javascript"></script>
         
 		<script type="text/javascript">
