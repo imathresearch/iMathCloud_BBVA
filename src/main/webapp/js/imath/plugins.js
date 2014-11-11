@@ -15,6 +15,12 @@ function ajaxGetUserMathFunctions() {
     });
 }
 
+// for legacy support
+
+function getUserMathFunctions() {
+	ajaxGetUserMathFunctions();
+}
+
 function fillMathFuncForMenu(functions) {
 	var out="";
 	for(var i=0; i<functions.length; i++) {

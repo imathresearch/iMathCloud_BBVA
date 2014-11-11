@@ -68,7 +68,9 @@ function newConsole(notebookId, notebookName){
 		var label = notebookName; 
 		var id = nameTab;
 		var li = $( tabTemplate.replace( /#\{href\}/g, "#" + id ).replace( /#\{label\}/g, label ) );
-		 
+		
+		currentTabConsole = li.find("a");
+		
 		//var tabs = $( "#tabsConsole" ).tabs();
 		//tabs.find( ".ui-tabs-nav" ).append( li );
 		
@@ -100,8 +102,8 @@ function newConsole(notebookId, notebookName){
 		});
 				
 	}
-	
 }
+
 function registerCloseEventConsole() {
 	$(".closeTabConsole").unbind( "click" );
     $(".closeTabConsole").click(function () {
@@ -111,6 +113,7 @@ function registerCloseEventConsole() {
         
         if ($('#id-imath-headTabsConsole a:last').length>0){
         	$('#id-imath-headTabsConsole a:last').tab('show'); 
+        	currentTabConsole = $('#id-imath-headTabsConsole a:last');
         }
         
         $(tabContentId).remove(); //remove respective tab content
@@ -162,6 +165,9 @@ function isNotebookOpen(idNotebook){
 function getActiveConsole(){	
 	var tab = getCurrentTabConsole();
 	var href = tab.attr("href");
+	if (href=== undefined) {
+		href = tab.getParent().attr("href");
+	}
 	var idConsole = getIdFromConsoleTabName(href.substring(1));
 	return idConsole;
 	/*

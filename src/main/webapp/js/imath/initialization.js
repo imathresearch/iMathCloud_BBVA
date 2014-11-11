@@ -13,7 +13,7 @@ window.onload = function() {
 	$("#id-imath-headTabsConsole").on("click", "a", function (e) {
         e.preventDefault();
         $(this).tab('show');
-        $currentTabConsole = $(this);
+        currentTabConsole = $(this);
     });
 	
     /*
@@ -94,7 +94,7 @@ var consolesIdOpenTabIndex = new Array();
 var openTabIndexIdNotebook = new Array();
 
 var projectName;
-
+var currentTabConsole = null;
 
 function assignEvents() {
 	$("#imath-id-refresh-files").click(function () {
