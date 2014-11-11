@@ -209,20 +209,12 @@ function openNotebook(idFile){
 function getNotebookList(){	
 	host = window.hostGlobal; 
     var listNotebooks = null;
-    
+    //alert("rest/notebook_service/getNotebookList/"+host['url']+"/"+host['port']);
     $.ajax({
       url: "rest/notebook_service/getNotebookList/"+host['url']+"/"+host['port'],
       type: "GET",
       async: false,
       success: function(notebooks) {    	
-    	  /*console.log("on success getNotebookList");
-    	  var len = notebooks.length;
-    	  for (var i=0; i<len; i++) {
-    		  var notebook_id = notebooks[i].notebook_id;
-    		  var nbname = notebooks[i].name;
-    		  var kernel = notebooks[i].kernel_id;
-    		  console.log("Notebook " + notebook_id + " name " + nbname + " kernel " + kernel);
-    	  }*/
     	  listNotebooks = notebooks;
       },
       error: function(){

@@ -10,6 +10,12 @@ window.onload = function() {
         $currentTab = $(this);
     });
     
+	$("#id-imath-headTabsConsole").on("click", "a", function (e) {
+        e.preventDefault();
+        $(this).tab('show');
+        $currentTabConsole = $(this);
+    });
+	
     /*
 	$( "#tabsFile" ).tabs().delegate( "span.ui-icon-close", "click", function() {
 		var panelId = $( this ).closest( "li" ).remove().attr( "aria-controls" );
@@ -98,6 +104,10 @@ function assignEvents() {
 	$("#imath-id-refresh-jobs").click(function () {
 		ajaxGetJobs();
 	});
+	
+	$("#imath-id-new-console").click(function() { 
+		newNotebook();    		
+	});
 }
 
 function placeWaiting(classid) {
@@ -123,11 +133,45 @@ function ajaxRequestSession() {
         	ajaxGetUserInfo();
         	ajaxGetUserMathFunctions();
         	ajaxGetJobs();
+        	conectToDefaultConsole(host);
         },
         error: function(error) {
             console.log("error requestion for a new session -" + error.status);
         }
     });
+}
+
+function conectToDefaultConsole(host) {
+	window.hostGlobal=host;
+}
+var id = setInterval(function() {
+	if (! (typeof window.hostGlobal=== 'undefined')) {
+		host = window.hostGlobal;
+		urlConsole = 'http://'+host['url']+':' + host['port'];		
+		if (isReady(host['url'], host['port'])) {
+			clearInterval(id);
+			newDefaultNotebook();
+		}
+	}
+}, 2000);
+
+// Check if a url is ready
+function isReady(host, port) {
+    //var encodedURL = encodeURIComponent(url);
+    var isValid = false;
+    var urlCall = "rest/session_service/isConsoleReady/"+host+"/"+port; 
+    $.ajax({
+      url: urlCall,
+      type: "get",
+      async: false,
+      success: function() {
+        isValid = true;
+      },
+      error: function(){
+        isValid = false;
+      }
+    });
+    return isValid;
 }
 
 function ajaxGetUserInfo(){

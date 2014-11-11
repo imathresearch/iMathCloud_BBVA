@@ -235,21 +235,18 @@
                             </div><!-- /.box Own Instances-->
  						 
  							<!-- Box public instances -->
-                            <div class="box imath-waiting-pub-instances">
-                                <div class="box-header">
-                                	<i class="fa-cop"></i> 
-                                    <h3 class="box-title"><i class="fa fa-cog"></i>&nbsp;&nbsp;&nbsp; Console</h3>
-                                    <div class="box-tools pull-right">
-										<div class="btn-group" data-toggle="btn-toggle">
-											<button id="imath-id-new-console" type="button" class="btn btn-primary active"><i class="fa fa-plus"></i> Console</button>
+                            <div class="nav-tabs-custom">
+								<ul id="id-imath-headTabsConsole" class="nav nav-tabs pull-right">
+                            		<li class="pull-left header">
+                            			<i class="fa fa-th"></i>Console 
+                            			<div class="btn-group" data-toggle="btn-toggle">
+											<button id="imath-id-new-console" type="button" class="btn btn-primary active"><i class="fa fa-plus"></i> </button>
 										</div>
-									</div>
-                                </div><!-- /.box-header -->
-                                <div class="box-body">
-                                    <table class="table table-bordered imath-public-instances">
-                                    </table>
-                                </div><!-- /.box-body -->
-                            </div><!-- /.box public instances-->
+                            		</li>
+   	                        	</ul>
+                               	<div id="tabsConsole" class="tab-content span4">
+                               	</div>
+                            </div>
  						</section>
                    	</div><!-- /.row (main row) -->
                 </section><!-- /.content -->
@@ -339,6 +336,7 @@
 		<script src="js/imath/toolbar.js" type="text/javascript"></script>
 		<script src="js/imath/plugins.js" type="text/javascript"></script>
 		<script src="js/imath/plotCSV.js" type="text/javascript"></script>
+		<script src="js/imath/notebook.js" type="text/javascript"></script>
         <script src="js/imath/initialization.js" type="text/javascript"></script>
         
 		<script type="text/javascript">
