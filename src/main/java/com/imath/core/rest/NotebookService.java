@@ -455,7 +455,7 @@ public class NotebookService {
         }
 	}
 	
-	/*@GET
+	@GET
     @Path("{port}/getVideoContent/{userName}/{videoPath: .+}")
 	//@Consumes(MediaType.APPLICATION_JSON)
     @Produces({"video/mp4"})
@@ -474,7 +474,8 @@ public class NotebookService {
 		    	System.out.println("Path file " + path.toString());
 				java.io.File f = new java.io.File(path.toString());				
 				//return Response.status(Response.Status.OK).entity(content).build();
-				return Response.ok(f, "video/mp4").build();
+				return Response.ok(f, "video/mp4").header("Accept-Ranges", "bytes").build();
+			
 			}
 			
 			return Response.status(Response.Status.NOT_FOUND).build(); 
@@ -485,7 +486,7 @@ public class NotebookService {
 			LOG.severe("Error reading file path: " +  videoPath  + " from user: "+ userName);
 			throw new WebApplicationException(Response.Status.NOT_FOUND);
 		}
-    }*/
+    }
 	
 
 }
