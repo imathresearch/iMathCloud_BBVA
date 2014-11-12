@@ -62,7 +62,7 @@ function fillRemoteFiles(files, treeView, shareZone) {
 		        items: genContextMenu(file['type'], shareZone, file['sharingState'], true) 
 		    });
 		} else {			
-			var trig = 'left'; 
+			var trig = 'right'; 
 			if (file['type'] == "dir") {
 				trig = 'right'; 
 			}

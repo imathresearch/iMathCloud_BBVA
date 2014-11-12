@@ -23,6 +23,10 @@ function getUserMathFunctions() {
 
 function fillMathFuncForMenu(functions) {
 	var out="";
+	out += '"math": {';
+	out += '    "name": "Math",'; 
+	out += '	"items": {';
+
 	for(var i=0; i<functions.length; i++) {
 		func = functions[i];
 		var aux="";
@@ -32,7 +36,8 @@ function fillMathFuncForMenu(functions) {
 		aux += '"' + func['id'] + '": {"name": "' + func['shortName']+ '", "icon": "paste"}'; 
 		out += aux;
 	}
-	generateEastButtons("basicStatistics", functions);
+	out += '	}';
+	out += '}';
 	return out;
 }
 
