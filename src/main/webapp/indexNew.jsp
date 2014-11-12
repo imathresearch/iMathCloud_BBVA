@@ -167,9 +167,9 @@
 
                     <!-- Main row -->
                     <div class="row imath-main-row">
- 						<section class="col-lg-5 connectedSortable">
+ 						<section class="col-sm-3 connectedSortable">
  							<!-- Box Own projects -->
- 							<div class="box imath-waiting-creation imath-waiting-files">
+ 							<div class="box box-solid box-primary imath-waiting-creation imath-waiting-files">
                                 <div class="box-header">
                                     <h3 class="box-title"><i class="fa fa-bar-chart-o"></i>&nbsp;&nbsp;&nbsp; Files</h3>
                                     <div class="box-tools pull-right">
@@ -187,7 +187,7 @@
                             </div><!-- /.box Own projects-->
                             
                             <!-- Box Jobs -->
-                            <div class="box imath-waiting-jobs">
+                            <div class="box box-solid box-primary imath-waiting-jobs">
                                 <div class="box-header">
                                     <h3 class="box-title"><i class="fa fa-bar-chart-o"></i>&nbsp;&nbsp;&nbsp; Jobs</h3>
                                     <div class="box-tools pull-right">
@@ -215,7 +215,7 @@
 												<th>Job#</th>
 												<th>Description</th>
 												<th>Started</th>
-												<th>% Compl.</th>
+												<th>%</th>
 											</tr>
 										</thead>
 										<tbody id="jobsTBODY">
@@ -224,17 +224,16 @@
                                 </div><!-- /.box-body -->
                             </div><!-- /.box collaborations-->
  						</section> 
- 						<section class="col-lg-7 connectedSortable">
- 						    <!-- Box Own instances -->
+ 						<section class="col-sm-5 connectedSortable">
                             <div class="nav-tabs-custom">
 	                            <ul id="id-imath-headTabsFile" class="nav nav-tabs pull-right">
 	                            	<li class="pull-left header"><i class="fa fa-th"></i>Editor</li>
     	                        </ul>
                                 <div id="tabsFile" class="tab-content span4">
                                 </div>
-                            </div><!-- /.box Own Instances-->
- 						 
- 							<!-- Box public instances -->
+                            </div>
+ 						</section>
+ 						<section class="col-sm-4 connectedSortable"> 
                             <div class="nav-tabs-custom">
 								<ul id="id-imath-headTabsConsole" class="nav nav-tabs pull-right">
                             		<li class="pull-left header">
