@@ -190,3 +190,60 @@ function ajaxGetUserInfo(){
     });
 	
 }
+
+//Functions to show simple dialogs and form dialogs
+
+function showFormDialog() {
+	var key = arguments[0];
+	var extra = [];
+	for (var i = 1; i < arguments.length; i++) {
+	    extra.push(arguments[i]);
+	}
+	var form_tpl = eval("form_tpl_" + key + "("+ extra +")");
+	showDialog(form_tpl.content, form_tpl.title, form_tpl.buttons);
+}
+
+
+function showDialog(content, title, buttons) {
+	
+	$("#contentPopup").html(content);
+	$("#id-imath-title-dialog").html(title);
+	$("#id-imath-buttons-dialog").html("");
+	if (buttons.Cancel) {
+		$("#id-imath-buttons-dialog").append('<button id="id-imath-cancel-button-select" type="button" class="btn" data-dismiss="modal"><i class="fa fa-times"></i> Cancel</button>');
+		$("#imath-id-cancel-button-select").click(buttons.Cancel);
+	}
+	if (buttons.Submit) {
+		$("#id-imath-buttons-dialog").append('<button id="id-imath-submit-button-select" type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-check-square-o"></i> Submit</button>');
+		$("#id-imath-submit-button-select").click(buttons.Submit);
+	}
+	if (buttons.OK) {
+		$("#id-imath-buttons-dialog").append('<button id="id-imath-ok-button-select" type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-check-square-o"></i> OK</button>');
+		$("#id-imath-OK-button-select").click(buttons.OK);
+	}
+	$("#dialogPopup").modal();
+	//$("#imath-id-conf-message").modal();
+}
+
+
+
+window.addEventListener("beforeunload", function (e) {
+	
+	  console.log("BEFOREUNLOAD");
+	
+	  // Before closing the tab, we call the logout servlet
+	  var urlCall = "logout"; 
+	  $.ajax({
+		  url: urlCall,
+	      type: "get",
+	      async: false,
+	      success: function() {
+	        isValid = true;
+	      },
+	      error: function(){
+	        isValid = false;
+	      }
+	   });	   
+	 
+	  return; // To not show any confirmation message                             
+});

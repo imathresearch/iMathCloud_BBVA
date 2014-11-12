@@ -188,7 +188,7 @@ function form_tpl_uploadFiles() {
 	    $("div#response").html("File(s) uploaded");
 	    refreshFilesTree();
 	    setTimeout(function(){
-	    	$("#dialogPopup").dialog("close");
+	    	$("#dialogPopup").modal('hide');
 	    },350);
 	};
 
@@ -199,7 +199,7 @@ function form_tpl_uploadFiles() {
 
 	var buttons = {
 		Cancel : function() {
-			$("#dialogPopup").dialog("close");
+			$("#dialogPopup").modal('hide');
 		},
 		Submit : function() {
 			existentFiles = getFilesInfo(false,selectedFile.id);
@@ -305,7 +305,7 @@ function form_tpl_deleteFile() {
 			$("div#response").html("Deleted");
 			refreshFilesTree();
 			setTimeout(function(){
-				$("#dialogPopup").dialog("close");
+				$("#dialogPopup").modal('hide');
 				},350);
 		}
 	};
@@ -318,7 +318,7 @@ function form_tpl_deleteFile() {
 
 	var buttons = {
 		Cancel : function() {
-			$("#dialogPopup").dialog("close");
+			$("#dialogPopup").modal('hide');
 		},
 		Submit : function() {
 			deleteFile(idFile, funcSuccess, funcError);
@@ -415,7 +415,7 @@ function form_tpl_inputText() {
 			$("div#response").html(ok_state);
 			refreshFilesTree();
 			setTimeout(function(){
-				$("#dialogPopup").dialog("close");
+				$("#dialogPopup").modal('hide');
 				},350);
 		}
 	};
@@ -435,7 +435,7 @@ function form_tpl_inputText() {
 	};
 	
 	var buttons = {
-		Cancel : function() { $("#dialogPopup").dialog("close");},
+		Cancel : function() { $("#dialogPopup").modal('hide');},
 		Submit : funcSubmit
 	};
 

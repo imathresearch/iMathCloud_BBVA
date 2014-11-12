@@ -289,8 +289,22 @@
             </div><!-- /.modal-dialog -->
         </div><!-- /.modal -->
 
-        <!-- The following modals permit to visualize user's profile, modify password and modify photograph -->
-
+		<div id="dialogPopup" class="modal fade" tabindex="-1" role="dialog">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title"><i class="fa fa-warning danger"></i>
+							<span id="id-imath-title-dialog"></span>
+						</h4>
+					</div>
+					<div id="contentPopup" class="modal-body">
+					</div>
+					<div id="id-imath-buttons-dialog" class="modal-footer clearfix">
+					</div>	 
+				</div>
+			</div>
+		</div>
 
         <!-- jQuery 2.0.2 -->
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
@@ -350,7 +364,6 @@
 			$("#projectname").html(projName);
 			*/
 		</script>
-
     </body>
 	
 </html>
