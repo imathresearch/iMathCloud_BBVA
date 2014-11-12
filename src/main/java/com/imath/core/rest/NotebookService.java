@@ -52,9 +52,9 @@ public class NotebookService {
 	private static String LOG_PRE = Constants.LOG_PREFIX_SYSTEM + "[NotebookService]";
 	
 	@GET
-    @Path("/getNotebook/{id}/{port}")
+    @Path("/getNotebook/{userName}/{id}/{port}")
     @Produces(MediaType.TEXT_HTML)
-    public Response REST_getNotebookHTML(@PathParam("id") String idNotebook, @PathParam("port") String port, @Context SecurityContext sec){
+    public Response REST_getNotebookHTML(@PathParam("userName") String userName, @PathParam("id") String idNotebook, @PathParam("port") String port, @Context SecurityContext sec){
 		LOG.info(LOG_PRE + "[getNotebookHTML]" + idNotebook);
 		//System.out.println("Getting notebook");
 		String urlString = "http://" + Constants.IMATH_HOST + ":" + port + "/" + idNotebook;
@@ -86,6 +86,20 @@ public class NotebookService {
             	if(line.startsWith("<li id=\"print_notebook\">")){
             		String addon = "href=\"http://" + Constants.IMATH_HOST + ":" + Constants.IMATH_PORT + "/iMathCloud/rest/notebook_service/" + port + "/";
             		line = line.replaceAll("href=\"/", addon);
+            	}
+            	
+            	//javascript variables
+            	if(line.startsWith("var url")){
+            		line = line + "=\"" + Constants.ROOT_FILE_SYSTEM + "/" + userName + "\"";
+            		System.out.println(line);
+            	}
+            	if(line.startsWith("var portConsole")){
+            		line = line + "=\"" + port + "\"";
+            		System.out.println(line);
+            	}
+            	if(line.startsWith("var userName")){
+            		line = line + "=\"" + userName + "\"";
+            		System.out.println(line);
             	}
             	            	
             	sb.append(line + '\n');            	               
