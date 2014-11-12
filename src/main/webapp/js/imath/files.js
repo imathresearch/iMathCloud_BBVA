@@ -62,20 +62,33 @@ function fillRemoteFiles(files, treeView, shareZone) {
 		        items: genContextMenu(file['type'], shareZone, file['sharingState'], true) 
 		    });
 		} else {			
-			var trig = 'right'; 
+			var trig = 'hover'; 
 			if (file['type'] == "dir") {
 				trig = 'right'; 
+				$.contextMenu({
+			        selector: '.' + genClassFileContextMenu(file['id']) , 
+			        trigger: trig,
+			        callback: function(key, options) {
+			        	var a = options.$trigger.attr("id");
+						var b = a.split("__");
+			        	executeMenu(key,b[1], b[2]);
+			        },
+			        items: genContextMenu(file['type'], shareZone, file['sharingState']) 
+			    });
+			} else {
+				$.contextMenu({
+			        selector: '.' + genClassFileContextMenu(file['id']) , 
+			        trigger: trig,
+			        delay: 250,
+			        autoHide: true,
+			        callback: function(key, options) {
+			        	var a = options.$trigger.attr("id");
+						var b = a.split("__");
+			        	executeMenu(key,b[1], b[2]);
+			        },
+			        items: genContextMenu(file['type'], shareZone, file['sharingState']) 
+			    });
 			}
-			$.contextMenu({
-		        selector: '.' + genClassFileContextMenu(file['id']) , 
-		        trigger: trig,
-		        callback: function(key, options) {
-		        	var a = options.$trigger.attr("id");
-					var b = a.split("__");
-		        	executeMenu(key,b[1], b[2]);
-		        },
-		        items: genContextMenu(file['type'], shareZone, file['sharingState']) 
-		    });
 			$( "#filedir_" + file['dir'] ).append(aux);
 		}
 	}
