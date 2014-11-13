@@ -37,7 +37,7 @@ public class WebSocketClient{// implements MessageHandler.Partial<String>{
     public void onOpen(Session session) {
 		LOG.info(LOG_PRE + "[onOpen]" + this.option);
         //System.out.println("["+option+"] Client Connected to endpoint: " + session.getBasicRemote());               
-        session.setMaxTextMessageBufferSize(100000);        
+        session.setMaxTextMessageBufferSize(2000000);//500000);        
         
     }
 	

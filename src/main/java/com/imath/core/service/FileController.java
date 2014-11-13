@@ -39,6 +39,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.lang.reflect.Array;
 import java.net.URI;
 import java.nio.file.FileVisitOption;
@@ -101,6 +102,42 @@ public class FileController extends AbstractController {
     		db.remove(file);
     	}
     }
+   
+    /*@TransactionAttribute(TransactionAttributeType.REQUIRED)
+    public String getVideoContent(String userName, File file) throws Exception{
+    	//TODO: Test needed!
+    	LOG.info("File Video id:" + file.getId() + " requested");
+    	try {
+    		return(getVideo(userName,file.getUrl()));
+    	}
+    	catch (Exception e) {
+    		LOG.severe("Error opening the file video id: " + file.getId());
+    		throw e;
+    	}
+    }
+    
+    private String getVideo(String userName, String uri) throws Exception {
+    	
+    	URI u = URI.create(uri);
+    	Path path = Paths.get(u.getPath());
+    	String result = new String();
+		BufferedReader rd  = null;
+	    StringBuilder sb = null;
+		//read the result from the server
+        rd  = new BufferedReader(new FileReader(path.toString()));
+        sb = new StringBuilder();
+        String line = new String();
+        while ((line = rd.readLine()) != null){
+              sb.append(line + '\n');
+        }
+        rd.close();
+        //System.out.println(sb.toString());
+        result = sb.toString();
+    	// TODO: Test needed!
+    	
+    	return result;
+    }*/
+    
     
     /**
      * Retrieve the entire content of a file. It should be only used for source files and small data files.

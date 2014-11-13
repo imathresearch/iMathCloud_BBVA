@@ -42,8 +42,8 @@ public class WebsocketService {
         this.option = opt;
         this.wcc.start(kernelId, portIpython, this.option);
         
-        session.setMaxTextMessageBufferSize(100000);
-        this.wcc.sessionServer.setMaxTextMessageBufferSize(100000);
+        session.setMaxTextMessageBufferSize(2000000);
+        this.wcc.sessionServer.setMaxTextMessageBufferSize(2000000);
         
         this.ping = false;
     }
@@ -116,6 +116,7 @@ public class WebsocketService {
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
+					this.cancel();
 				}            
 	        }
 	    }

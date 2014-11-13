@@ -7,8 +7,11 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
+import java.net.URI;
 import java.net.URL;
 import java.net.URLConnection;
+import java.nio.file.Paths;
+import java.util.List;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -25,11 +28,15 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
 
+import com.imath.core.model.File;
+import com.imath.core.security.SecurityManager;
+import com.imath.core.service.FileController;
 import com.imath.core.util.Constants;
 
 
@@ -40,13 +47,14 @@ import com.imath.core.util.Constants;
 public class NotebookService {
 		
 	@Inject private Logger LOG;
+	@Inject private FileController fc;
 	
 	private static String LOG_PRE = Constants.LOG_PREFIX_SYSTEM + "[NotebookService]";
 	
 	@GET
-    @Path("/getNotebook/{id}/{port}")
+    @Path("/getNotebook/{userName}/{id}/{port}")
     @Produces(MediaType.TEXT_HTML)
-    public Response REST_getNotebookHTML(@PathParam("id") String idNotebook, @PathParam("port") String port, @Context SecurityContext sec){
+    public Response REST_getNotebookHTML(@PathParam("userName") String userName, @PathParam("id") String idNotebook, @PathParam("port") String port, @Context SecurityContext sec){
 		LOG.info(LOG_PRE + "[getNotebookHTML]" + idNotebook);
 		//System.out.println("Getting notebook");
 		String urlString = "http://" + Constants.IMATH_HOST + ":" + port + "/" + idNotebook;
@@ -78,6 +86,20 @@ public class NotebookService {
             	if(line.startsWith("<li id=\"print_notebook\">")){
             		String addon = "href=\"http://" + Constants.IMATH_HOST + ":" + Constants.IMATH_PORT + "/iMathCloud/rest/notebook_service/" + port + "/";
             		line = line.replaceAll("href=\"/", addon);
+            	}
+            	
+            	//javascript variables
+            	if(line.startsWith("var url")){
+            		line = line + "=\"" + Constants.ROOT_FILE_SYSTEM + "/" + userName + "\"";
+            		System.out.println(line);
+            	}
+            	if(line.startsWith("var portConsole")){
+            		line = line + "=\"" + port + "\"";
+            		System.out.println(line);
+            	}
+            	if(line.startsWith("var userName")){
+            		line = line + "=\"" + userName + "\"";
+            		System.out.println(line);
             	}
             	            	
             	sb.append(line + '\n');            	               
@@ -432,6 +454,39 @@ public class NotebookService {
             return null; //Response.status(Response.Status.BAD_REQUEST).build();
         }
 	}
+	
+	@GET
+    @Path("{port}/getVideoContent/{userName}/{videoPath: .+}")
+	//@Consumes(MediaType.APPLICATION_JSON)
+    @Produces({"video/mp4"})
+    public Response REST_getVideoContent(@PathParam("userName") String userName, @PathParam("videoPath") String videoPath, @Context SecurityContext sc){
+	    LOG.info(LOG_PRE + "[getVideoContent]" + userName + " " + videoPath);
+		try { 
+		    //SecurityManager.secureBasic(userName, sc);
+		    fc.updateFilesFromStorage(userName);
+		    String absolutePath = "/";
+		    absolutePath = absolutePath.concat(videoPath);
+		    System.out.println("Absolute path " + absolutePath);		    
+			File file = fc.checkIfFileExistInUser(absolutePath, userName);
+			if(file != null){
+				URI u = URI.create(file.getUrl());
+		    	java.nio.file.Path  path = Paths.get(u.getPath());
+		    	System.out.println("Path file " + path.toString());
+				java.io.File f = new java.io.File(path.toString());				
+				//return Response.status(Response.Status.OK).entity(content).build();
+				return Response.ok(f, "video/mp4").header("Accept-Ranges", "bytes").build();
+			
+			}
+			
+			return Response.status(Response.Status.NOT_FOUND).build(); 
+			
+			
+		}
+		catch (Exception e) {
+			LOG.severe("Error reading file path: " +  videoPath  + " from user: "+ userName);
+			throw new WebApplicationException(Response.Status.NOT_FOUND);
+		}
+    }
 	
 
 }
