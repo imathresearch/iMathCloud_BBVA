@@ -116,6 +116,7 @@ public class WebsocketService {
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
+					this.cancel();
 				}            
 	        }
 	    }
