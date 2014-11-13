@@ -167,7 +167,7 @@
 
                     <!-- Main row -->
                     <div class="row imath-main-row">
- 						<section class="col-sm-3 connectedSortable">
+ 						<section class="col-sm-2 connectedSortable">
  							<!-- Box Own projects -->
  							<div class="box box-solid box-primary imath-waiting-creation imath-waiting-files">
                                 <div class="box-header">
@@ -224,8 +224,8 @@
                                 </div><!-- /.box-body -->
                             </div><!-- /.box collaborations-->
  						</section> 
- 						<section class="col-sm-5 connectedSortable">
-                            <div class="nav-tabs-custom">
+ 						<section class="col-sm-4 connectedSortable">
+                            <div class="nav-tabs-custom box-solid box-primary">
 	                            <ul id="id-imath-headTabsFile" class="nav nav-tabs pull-right">
 	                            	<li class="pull-left header"><i class="fa fa-th"></i>Editor</li>
     	                        </ul>
@@ -233,8 +233,8 @@
                                 </div>
                             </div>
  						</section>
- 						<section class="col-sm-4 connectedSortable"> 
-                            <div class="nav-tabs-custom">
+ 						<section class="col-sm-6 connectedSortable"> 
+                            <div class="nav-tabs-custom box-solid box-primary">
 								<ul id="id-imath-headTabsConsole" class="nav nav-tabs pull-right">
                             		<li class="pull-left header">
                             			<i class="fa fa-th"></i>Console 
