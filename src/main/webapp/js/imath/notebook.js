@@ -15,7 +15,7 @@ function executeInConsoleR(str, idConsole) {
     //goToConsole();
 }
 
-function setDefaultLanguage(str, idConsole) {
+/*function setDefaultLanguage(str, idConsole) {
 	sendMessage(MSG_DEFAULT_LANGUAGE, str, idConsole);
 }
 
@@ -26,7 +26,7 @@ function setEnvironmentVariable(str, idConsole) {
 
 function setPORTConsole(idConsole){
 	sendMessage(MSG_PORTCONSOLE, host['port'], idConsole);
-}
+}*/
 
 function sendMessage(msgType, content, idConsole) {
 	//console.log("sendMessage" + msgType + content);
@@ -83,7 +83,7 @@ function newConsole(notebookId, notebookName){
 		//$( "#tabsConsole" ).tabs("option", "active",consolesIdOpenTabIndex[idConsole] );
 		
 		
-		var callBE = 'http://' + host['url'] + ":8080"+ '/iMathCloud/rest/notebook_service/getNotebook/' + notebookId + "/" + host['port'];
+		var callBE = 'http://' + host['url'] + ":" + IMATH_PORT+ '/iMathCloud/rest/notebook_service/getNotebook/' + userName + "/" + notebookId + "/" + host['port'];
 		$( "#interactive_math-" + idConsole).attr('src', callBE);
 		//$( "#interactive_math-" + idConsole).attr('src',urlConsole +'/' + notebookId);								
 		
@@ -91,15 +91,17 @@ function newConsole(notebookId, notebookName){
 		var he = u.offsetHeight;
 		he = 400;
 		$( "#interactive_math-" + idConsole).height(he-70);
-		host = window.hostGlobal;
-		mathLanguageCode = host['mathLanguage']['consoleCode'];
+		//host = window.hostGlobal;
+		//mathLanguageCode = host['mathLanguage']['consoleCode'];
 		getUserMathFunctions();
+		
+		/*
 		$('iframe#interactive_math-' + idConsole).load(function() {
 			var env_var = "/iMathCloud/" + userName;
 			setEnvironmentVariable(env_var, idConsole);
 			setDefaultLanguage(mathLanguageCode, idConsole);
 			setPORTConsole(idConsole);
-		});
+		});*/
 				
 	}
 }
