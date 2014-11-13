@@ -89,8 +89,9 @@ function newConsole(notebookId, notebookName){
 		
 		var u = document.getElementById('tabsConsole');
 		var he = u.offsetHeight;
-		he = 400;
+		he = 1000;
 		$( "#interactive_math-" + idConsole).height(he-70);
+		$("#"+nameTab).height(he-70);
 		//host = window.hostGlobal;
 		//mathLanguageCode = host['mathLanguage']['consoleCode'];
 		getUserMathFunctions();
