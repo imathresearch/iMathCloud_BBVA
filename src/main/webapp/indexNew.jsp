@@ -114,8 +114,25 @@
 	
 		.CodeMirror {
  			font-size: 10pt;   			
-		} 
+		}
+		
+		.nav-tabs-color{
+			background: #3c8dbc;		
+		}
+		
+		.nav-tabs-custom > .nav-tabs > li.header-color{
+			color: white;
+		}
+		
+		.nav-tabs-custom > .nav-tabs > li:not(.active) > a:hover, .nav-tabs-custom > .nav-tabs > li:not(.active) > a:focus, .nav-tabs-custom > .nav-tabs > li:not(.active) > a:active {
+			border-color: transparent;
+			color: black;
+		}
         
+        .nav-tabs-custom > .nav-tabs > li:not(.active) > a {
+			border-color: transparent;
+			color: white;
+		}
         </style>
         
     </head>
@@ -175,7 +192,7 @@
  							<!-- Box Own projects -->
  							<div class="box box-solid box-primary imath-waiting-creation imath-waiting-files">
                                 <div class="box-header">
-                                    <h3 class="box-title"><i class="fa fa-bar-chart-o"></i>&nbsp;&nbsp;&nbsp; Files</h3>
+                                    <h3 class="box-title"><i class="fa fa-folder-o"></i>&nbsp;&nbsp;&nbsp; Files</h3>
                                     <div class="box-tools pull-right">
 										<div class="btn-group" data-toggle="btn-toggle">
 											<button id="imath-id-refresh-files" type="button" class="btn btn-primary active"><i class="fa fa-refresh"></i></button>
@@ -229,19 +246,19 @@
                             </div><!-- /.box collaborations-->
  						</section> 
  						<section class="col-sm-4 connectedSortable">
-                            <div class="nav-tabs-custom box-solid box-primary">
+                            <div class="nav-tabs-custom nav-tabs-color box-solid box-primary">
 	                            <ul id="id-imath-headTabsFile" class="nav nav-tabs pull-right">
-	                            	<li class="pull-left header"><i class="fa fa-th"></i>Editor</li>
+	                            	<li class="pull-left header header-color"><i class="fa fa-edit"></i>Editor</li>
     	                        </ul>
                                 <div id="tabsFile" class="tab-content span4">
                                 </div>
                             </div>
  						</section>
  						<section class="col-sm-6 connectedSortable"> 
-                            <div class="nav-tabs-custom box-solid box-primary">
+                            <div class="nav-tabs-custom nav-tabs-color box-solid box-primary">
 								<ul id="id-imath-headTabsConsole" class="nav nav-tabs pull-right">
-                            		<li class="pull-left header">
-                            			<i class="fa fa-th"></i>Console 
+                            		<li class="pull-left header header-color">
+                            			<i class="fa fa-desktop"></i>Console 
                             			<div class="btn-group" data-toggle="btn-toggle">
 											<button id="imath-id-new-console" type="button" class="btn btn-primary active"><i class="fa fa-plus"></i> </button>
 										</div>
