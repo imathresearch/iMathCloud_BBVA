@@ -47,12 +47,16 @@ function fillRemoteFiles(files, treeView, shareZone) {
 			aux = aux + "</span></li>";
 		}
 		
+		var trig = 'right'; 
 		if (file['dir']==null) { //ROOT
 			if (shareZone==0) rootElement = genIdFileContextMenu(file['id'], file['name']);
 			$( treeView ).append(aux);
 			$.contextMenu({
 		        selector: '.' + genClassFileContextMenu(file['id']) , 
 		        trigger: trig,
+		        delay: 1,
+		        autoHide: true,
+		        zIndex: 99,
 		        callback: function(key, options) {
 		        	var a = options.$trigger.attr("id");
 					var b = a.split("__");
@@ -61,13 +65,13 @@ function fillRemoteFiles(files, treeView, shareZone) {
 		        
 		        items: genContextMenu(file['type'], shareZone, file['sharingState'], true) 
 		    });
-		} else {			
-			var trig = 'hover'; 
+		} else {						
 			if (file['type'] == "dir") {
-				trig = 'right'; 
 				$.contextMenu({
 			        selector: '.' + genClassFileContextMenu(file['id']) , 
 			        trigger: trig,
+			        delay: 1,
+			        autoHide: true,
 			        zIndex: 99,
 			        callback: function(key, options) {
 			        	var a = options.$trigger.attr("id");
