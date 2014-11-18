@@ -111,6 +111,10 @@
 		td.spaced {
 			margin-left: 40px;
 		}
+	
+		.CodeMirror {
+ 			font-size: 10pt;   			
+		} 
         
         </style>
         
