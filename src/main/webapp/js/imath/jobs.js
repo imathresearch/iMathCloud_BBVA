@@ -104,13 +104,14 @@ function fillJobs(jobs) {
 	for(var i=0; i<jobs.length; i++) {
 		job = jobs[i];
 		console.log(job['startDate']);
-		var date = new Date(job['startDate']);
+		var date = new Date(job['startDate']);		
+		var dateText = dateToNice(date);
 		var aux = "<tr id='" + genIdJobContextMenu(job['id'], job['state']) + "' class='" + genClassJobContextMenu(job['id']) + "' >";
 		aux = aux +"<td>" + getImageJobStatus(job['state']) + "</td>";
 		aux = aux + "<td><a onclick='showJobStatus(\""+ job['id'] + "\")' + >" + job['id'] + "</a></td>";
 		aux = aux + "<td><a onclick='showJobStatus(\""+ job['id'] + "\")' + >" + job['description'] + "</a></td>";
-		aux = aux + '<td data-value="' + job['startDate'] + '">' + date + '</td>';		
-		aux = aux + '<td data-value="' + jobPercentCompletion(job) + '">' + jobPercentCompletion(job) + '</td>';
+		aux = aux + '<td data-value="' + job['startDate'] + '">' + dateText + '</td>';		
+		//aux = aux + '<td data-value="' + jobPercentCompletion(job) + '">' + jobPercentCompletion(job) + '</td>';
 		aux = aux + "</tr>";
 		$( "#jobsTBODY" ).append(aux);
 		jobsTable[job['id'].toString()] = job['state'];
@@ -119,6 +120,7 @@ function fillJobs(jobs) {
 	
 	$("#jobsXML").trigger('update')
 }
+
 
 
 function genIdJobContextMenu (jobId, state) {
@@ -499,4 +501,41 @@ function form_tpl_linreg(idFile){
 		"title":title,
 		"buttons":buttons
 		};
+}
+
+var global_month_array = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+function numberToMonth(i) {
+	ret = "";
+	if (i>=0 && i <=11) {
+		ret = global_month_array[i];
+	}
+	return ret; 
+}
+
+function getOrdinal(digitT) {
+	ret = "th";
+	if (digitT=="1") ret="st";
+	if (digitT=="2") ret="nd";
+	if (digitT=="3") ret="rd";
+	return ret;
+}
+
+function dateToNice(date) {
+	var year = date.getFullYear();
+	var monthText = numberToMonth(date.getMonth());
+	var day = date.getDate();
+	dayText = day.toString();
+	lastDigit = dayText[dayText.length-1];
+	ord = getOrdinal(lastDigit);
+	if (day==11) {
+		ord = "th";
+	}
+	else {
+		if (day==12) {
+			ord = "th";
+		}
+	}
+	var ret = monthText + " " + dayText + ord + " " + year + ", " + date.getHours() + ":" + date.getMinutes();
+	return ret;
 }

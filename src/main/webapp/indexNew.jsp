@@ -219,7 +219,7 @@
 												<th>Job#</th>
 												<th>Description</th>
 												<th>Started</th>
-												<th>%</th>
+												<!--th>%</th-->
 											</tr>
 										</thead>
 										<tbody id="jobsTBODY">
