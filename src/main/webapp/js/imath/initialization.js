@@ -2,8 +2,8 @@ window.onload = function() {
 	assignEvents();
 	getContextMenuJobs();
 	ajaxRequestSession();
+	
     //when ever any tab is clicked this method will be call
-    
 	$("#id-imath-headTabsFile").on("click", "a", function (e) {
         e.preventDefault();
         $(this).tab('show');
@@ -16,51 +16,8 @@ window.onload = function() {
         currentTabConsole = $(this);
     });
 	
-    /*
-	$( "#tabsFile" ).tabs().delegate( "span.ui-icon-close", "click", function() {
-		var panelId = $( this ).closest( "li" ).remove().attr( "aria-controls" );
-		var id = $( "#" + panelId ).remove().attr("id");
-		if (id.substring(0,4)==='plot') {
-			closeOpenFilePlot(getIdFromTabPlotName(id));
-		}
-		else {
-			closeOpenFile(getIdFromTabName(id));
-		}
-		$( "#tabsFile" ).tabs().tabs( "refresh" );
-	});
-	
-	$( "#tabsFile" ).tabs().bind( "keyup", function( event ) {
-		if ( event.altKey && event.keyCode === $.ui.keyCode.BACKSPACE ) {
-			var panelId = tabs.find( ".ui-tabs-active" ).remove().attr( "aria-controls" );
-			var id = $( "#" + panelId ).remove().attr("id");
-			if (id.substring(0,4)==='plot') {
-				closeOpenFilePlot(getIdFromTabPlotName(id));
-			}
-			else {
-				closeOpenFile(getIdFromTabName(id));
-			}
-			$( "#tabsFile" ).tabs().tabs( "refresh" );
-		}
-		
-	});
-	
-	$( "#tabsConsole" ).tabs().delegate( "span.ui-icon-close", "click", function() {
-		var panelId = $( this ).closest( "li" ).remove().attr( "aria-controls" );
-		var id = $( "#" + panelId ).remove().attr("id");
-		closeOpenConsole(getIdFromConsoleTabName(id));
-		$( "#tabsConsole" ).tabs().tabs( "refresh" );
-	});
-	
-	$( "#tabsConsole" ).tabs().bind( "keyup", function( event ) {
-		if ( event.altKey && event.keyCode === $.ui.keyCode.BACKSPACE ) {
-			var panelId = tabs.find( ".ui-tabs-active" ).remove().attr( "aria-controls" );
-			var id = $( "#" + panelId ).remove().attr("id");
-			closeOpenConsole(getIdFromConsoleTabName(id));
-			$( "#tabsConsole" ).tabs().tabs( "refresh" );
-		}
-	});
-	*/
-	
+	var aux = $("<div></div>").height(getProperHeight()-95);
+	$("#tabsFile").append(aux);
 };
 
 
@@ -95,6 +52,16 @@ var openTabIndexIdNotebook = new Array();
 
 var projectName;
 var currentTabConsole = null;
+
+function setProperHeight(selector) {
+	var gheight = $("id-imath-content").height();
+	$(selector).height(gheight);
+}
+
+function getProperHeight() {
+	var gheight = $(document).height()-100;
+	return gheight;
+}
 
 function assignEvents() {
 	$("#imath-id-refresh-files").click(function () {

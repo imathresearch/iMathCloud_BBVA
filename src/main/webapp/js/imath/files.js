@@ -643,7 +643,8 @@ function ajaxGetFiles() {
         success: function(files) {
         	//alert(JSON.stringify(files));
         	fillRemoteFiles(files, "#remoteTree",0);
-			$( "#remoteTree" ).treeview();
+        	$( "#remoteTree" ).height(getProperHeight()*2/3-150);
+        	$( "#remoteTree" ).treeview();
 			unplaceWaiting("imath-waiting-files");
         },
         error: function(error) {
@@ -1278,7 +1279,7 @@ function openCodeFile(data, modeStr) {
 	generateToolBarFile(data['id']);
 	//var u = document.getElementById("codeDIV_"+nameTab);
 	var u = document.getElementById('tabsFile');
-	var he = u.offsetHeight;
+	var he = getProperHeight(); //u.offsetHeight;
 	var x = document.getElementsByName('code_'+nameTab)[0];
 	
 	var conf = {

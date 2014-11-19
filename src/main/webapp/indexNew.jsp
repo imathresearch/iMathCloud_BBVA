@@ -133,6 +133,14 @@
 			border-color: transparent;
 			color: white;
 		}
+		
+		table.jobs-table tbody,
+		table.jobs-table thead tr { display: block; }
+
+		table.jobs-table tbody {
+    		overflow-y: auto;
+    		overflow-x: hidden;
+		}
         </style>
         
     </head>
@@ -184,10 +192,10 @@
         <div class="wrapper row-offcanvas row-offcanvas-left">
             <!-- Right side column. Contains the navbar and content of the page -->
                 <!-- Main content -->
-                <section class="content">
+                <section id="id-imath-content" class="content">
 
                     <!-- Main row -->
-                    <div class="row imath-main-row">
+                    <div id="id-imath-content" class="row imath-main-row">
  						<section class="col-sm-2 connectedSortable">
  							<!-- Box Own projects -->
  							<div class="box box-solid box-primary imath-waiting-creation imath-waiting-files">
@@ -217,7 +225,7 @@
 										</div>
 									</div>
                                 </div><!-- /.box-header -->
-                                <div class="box-body">
+                                <div id="id-imath-box-jobs" class="box-body">
                                 	<form role="form">
 	                                	<div class="form-group">
 		                                	<select id="selectJobState" class="form-control" onchange="filterJobState()">
@@ -229,7 +237,7 @@
 											</select>
 										</div>
 									</form>
-                                   	<table id="jobsXML" class="table table-bordered imath-collaborations">
+                                   	<table id="jobsXML" class="table table-bordered jobs-table">
                                     	<thead>
 											<tr>
 												<th> </th>
@@ -246,7 +254,7 @@
                             </div><!-- /.box collaborations-->
  						</section> 
  						<section class="col-sm-4 connectedSortable">
-                            <div class="nav-tabs-custom nav-tabs-color box-solid box-primary">
+                            <div id="id-imath-box-editor" class="nav-tabs-custom nav-tabs-color box-solid box-primary">
 	                            <ul id="id-imath-headTabsFile" class="nav nav-tabs pull-right">
 	                            	<li class="pull-left header header-color"><i class="fa fa-edit"></i>Editor</li>
     	                        </ul>
@@ -255,7 +263,7 @@
                             </div>
  						</section>
  						<section class="col-sm-6 connectedSortable"> 
-                            <div class="nav-tabs-custom nav-tabs-color box-solid box-primary">
+                            <div id="id-imath-box-console" class="nav-tabs-custom nav-tabs-color box-solid box-primary">
 								<ul id="id-imath-headTabsConsole" class="nav nav-tabs pull-right">
                             		<li class="pull-left header header-color">
                             			<i class="fa fa-desktop"></i>Console 

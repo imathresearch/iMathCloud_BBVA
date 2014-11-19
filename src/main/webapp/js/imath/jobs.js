@@ -101,6 +101,7 @@ var jobsTable = new Array();
 
 function fillJobs(jobs) {
 	clearJobTable();
+	$("#jobsTBODY").height(getProperHeight()/3-120);
 	for(var i=0; i<jobs.length; i++) {
 		job = jobs[i];
 		console.log(job['startDate']);
