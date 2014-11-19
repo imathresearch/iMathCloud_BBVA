@@ -30,7 +30,9 @@
 		<link href="css/jquery.contextMenu.css" rel="stylesheet"> 
 		<link rel='stylesheet' href='css/codemirror.css'></link>
   		<link rel='stylesheet' href='css/eclipse.css'></link>
-  		<link href="css/start/jquery-ui-1.10.0.custom.css" rel="stylesheet">
+  		<link href="css/start/jquery-ui-1.10.0.custom.css" rel="stylesheet">  	
+  		  		
+	  	<link href="css/table.sorter.css" rel="stylesheet" type="text/css" />
   		
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -152,7 +154,7 @@
 			width: 35%;
 		}
 		
-		th, th.jobId > td, th.jobDes > td, th.jobDate > td {    		
+		th, td {    		
     		overflow: hidden;
     		word-wrap:break-word    	
 		}
@@ -253,13 +255,13 @@
 											</select>
 										</div>
 									</form>
-                                   	<table id="jobsXML" class="table table-bordered imath-collaborations table-job">
+                                   	<table id="jobsXML" class="tablesorter table table-bordered imath-collaborations table-job">
                                     	<thead>
 											<tr>
 												<!--th class="jobState"> </th-->
-												<th align="center" class="jobId">#</th>
-												<th align="center" class="jobDes">Desc.</th>
-												<th align="center" class="jobDate">Started</th>
+												<th class="jobId">#</th>
+												<th class="jobDes">Desc.</th>
+												<th class="jobDate">Started</th>
 												<!--th>%</th-->
 											</tr>
 										</thead>
@@ -396,6 +398,8 @@
 		<script src="js/imath/plotCSV.js" type="text/javascript"></script>
 		<script src="js/imath/notebook.js" type="text/javascript"></script>
         <script src="js/imath/initialization.js" type="text/javascript"></script>
+        
+        <script type="text/javascript" src="js/libs/jquery.tablesorter.min.js"></script>
         
 		<script type="text/javascript">
 			var userName = "<%= request.getUserPrincipal().getName() %>";
