@@ -133,6 +133,30 @@
 			border-color: transparent;
 			color: white;
 		}
+		
+		.table-job{
+			width: 100%;
+			table-layout: fixed;
+			font-size:8pt;		
+		}
+		
+		th.jobId{
+			width:30%;
+		}
+		
+		th.jobDes{
+			width: 45%
+		}
+		
+		th.jobDate{
+			width: 35%;
+		}
+		
+		th, th.jobId > td, th.jobDes > td, th.jobDate > td {    		
+    		overflow: hidden;
+    		word-wrap:break-word    	
+		}
+		
         </style>
         
     </head>
@@ -220,7 +244,7 @@
                                 <div class="box-body">
                                 	<form role="form">
 	                                	<div class="form-group">
-		                                	<select id="selectJobState" class="form-control" onchange="filterJobState()">
+		                                	<select id="selectJobState" class="form-control" style="font-size:10pt" onchange="filterJobState()">
 						  						<option value="ALL">All jobs</option>
 						  						<option value="RUNNING">Running</option>  							
 						  						<option value="CANCELLED">Cancelled</option>
@@ -229,13 +253,13 @@
 											</select>
 										</div>
 									</form>
-                                   	<table id="jobsXML" class="table table-bordered imath-collaborations">
+                                   	<table id="jobsXML" class="table table-bordered imath-collaborations table-job">
                                     	<thead>
 											<tr>
-												<th> </th>
-												<th>Job#</th>
-												<th>Description</th>
-												<th>Started</th>
+												<!--th class="jobState"> </th-->
+												<th align="center" class="jobId">#</th>
+												<th align="center" class="jobDes">Desc.</th>
+												<th align="center" class="jobDate">Started</th>
 												<!--th>%</th-->
 											</tr>
 										</thead>

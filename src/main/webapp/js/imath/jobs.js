@@ -106,10 +106,11 @@ function fillJobs(jobs) {
 		console.log(job['startDate']);
 		var date = new Date(job['startDate']);		
 		var dateText = dateToNice(date);
+		var description = job['description'].split('/');		
 		var aux = "<tr id='" + genIdJobContextMenu(job['id'], job['state']) + "' class='" + genClassJobContextMenu(job['id']) + "' >";
-		aux = aux +"<td>" + getImageJobStatus(job['state']) + "</td>";
-		aux = aux + "<td><a onclick='showJobStatus(\""+ job['id'] + "\")' + >" + job['id'] + "</a></td>";
-		aux = aux + "<td><a onclick='showJobStatus(\""+ job['id'] + "\")' + >" + job['description'] + "</a></td>";
+		//aux = aux +"<td>" + getImageJobStatus(job['state']) + "</td>";
+		aux = aux + "<td>" +  getImageJobStatus(job['state']) + "  " + "<a onclick='showJobStatus(\""+ job['id'] + "\")' + >" + job['id'] + "</a></td>";
+		aux = aux + "<td>" + description[description.length-1] + "</td>";
 		aux = aux + '<td data-value="' + job['startDate'] + '">' + dateText + '</td>';		
 		//aux = aux + '<td data-value="' + jobPercentCompletion(job) + '">' + jobPercentCompletion(job) + '</td>';
 		aux = aux + "</tr>";
@@ -324,7 +325,14 @@ function showJobDialog(job) {
 //	$("#dialogPopup").append("<div id='contentPopup'>" + aux + "</div>");
 //	$("#contentPopup").html(aux);
 //	$("#dialogPopup").dialog("open");
-	showDialog(aux);
+	var content = aux;
+	var title = "Job Info";
+	var buttons = {
+			OK : function() {
+				$("#dialogPopup").modal('hide');
+			}		
+	};
+	showDialog(content, title, buttons);
 }
 
 function plotJobResults(idJob) {
@@ -536,6 +544,6 @@ function dateToNice(date) {
 			ord = "th";
 		}
 	}
-	var ret = monthText + " " + dayText + ord + " " + year + ", " + date.getHours() + ":" + date.getMinutes();
+	var ret = monthText + " " + dayText + ord + " " + year;
 	return ret;
 }
