@@ -71,7 +71,7 @@ function fillRemoteFiles(files, treeView, shareZone) {
 			//	trig = 'right'; 
 			//}
 			$.contextMenu({
-		        selector: '.' + genClassFileContextMenu(file['id']) , 
+		        selector: '.' + genClassFileContextMenu(file['id']) , 	
 		        trigger: trig,
 		        zIndex:10,
 		        callback: function(key, options) {
