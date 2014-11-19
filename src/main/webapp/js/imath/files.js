@@ -43,7 +43,7 @@ function fillRemoteFiles(files, treeView, shareZone) {
 					aux = "<li><span class='file'>";
 			}
 						
-			aux = aux + "<a id = '" + genIdFileContextMenu(file['id'], file['name']) + "' class='" + genClassFileContextMenu(file['id']) + "' href='#'>" +file['name']+ "</a>";
+			aux = aux + "<a id = '" + genIdFileContextMenu(file['id'], file['name']) + "' class='" + genClassFileContextMenu(file['id']) + " " + genClassFileContextMenu(file['id']) + "_l" + "' href='#'>" +file['name']+ "</a>";
 			aux = aux + "</span></li>";
 		}
 		
@@ -66,27 +66,27 @@ function fillRemoteFiles(files, treeView, shareZone) {
 		        items: genContextMenu(file['type'], shareZone, file['sharingState'], true) 
 		    });
 		} else {						
-			if (file['type'] == "dir") {
+			var trig = 'right'; 
+			//if (file['type'] == "dir") {
+			//	trig = 'right'; 
+			//}
+			$.contextMenu({
+		        selector: '.' + genClassFileContextMenu(file['id']) , 
+		        trigger: trig,
+		        zIndex:10,
+		        callback: function(key, options) {
+		        	var a = options.$trigger.attr("id");
+					var b = a.split("__");
+		        	executeMenu(key,b[1], b[2]);
+		        },
+		        items: genContextMenu(file['type'], shareZone, file['sharingState']) 
+		    });
+			trig = 'left';
+			if (file['type'] != "dir") {
 				$.contextMenu({
-			        selector: '.' + genClassFileContextMenu(file['id']) , 
+			        selector: '.' + genClassFileContextMenu(file['id']) + "_l", 
 			        trigger: trig,
-			        delay: 1,
-			        autoHide: true,
-			        zIndex: 99,
-			        callback: function(key, options) {
-			        	var a = options.$trigger.attr("id");
-						var b = a.split("__");
-			        	executeMenu(key,b[1], b[2]);
-			        },
-			        items: genContextMenu(file['type'], shareZone, file['sharingState']) 
-			    });
-			} else {
-				$.contextMenu({
-			        selector: '.' + genClassFileContextMenu(file['id']) , 
-			        trigger: trig,
-			        delay: 1,
-			        autoHide: true,
-			        zIndex: 99,
+			        zIndex:10,
 			        callback: function(key, options) {
 			        	var a = options.$trigger.attr("id");
 						var b = a.split("__");
