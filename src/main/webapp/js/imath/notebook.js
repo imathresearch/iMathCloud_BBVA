@@ -88,7 +88,9 @@ function newConsole(notebookId, notebookName){
 		//$( "#interactive_math-" + idConsole).attr('src',urlConsole +'/' + notebookId);								
 		
 		var u = document.getElementById('tabsConsole');
-		var he = getProperHeight()-100;//u.offsetHeight;
+		//var he = getProperHeight()-100;//u.offsetHeight;
+		var he = getWindowHeight() - getTopOffset("#"+nameTab) - getOffsetBottom();
+		
 		$( "#interactive_math-" + idConsole).height(he);
 		$("#"+nameTab).height(he);
 		//host = window.hostGlobal;

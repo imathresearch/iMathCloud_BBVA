@@ -101,7 +101,10 @@ var jobsTable = new Array();
 
 function fillJobs(jobs) {
 	clearJobTable();
-	$("#jobsTBODY").height(getProperHeight()/3-120);
+	
+	// 50 = 10 (padding box) + 20 (padding content) + 20 (spaces between boxes)
+	var he = getWindowHeight() - getTopOffset("#jobsTBODY") - getOffsetBottom()+10;
+	$("#jobsTBODY").height(he);
 	for(var i=0; i<jobs.length; i++) {
 		job = jobs[i];
 		console.log(job['startDate']);

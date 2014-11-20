@@ -1,4 +1,5 @@
 window.onload = function() {
+	drawLayout();
 	assignEvents();
 	getContextMenuJobs();
 	ajaxRequestSession();
@@ -15,8 +16,6 @@ window.onload = function() {
         $(this).tab('show');
         currentTabConsole = $(this);
     });
-	
-	addFakeTab();
 
 	$.tablesorter.addParser({
 	    id: "orderdate",
@@ -73,13 +72,24 @@ var openTabIndexIdNotebook = new Array();
 var projectName;
 var currentTabConsole = null;
 
+function drawLayout() {
+	$( "#remoteTree" ).height(getWindowHeight()/2);
+	addFakeTab();
+}
+
 function addFakeTab() {
-	var aux = $("<div id='id-imath-fake-tab'></div>").height(getProperHeight()-95);
+	var aux = $("<div id='id-imath-fake-tab'></div>");
 	$("#tabsFile").append(aux);
+	var he = getWindowHeight() - getTopOffset("#id-imath-fake-tab") - getOffsetBottom();
+	aux.height(he);
 }
 
 function removeFakeTab() {
 	$("#id-imath-fake-tab").remove();
+}
+
+function getOffsetBottom() {
+	return 80;
 }
 
 function setProperHeight(selector) {
@@ -88,8 +98,18 @@ function setProperHeight(selector) {
 }
 
 function getProperHeight() {
-	var gheight = $(document).height()-100;
+	var gheight = $(window).height()-100;
 	return gheight;
+}
+
+function getWindowHeight() {
+	return $(window).height();
+}
+
+// Offset with respect document
+function getTopOffset(selector) {
+	var x = $(selector).offset();
+	return x.top;
 }
 
 function assignEvents() {

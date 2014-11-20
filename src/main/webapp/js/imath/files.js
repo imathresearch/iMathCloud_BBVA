@@ -133,6 +133,7 @@ function clearFileTree(shareZone){
 	if (!shareZone){
 		$( "#remoteTree" ).remove();
 		$( "#remoteTreeContent").append('<ul id="remoteTree" class="filetree"></ul>');
+		$( "#remoteTree" ).height(getWindowHeight()/2);
 	}
 	//$( "#remoteTreeShared" ).remove();
 	//$( "#remoteTreeContent").append('<ul id="remoteTreeShared" class="filetree"></ul>');
@@ -643,7 +644,6 @@ function ajaxGetFiles() {
         success: function(files) {
         	//alert(JSON.stringify(files));
         	fillRemoteFiles(files, "#remoteTree",0);
-        	$( "#remoteTree" ).height(getProperHeight()*2/3-150);
         	$( "#remoteTree" ).treeview();
 			unplaceWaiting("imath-waiting-files");
         },
@@ -1283,7 +1283,10 @@ function openCodeFile(data, modeStr) {
 	generateToolBarFile(data['id']);
 	//var u = document.getElementById("codeDIV_"+nameTab);
 	var u = document.getElementById('tabsFile');
-	var he = getProperHeight(); //u.offsetHeight;
+	
+	var he = getWindowHeight() - getTopOffset("#"+id) - getOffsetBottom();
+	
+	//var he = getProperHeight(); //u.offsetHeight;
 	var x = document.getElementsByName('code_'+nameTab)[0];
 	
 	var conf = {
