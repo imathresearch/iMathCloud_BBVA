@@ -870,7 +870,11 @@ function closeOpenFile(idFile) {
 	}
 	globalTabCounting--;
 	
-	var numOpenTabs = $('.tab-File').length;	
+	if (globalTabCounting==0) {
+		addFakeTab();
+	}
+	//var numOpenTabs = $('.tab-File').length;
+	 
 	/*
 	if(numOpenTabs == 0){		
 		var tabs = $( "#tabsFile" ).tabs();
@@ -1251,7 +1255,7 @@ function openCodeFile(data, modeStr) {
 	var label = data['name']; 
 	var id = nameTab;
 	var li = $( tabTemplate.replace( /#\{href\}/g, "#" + id ).replace( /#\{label\}/g, label ) );
-	
+	removeFakeTab();
 	
 	//$('.tab-File').removeClass("active");
 	var numOpenTabs = $('.tab-File').length;	

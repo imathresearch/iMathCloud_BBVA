@@ -16,8 +16,7 @@ window.onload = function() {
         currentTabConsole = $(this);
     });
 	
-	var aux = $("<div></div>").height(getProperHeight()-95);
-	$("#tabsFile").append(aux);
+	addFakeTab();
 
 	$.tablesorter.addParser({
 	    id: "orderdate",
@@ -73,6 +72,15 @@ var openTabIndexIdNotebook = new Array();
 
 var projectName;
 var currentTabConsole = null;
+
+function addFakeTab() {
+	var aux = $("<div id='id-imath-fake-tab'></div>").height(getProperHeight()-95);
+	$("#tabsFile").append(aux);
+}
+
+function removeFakeTab() {
+	$("#id-imath-fake-tab").remove();
+}
 
 function setProperHeight(selector) {
 	var gheight = $("id-imath-content").height();
