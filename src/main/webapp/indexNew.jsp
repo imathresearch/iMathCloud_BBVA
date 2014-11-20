@@ -30,7 +30,9 @@
 		<link href="css/jquery.contextMenu.css" rel="stylesheet"> 
 		<link rel='stylesheet' href='css/codemirror.css'></link>
   		<link rel='stylesheet' href='css/eclipse.css'></link>
-  		<link href="css/start/jquery-ui-1.10.0.custom.css" rel="stylesheet">
+  		<link href="css/start/jquery-ui-1.10.0.custom.css" rel="stylesheet">  	
+  		  		
+	  	<link href="css/table.sorter.css" rel="stylesheet" type="text/css" />
   		
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -141,6 +143,30 @@
     		overflow-y: auto;
     		overflow-x: hidden;
 		}
+
+		table.table-job{
+			width: 100%;
+			table-layout: fixed;
+			font-size:8pt;		
+		}
+		
+		th.jobId{
+			width:30%;
+		}
+		
+		th.jobDes{
+			width: 45%
+		}
+		
+		th.jobDate{
+			width: 35%;
+		}
+		
+		th, td {    		
+    		overflow: hidden;
+    		word-wrap:break-word    	
+		}
+		
         </style>
         
     </head>
@@ -228,7 +254,7 @@
                                 <div id="id-imath-box-jobs" class="box-body">
                                 	<form role="form">
 	                                	<div class="form-group">
-		                                	<select id="selectJobState" class="form-control" onchange="filterJobState()">
+		                                	<select id="selectJobState" class="form-control" style="font-size:10pt" onchange="filterJobState()">
 						  						<option value="ALL">All jobs</option>
 						  						<option value="RUNNING">Running</option>  							
 						  						<option value="CANCELLED">Cancelled</option>
@@ -237,13 +263,13 @@
 											</select>
 										</div>
 									</form>
-                                   	<table id="jobsXML" class="table table-bordered jobs-table">
+                                   	<table id="jobsXML" class="tablesorter table table-bordered table-job jobs-table">
                                     	<thead>
 											<tr>
-												<th> </th>
-												<th>Job#</th>
-												<th>Description</th>
-												<th>Started</th>
+												<!--th class="jobState"> </th-->
+												<th class="jobId">#</th>
+												<th class="jobDes">Desc.</th>
+												<th class="jobDate">Started</th>
 												<!--th>%</th-->
 											</tr>
 										</thead>
@@ -381,16 +407,10 @@
 		<script src="js/imath/notebook.js" type="text/javascript"></script>
         <script src="js/imath/initialization.js" type="text/javascript"></script>
         
+        <script type="text/javascript" src="js/libs/jquery.tablesorter.min.js"></script>
+        
 		<script type="text/javascript">
 			var userName = "<%= request.getUserPrincipal().getName() %>";
-			/*
-			var aux = userName.split("XYZ");
-			var projName = userName;
-			if (aux.length == 2) {
-				projName=aux[0];
-			}
-			$("#projectname").html(projName);
-			*/
 		</script>
     </body>
 	

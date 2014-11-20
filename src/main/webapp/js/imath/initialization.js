@@ -18,6 +18,27 @@ window.onload = function() {
 	
 	var aux = $("<div></div>").height(getProperHeight()-95);
 	$("#tabsFile").append(aux);
+
+	$.tablesorter.addParser({
+	    id: "orderdate",
+	    is: function (s, table, cell) {
+	        return true;
+	    },
+	    format: function (s, table, cell, cellIndex) {
+	    	console.log("RUNNING PARSER");
+	        return new Date(s).getTime() || '';
+	    },
+	    type: "numeric"
+	});
+	    	
+	$("#jobsXML").tablesorter({ 
+        // pass the headers argument and assing a object 
+        headers: {                
+            0: { sorter: false}, 
+            1: { sorter: false},            
+            2: { sorter: 'orderdate'}            
+        } 
+    });
 };
 
 
