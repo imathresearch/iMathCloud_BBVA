@@ -166,7 +166,19 @@
     		overflow: hidden;
     		word-wrap:break-word    	
 		}
+		.footer {
+			position: absolute;
+    		bottom: 0;
+		}
+		body, html {
+			height:100%;
+			overflow: hidden;
+		}
 		
+		.filetree {
+		    overflow-y: auto;
+    		overflow-x: hidden;
+		}
         </style>
         
     </head>
@@ -305,7 +317,7 @@
                    	</div><!-- /.row (main row) -->
                 </section><!-- /.content -->
         </div><!-- ./wrapper -->
-
+		<div id="id-imath-footer" class="footer"></div>
 		<!-- COMPOSE MESSAGE MODAL FOR CONFIRMATIONS-->
         <div class="modal fade" id="imath-id-conf-message" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog">

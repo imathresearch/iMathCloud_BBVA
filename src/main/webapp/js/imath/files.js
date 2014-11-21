@@ -1284,8 +1284,6 @@ function openCodeFile(data, modeStr) {
 	//var u = document.getElementById("codeDIV_"+nameTab);
 	var u = document.getElementById('tabsFile');
 	
-	var he = getWindowHeight() - getTopOffset("#"+id) - getOffsetBottom();
-	
 	//var he = getProperHeight(); //u.offsetHeight;
 	var x = document.getElementsByName('code_'+nameTab)[0];
 	
@@ -1315,10 +1313,13 @@ function openCodeFile(data, modeStr) {
 	};
 	
 	showTab(id);
+	// -37 for the htmlButtons
+	var he = getWindowHeight() - getTopOffset("#"+id) - getOffsetBottom()-37;
+
     registerCloseEvent();
     
 	var myCodeMirror = CodeMirror.fromTextArea(x,conf);
-	myCodeMirror.setSize(null,(he-150)+"px");
+	myCodeMirror.setSize(null,(he)+"px");
 	myCodeMirror.getScrollerElement().style.heigth = he+"px";
 	myCodeMirror.refresh();	
 	addCodeMirrorTabInstance(data['id'],myCodeMirror, globalTabCounting);
@@ -1340,6 +1341,8 @@ function registerCloseEvent() {
         
         if ($('#id-imath-headTabsFile a:last').length>0){
         	$('#id-imath-headTabsFile a:last').tab('show'); 
+        	currentTab=$('#id-imath-headTabsFile a:last');
+        	resizeFileEditor($('#id-imath-headTabsFile a:last'));
         }
         
         $(tabContentId).remove(); //remove respective tab content

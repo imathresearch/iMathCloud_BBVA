@@ -118,6 +118,7 @@ function registerCloseEventConsole() {
         if ($('#id-imath-headTabsConsole a:last').length>0){
         	$('#id-imath-headTabsConsole a:last').tab('show'); 
         	currentTabConsole = $('#id-imath-headTabsConsole a:last');
+        	resizeConsoleTab($('#id-imath-headTabsConsole a:last'));
         }
         
         $(tabContentId).remove(); //remove respective tab content

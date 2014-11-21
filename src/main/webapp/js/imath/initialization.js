@@ -9,12 +9,14 @@ window.onload = function() {
         e.preventDefault();
         $(this).tab('show');
         $currentTab = $(this);
+        resizeFileEditor($(this));
     });
     
 	$("#id-imath-headTabsConsole").on("click", "a", function (e) {
         e.preventDefault();
         $(this).tab('show');
         currentTabConsole = $(this);
+        resizeConsoleTab($(this));
     });
 
 	$.tablesorter.addParser({
@@ -72,6 +74,23 @@ var openTabIndexIdNotebook = new Array();
 var projectName;
 var currentTabConsole = null;
 
+function resizeFileEditor(tab) {
+	var id = tab.attr("href");
+    var he = getWindowHeight() - getTopOffset(id) - getOffsetBottom()-37;
+    var idFile=getIdFromTabName(id.substr(1));
+    var myCodeMirror = getCodeMirrorInstance(idFile);
+	myCodeMirror.setSize(null,(he)+"px");
+	myCodeMirror.getScrollerElement().style.heigth = he+"px";
+	myCodeMirror.refresh();	
+}
+
+function resizeConsoleTab(tab) {
+	var nameTab = tab.attr("href");
+    var he = getWindowHeight() - getTopOffset(nameTab) - getOffsetBottom();
+    $(nameTab + ' iframe:last').height(he);
+	$(nameTab).height(he);
+}
+
 function drawLayout() {
 	$( "#remoteTree" ).height(getWindowHeight()/2);
 	addFakeTab();
@@ -89,7 +108,8 @@ function removeFakeTab() {
 }
 
 function getOffsetBottom() {
-	return 80;
+	//return 80;
+	return 40;
 }
 
 function setProperHeight(selector) {
@@ -103,7 +123,8 @@ function getProperHeight() {
 }
 
 function getWindowHeight() {
-	return $(window).height();
+	return getTopOffset("#id-imath-footer");
+	//return $(window).height();
 }
 
 // Offset with respect document
