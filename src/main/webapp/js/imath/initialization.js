@@ -25,18 +25,22 @@ window.onload = function() {
 	        return true;
 	    },
 	    format: function (s, table, cell, cellIndex) {
-	    	console.log("RUNNING PARSER");
+	    	s = s.split('/');
+	    	var tweenty = "20";
+	    	var full_year = tweenty.concat(s[2]);
+	    	s[2] = full_year;
+	    	s = s.join('/');
 	        return new Date(s).getTime() || '';
 	    },
 	    type: "numeric"
 	});
 	    	
 	$("#jobsXML").tablesorter({ 
-        // pass the headers argument and assing a object 
+        // pass the headers argument and assing a object
+		dateFormat: "mmddyyyy",
         headers: {                
             0: { sorter: false}, 
-            1: { sorter: false},            
-            2: { sorter: 'orderdate'}            
+            1: { sorter: "orderdate"}                     
         } 
     });
 };
