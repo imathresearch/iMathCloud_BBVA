@@ -136,13 +136,7 @@
 			color: white;
 		}
 		
-		table.jobs-table tbody,
-		table.jobs-table thead tr { display: block; }
-
-		table.jobs-table tbody {
-    		overflow-y: auto;
-    		overflow-x: hidden;
-		}
+		
 
 		table.table-job{
 			width: 100%;
@@ -150,12 +144,9 @@
 			font-size:8pt;		
 		}
 		
-		th.jobId{
-			width:30%;
-		}
-		
+				
 		th.jobDes{
-			width: 45%
+			width: 65%
 		}
 		
 		th.jobDate{
@@ -263,12 +254,13 @@
 											</select>
 										</div>
 									</form>
+									<div id="divjobTable" style="width:100%; overflow-y:auto;">
                                    	<table id="jobsXML" class="tablesorter table table-bordered table-job jobs-table">
                                     	<thead>
 											<tr>
-												<!--th class="jobState"> </th-->
-												<th class="jobId">#</th>
-												<th class="jobDes">Desc.</th>
+												<!--th class="jobState"> </th>
+												<th class="jobId">#</th-->
+												<th class="jobDes">Description</th>
 												<th class="jobDate">Started</th>
 												<!--th>%</th-->
 											</tr>
@@ -276,6 +268,7 @@
 										<tbody id="jobsTBODY">
 					 					</tbody>
                                     </table>
+                                    </div>
                                 </div><!-- /.box-body -->
                             </div><!-- /.box collaborations-->
  						</section> 

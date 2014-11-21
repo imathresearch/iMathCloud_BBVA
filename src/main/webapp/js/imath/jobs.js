@@ -103,8 +103,8 @@ function fillJobs(jobs) {
 	clearJobTable();
 	
 	// 50 = 10 (padding box) + 20 (padding content) + 20 (spaces between boxes)
-	var he = getWindowHeight() - getTopOffset("#jobsTBODY") - getOffsetBottom()+10;
-	$("#jobsTBODY").height(he);
+	var he = getWindowHeight() - getTopOffset("#divjobTable") - getOffsetBottom()+10;
+	$("#divjobTable").height(he);
 	for(var i=0; i<jobs.length; i++) {
 		job = jobs[i];
 		console.log(job['startDate']);
@@ -113,8 +113,8 @@ function fillJobs(jobs) {
 		var description = job['description'].split('/');		
 		var aux = "<tr id='" + genIdJobContextMenu(job['id'], job['state']) + "' class='" + genClassJobContextMenu(job['id']) + "' >";
 		//aux = aux +"<td>" + getImageJobStatus(job['state']) + "</td>";
-		aux = aux + "<td>" +  getImageJobStatus(job['state']) + "  " + "<a onclick='showJobStatus(\""+ job['id'] + "\")' + >" + job['id'] + "</a></td>";
-		aux = aux + "<td>" + description[description.length-1] + "</td>";
+		//aux = aux + "<td>" +  getImageJobStatus(job['state']) + "  " + "<a onclick='showJobStatus(\""+ job['id'] + "\")' + >" + job['id'] + "</a></td>";
+		aux = aux + "<td>" + getImageJobStatus(job['state']) + "  " + "<a onclick='showJobStatus(\""+ job['id'] + "\")' + >" + description[description.length-1] + "</a></td>";
 		aux = aux + '<td data-value="' + job['startDate'] + '">' + dateText + '</td>';		
 		//aux = aux + '<td data-value="' + jobPercentCompletion(job) + '">' + jobPercentCompletion(job) + '</td>';
 		aux = aux + "</tr>";
@@ -534,7 +534,7 @@ function getOrdinal(digitT) {
 }
 
 function dateToNice(date) {
-	var year = date.getFullYear();
+	/*var year = date.getFullYear();
 	var monthText = numberToMonth(date.getMonth());
 	var day = date.getDate();
 	dayText = day.toString();
@@ -549,5 +549,14 @@ function dateToNice(date) {
 		}
 	}
 	var ret = monthText + " " + dayText + ord + " " + year;
+	*/
+	var year = date.getFullYear();
+	year = year.toString();
+	var small_year = year.substring(year.length-2, year.length);
+	
+	var month = date.getMonth()+1;
+	var day = date.getUTCDate();
+	var ret = month + "/" + day + "/" + small_year;
+	
 	return ret;
 }
