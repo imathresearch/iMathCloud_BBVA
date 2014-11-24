@@ -211,10 +211,10 @@
 										</div>
 									</div>
                                 </div><!-- /.box-header -->
-                                <div id="id-imath-box-jobs" class="box-body">
-                                	<form role="form">
-	                                	<div class="form-group">
-		                                	<select id="selectJobState" class="form-control" style="font-size:10pt" onchange="filterJobState()">
+                                <form role="form">
+                                	<div id="id-imath-box-jobs" class="box-body">
+                                		<div class="form-group">
+		                                	<select id="selectJobState" class="form-control" style="font-size:10pt" onchange="filterJobState()" onclick="$(this).focus()">
 						  						<option value="ALL">All jobs</option>
 						  						<option value="RUNNING">Running</option>  							
 						  						<option value="CANCELLED">Cancelled</option>
@@ -222,24 +222,25 @@
 						  						<option value="FINISHED_ERROR">Finished ERROR</option>
 											</select>
 										</div>
-									</form>
-									<div id="divjobTable" style="width:100%; overflow-y:auto;">
-                                   	<table id="jobsXML" class="tablesorter table table-bordered table-job jobs-table">
-                                    	<thead>
-											<tr>
-												<!--th class="jobState"> </th>
-												<th class="jobId">#</th-->
-												<th class="jobDes">Description</th>
-												<th class="jobDate">Started</th>
-												<!--th>%</th-->
-											</tr>
-										</thead>
-										<tbody id="jobsTBODY">
-					 					</tbody>
-                                    </table>
-                                    </div>
-                                </div><!-- /.box-body -->
-                            </div><!-- /.box collaborations-->
+										<div id="divjobTable" style="width:100%; overflow-y:auto;" class="form-group">
+		                                   	<table id="jobsXML" class="tablesorter table table-bordered table-job jobs-table">
+		                                    	<thead>
+													<tr>
+														<!--th class="jobState"> </th>
+														<th class="jobId">#</th-->
+														<th class="jobDes">Description</th>
+														<th class="jobDate">Started</th>
+														<!--th>%</th-->
+													</tr>
+												</thead>
+												<tbody id="jobsTBODY">
+							 					</tbody>
+		                                    </table>
+	                                    </div>
+									</div>
+								</form>
+                                
+                            </div>
  						</section> 
  						<section class="col-sm-4 connectedSortable">
                             <div id="id-imath-box-editor" class="nav-tabs-custom nav-tabs-color box-solid box-primary">
