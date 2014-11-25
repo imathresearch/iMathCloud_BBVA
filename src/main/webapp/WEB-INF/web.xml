@@ -53,6 +53,10 @@
     <javaee:servlet-name>recoverpassword</javaee:servlet-name>
     <javaee:servlet-class>com.imath.web.servlet.RecoverPassword</javaee:servlet-class>
   </javaee:servlet>
+    <javaee:servlet>
+    <javaee:servlet-name>font</javaee:servlet-name>
+    <javaee:servlet-class>com.imath.web.servlet.FontStatic</javaee:servlet-class>
+  </javaee:servlet>
   <javaee:servlet-mapping>
     <javaee:servlet-name>recoverpassword</javaee:servlet-name>
     <javaee:url-pattern>/recoverpassword</javaee:url-pattern>
@@ -68,6 +72,11 @@
   <javaee:servlet-mapping>
     <javaee:servlet-name>logout</javaee:servlet-name>
     <javaee:url-pattern>/logout</javaee:url-pattern>
+  </javaee:servlet-mapping>
+  <javaee:servlet-mapping>
+    <javaee:servlet-name>font</javaee:servlet-name>
+    <javaee:url-pattern>*.woff</javaee:url-pattern>
+    <javaee:url-pattern>*.ttf</javaee:url-pattern>
   </javaee:servlet-mapping>
   
   

@@ -32,6 +32,7 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.ResponseBuilder;
 import javax.ws.rs.core.SecurityContext;
 
 import com.imath.core.model.File;
@@ -115,7 +116,7 @@ public class NotebookService {
 	
 	@GET
     @Path("/files/{port}/{path: .+}")
-    @Produces({"text/css", "application/javascript", "image/png"})
+    @Produces({"text/html; charset=UTF-8", "text/css", "application/javascript", "image/png"})
     public Response REST_getNotebookFile(@PathParam("port") String port, @PathParam("path") String path, @Context SecurityContext sec){
 		LOG.info(LOG_PRE + "[getNotebookFile] " + path);
 		String urlString = "http://" + Constants.IMATH_HOST + ":" + port + "/" + path;
@@ -128,7 +129,7 @@ public class NotebookService {
             urlConn.connect();
 
             String contentType = urlConn.getContentType();
-           
+            System.out.println("------------------" + contentType);
             // if the file is an image
             if(contentType.equals("image/png")){
             	BufferedImage image = ImageIO.read(urlConn.getInputStream());
@@ -137,8 +138,7 @@ public class NotebookService {
             	byte[] imageData = baos.toByteArray();
             	return Response.ok(imageData).build();          
             	// return Response.ok(new ByteArrayInputStream(imageData)).build();
-            }
-                                    
+            } 
             // if the file is css or javascript
             String result = new String();
     		BufferedReader rd  = null;
@@ -150,8 +150,13 @@ public class NotebookService {
             while ((line = rd.readLine()) != null){            	
             	sb.append(line + '\n');            	               
             }                      
-            result = sb.toString();                         
-            return Response.status(Response.Status.OK).entity(result).build();  
+            result = sb.toString();       
+            
+            ResponseBuilder resp = Response.status(Response.Status.OK);
+            resp.entity(result);
+            resp.header("Access-Control-Allow-Origin", "*");
+           
+            return resp.build();  
             
         } catch(Exception e) {
             e.printStackTrace();
