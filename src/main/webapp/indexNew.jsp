@@ -168,7 +168,7 @@
 		
 		.filetree {
 		    overflow-y: auto;
-    		overflow-x: hidden;
+    		overflow-x: auto;
 		}
         </style>
         
