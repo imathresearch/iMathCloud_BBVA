@@ -269,7 +269,7 @@ function showDialog(content, title, buttons) {
 
 
 window.addEventListener("beforeunload", function (e) {
-	  // Before closing the tab, we call the logout servlet
+	  // Before closing the app, we call the logout servlet
 	  var urlCall = "logout"; 
 	  $.ajax({
 		  url: urlCall,
