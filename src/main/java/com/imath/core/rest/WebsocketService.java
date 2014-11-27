@@ -49,16 +49,15 @@ public class WebsocketService {
     }
     
     @OnMessage
-    public void OnMessage(String name) {
-    	LOG.info(LOG_PRE + "[OnMessage]" + this.option);
-    	//System.out.println("["+this.option+"] Server receiving " + name);
+    public void OnMessage(String name) {    	    	
     	
     	//It is a ping message
-    	if(name.equals("[IMATH]Ping")){
-    		//System.out.println("["+this.option+"] Server receiving PING" );
+    	if(name.equals("[IMATH]Ping")){    	
     		return;
     	}    
         
+    	LOG.info(LOG_PRE + "[OnMessage]" + this.option);
+    	
     	//It is a normal message to transfer
     	try {
         	wcc.session.getBasicRemote().sendText(name);
@@ -76,8 +75,6 @@ public class WebsocketService {
 	@OnClose
     public void onClose(Session session, CloseReason reason) {
 		LOG.info(LOG_PRE + "[onClose]" + this.option);
-        //System.out.println("["+option+"] Closing server");
-        //System.out.println("CLOSED: " + reason.getCloseCode() + ", " + reason.getReasonPhrase());
         
         try {
 			wcc.session.close();
@@ -92,9 +89,7 @@ public class WebsocketService {
 		
 	@OnError
     public void onError(Throwable t) {
-		LOG.info(LOG_PRE + "[onError]" + this.option);
-        //System.out.println("["+option+"] ERROR server");    
-        //System.out.println(t.getMessage());
+		LOG.info(LOG_PRE + "[onError]" + this.option);       
         reminderBeep.timer.cancel();
     }
 	
@@ -109,8 +104,7 @@ public class WebsocketService {
 	    class RemindTask extends TimerTask {
 
 	        @Override
-	        public void run() {
-	            //System.out.println("ReminderTask is completed by Java timer");
+	        public void run() {	         
 	            try {	            		                                    	
 	               wcc.sessionServer.getBasicRemote().sendText("{\"ping\":\"[IMATH]Ping\"}");	                				
 				} catch (Exception e) {

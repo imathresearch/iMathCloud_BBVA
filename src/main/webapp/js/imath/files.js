@@ -160,7 +160,6 @@ function refreshFilesTree() {
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 
 function prepareFile(idFileDir, key){
-	console.log("prepareFIle");
 	
 	$.ajax({
         url: "rest/file_service/getFile/"+userName + "/" + idFileDir ,
@@ -242,7 +241,6 @@ function uploadFiles(files, selectedFile, funcSuccess, funcError) {
 	} else {
 		 var data = new FormData();
 		 if(selectedFile != undefined){
-			 console.log("destinationDir " + selectedFile.absolutePath);
 			data.append("destinationDir", selectedFile.absolutePath);
 		 }
 		 
@@ -382,7 +380,6 @@ function deleteFile(idFile, funcSuccess, funcError) {
 
 function form_tpl_inputText() {
 	
-	console.log("SUBKEY " + subkey);
 	switch(subkey) {
 		case "renameFile":
 			var form_title = "Rename File/Directory";
@@ -500,7 +497,6 @@ function renameFile(idFile, newName, funcSuccess, funcError) {
 }
 
 function renameFileSyn(idFile, newName){
-	//console.log("On renameFileSyn");
 	var data = new FormData();
 	data.append("idFile", idFile);
 	data.append("newName", newName);
@@ -518,7 +514,6 @@ function renameFileSyn(idFile, newName){
 		contentType : false,
 
 		success: function(data) {    	
-			//console.log("on success renameFileSyn");
 	    	success = true;
 	    },
 	    error: function(){
@@ -582,7 +577,6 @@ function createFile(idParentDir, fileName, funcSuccess, funcError ){
 
 
 function copyItem(id) {
-	console.log("COPY ITEM " + id);
 	itemToCopy = id;
 }
 
@@ -604,7 +598,6 @@ function pasteItem(destiny) {
         }
     });
 
-	console.log("PASTE ITEM " + itemToCopy + " TO " + destiny);
     refreshFilesTree();
 }
 ///////////////////////////////////////////////////////////////////////////

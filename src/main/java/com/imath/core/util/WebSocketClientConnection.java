@@ -23,7 +23,6 @@ public class WebSocketClientConnection {
         WebSocketContainer container = ContainerProvider.getWebSocketContainer();
         String uri = "ws://" + Constants.IMATH_HOST + ":" + port + "/kernels/" + kernelId + "/" + opt;
         LOG.info(LOG_PRE + "Connecting to " + uri);
-        //System.out.println("Connecting to " + uri);
         try {
         	WebSocketClient client = new WebSocketClient(sessionServer, opt);
             session = container.connectToServer(client, URI.create(uri));

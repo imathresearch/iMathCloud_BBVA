@@ -29,14 +29,11 @@ function setPORTConsole(idConsole){
 }*/
 
 function sendMessage(msgType, content, idConsole) {
-	//console.log("sendMessage" + msgType + content);
-	//console.log("sendMessage" + urlConsole);
 	iframeObj = document.getElementById("interactive_math-" + idConsole);
 	var win = iframeObj.contentWindow;
 	
 	var destination = 'http://' + host['url'] + ":" + IMATH_PORT;
 	win.postMessage(msgType + content, destination);
-	//win.postMessage(msgType + content, urlConsole);
 }
 
 function goToConsole(idConsole) {
@@ -47,7 +44,6 @@ function goToConsole(idConsole) {
 
 function newConsole(notebookId, notebookName){
 	
-	//console.log("New console");
 	
 	if(!isNotebookOpen(notebookId)){
 		var idConsole = globalIdConsole;	
@@ -71,30 +67,22 @@ function newConsole(notebookId, notebookName){
 		
 		currentTabConsole = li.find("a");
 		
-		//var tabs = $( "#tabsConsole" ).tabs();
-		//tabs.find( ".ui-tabs-nav" ).append( li );
+		
 		
 		$('#id-imath-headTabsConsole').append(li);
 		$('#tabsConsole').append("<div id='" +nameTab + "' class='tab-pane' style='padding: 0;'><iframe id='interactive_math-" + idConsole + "' class='interactive_math' width='100%' frameborder='0' scrolling='no'></iframe></div>");
 		registerCloseEventConsole();
 		showTabConsole(id);
 		
-		//tabs.tabs( "refresh" );
-		//$( "#tabsConsole" ).tabs("option", "active",consolesIdOpenTabIndex[idConsole] );
-		
 		
 		var callBE = 'http://' + host['url'] + ":" + IMATH_PORT+ '/iMathCloud/rest/notebook_service/getNotebook/' + userName + "/" + notebookId + "/" + host['port'];
 		$( "#interactive_math-" + idConsole).attr('src', callBE);
-		//$( "#interactive_math-" + idConsole).attr('src',urlConsole +'/' + notebookId);								
 		
 		var u = document.getElementById('tabsConsole');
-		//var he = getProperHeight()-100;//u.offsetHeight;
 		var he = getWindowHeight() - getTopOffset("#"+nameTab) - getOffsetBottom();
 		
 		$( "#interactive_math-" + idConsole).height(he);
-		$("#"+nameTab).height(he);
-		//host = window.hostGlobal;
-		//mathLanguageCode = host['mathLanguage']['consoleCode'];
+		$("#"+nameTab).height(he);		
 		getUserMathFunctions();
 		
 		/*
@@ -290,8 +278,6 @@ function newDefaultNotebook(){
 	}	
 		
 	if (found){ // 2. The default notebook exists, so a console is open using it
-		//console.log("The notebook exists");
-		//console.log("Name " + notebookName);
 		newConsole(notebookId, notebookName);
 	}
 	else{ // 3. The default notebook does not exist

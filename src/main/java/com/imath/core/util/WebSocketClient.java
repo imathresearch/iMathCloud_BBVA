@@ -21,7 +21,6 @@ public class WebSocketClient{// implements MessageHandler.Partial<String>{
 	
 	public Session sessionServer;
 	public String option; 
-	//public JavaReminder reminderBeep;
 	
 	private Logger LOG = Logger.getAnonymousLogger();
 	
@@ -36,23 +35,19 @@ public class WebSocketClient{// implements MessageHandler.Partial<String>{
 	@OnOpen
     public void onOpen(Session session) {
 		LOG.info(LOG_PRE + "[onOpen]" + this.option);
-        //System.out.println("["+option+"] Client Connected to endpoint: " + session.getBasicRemote());               
-        session.setMaxTextMessageBufferSize(2000000);//500000);        
+        session.setMaxTextMessageBufferSize(2000000);      
         
     }
 	
 	@OnClose
     public void onClose(Session session, CloseReason reason) {
-		LOG.info(LOG_PRE + "[onClose]" + this.option + " "+ reason.getCloseCode() + ", " + reason.getReasonPhrase());
-        //System.out.println("["+option+"] Client Closing");
-        //System.out.println("CLOSED: " + reason.getCloseCode() + ", " + reason.getReasonPhrase());        
+		LOG.info(LOG_PRE + "[onClose]" + this.option + " "+ reason.getCloseCode() + ", " + reason.getReasonPhrase());     
     }
  
 	
     @OnMessage
     public  void onMessage(String message) {
     	LOG.info(LOG_PRE + "[onMessage]" + this.option);
-    	//System.out.println("["+option+"] Client receiving ");
         
         try {
 			this.sessionServer.getBasicRemote().sendText(message);
@@ -65,7 +60,6 @@ public class WebSocketClient{// implements MessageHandler.Partial<String>{
     @OnError
     public void onError(Throwable t) {
     	LOG.info(LOG_PRE + "[onError]" + this.option);
-    	//System.out.println("["+option+"] Error in client");
         t.printStackTrace();
     }
 

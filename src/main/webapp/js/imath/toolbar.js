@@ -1,5 +1,4 @@
 function executeMenu(key,id, fileName) {
-	console.log(key);
 	switch(key) {
 		case "edit":
 			loadFile(id);
@@ -85,7 +84,6 @@ function getContextMenuJobs() {
         	var a = options.$trigger.attr("id");
         	var b = a.split("__");
         	executeMenuJob(key,b[1]);
-        	console.log("after executeMenuJob");		          
         	//var m = "clicked: " + key + ". No ID found.";
         	//if (b[1])
         	//	m = "clicked: " + key + ". With ID: " + b[1] + ".";

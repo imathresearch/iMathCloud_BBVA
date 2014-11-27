@@ -46,12 +46,10 @@ function fillMathFuncForMenu(functions) {
 function submitMathFunction(key,idFile,ParamDTO) {
 	// Only for contextual menu
 	// TODO: handle parameter: Now, fixed to 5...
-//	console.log("ParamDTO: " + ParamDTO);
 	if (typeof ParamDTO === "undefined") {
 		ParamDTO = generateEmptyDTO();
 	}
 	ParamDTOS = JSON.stringify(ParamDTO);//(typeof ParamDTO == 'undefined'  || ParamDTO == '') ?  '' : JSON.stringify(ParamDTO);
-	console.log("ParamDTO: " + ParamDTOS);
 	$.ajax({
         url: "rest/plugin_service/submitMathFunction/" + userName + "/" + key + "/" + idFile ,// + "/" + ParamDTO,// +"/5",
         cache: false,

@@ -107,7 +107,6 @@ function fillJobs(jobs) {
 	$("#divjobTable").height(he);
 	for(var i=0; i<jobs.length; i++) {
 		job = jobs[i];
-		console.log(job['startDate']);
 		var date = new Date(job['startDate']);		
 		var dateText = dateToNice(date);
 		var description = job['description'].split('/');		
@@ -421,7 +420,6 @@ function form_tpl_linreg(idFile){
 					dataHeader.push(value);
 				});
 			}else{
-				//console.log([headerAux].concat(contentAux));
 				contentAux = [headerAux].concat(contentAux);
 				$.each(headerAux.split(','),function(index,value){
 					dataHeader.push("column "+(index+1));
