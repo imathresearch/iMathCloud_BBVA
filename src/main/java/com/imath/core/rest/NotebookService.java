@@ -4,6 +4,7 @@ import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.FileReader;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
@@ -11,6 +12,7 @@ import java.net.URI;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.file.Paths;
+import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
@@ -35,7 +37,14 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 import javax.ws.rs.core.SecurityContext;
 
+import org.codehaus.jackson.JsonParser;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+
+import com.imath.core.data.MainServiceDB;
 import com.imath.core.model.File;
+import com.imath.core.model.FileShared;
 import com.imath.core.security.SecurityManager;
 import com.imath.core.service.FileController;
 import com.imath.core.util.Constants;
@@ -49,13 +58,14 @@ public class NotebookService {
 		
 	@Inject private Logger LOG;
 	@Inject private FileController fc;
+	@Inject private MainServiceDB db;
 	
 	private static String LOG_PRE = Constants.LOG_PREFIX_SYSTEM + "[NotebookService]";
 	
 	@GET
-    @Path("/getNotebook/{userName}/{id}/{port}")
+    @Path("/getNotebook/{userName}/{id}/{port}/{type}")
     @Produces(MediaType.TEXT_HTML)
-    public Response REST_getNotebookHTML(@PathParam("userName") String userName, @PathParam("id") String idNotebook, @PathParam("port") String port, @Context SecurityContext sec){
+    public Response REST_getNotebookHTML(@PathParam("userName") String userName, @PathParam("id") String idNotebook, @PathParam("port") String port, @PathParam("type") String type, @Context SecurityContext sec){
 		LOG.info(LOG_PRE + "[getNotebookHTML]" + idNotebook);
 		//System.out.println("Getting notebook");
 		String urlString = "http://" + Constants.IMATH_HOST + ":" + port + "/" + idNotebook;
@@ -100,6 +110,10 @@ public class NotebookService {
             	}
             	if(line.startsWith("var userName")){
             		line = line + "=\"" + userName + "\"";
+            		System.out.println(line);
+            	}
+            	if(line.startsWith("var typeConsole")){
+            		line = line + "=\"" + type + "\"";
             		System.out.println(line);
             	}
             	            	
@@ -418,11 +432,11 @@ public class NotebookService {
 	}
 	
 	@GET
-	@Path("/newNotebook/{host}/{port}")
+	@Path("/newNotebook/{host}/{port}/{type}")
 	@Produces(MediaType.TEXT_PLAIN)
-	public String REST_newNotebook(@PathParam("host") String host, @PathParam("port") String port){
+	public String REST_newNotebook(@PathParam("host") String host, @PathParam("port") String port, @PathParam("type") String type){
 	    LOG.info(LOG_PRE + "[newNotebook]" + host + " " + port);
-		String urlString = "http://" + host + ":" + port + "/new";
+		String urlString = "http://" + host + ":" + port + "/new/" + type;
 		try {
             URL url = new URL(urlString);
             URLConnection urlConn = url.openConnection();
@@ -492,6 +506,63 @@ public class NotebookService {
 			throw new WebApplicationException(Response.Status.NOT_FOUND);
 		}
     }
+	
+	@GET
+    @Path("/getNotebookFileInfo/{userName}/{idFile}")
+	@Produces(MediaType.APPLICATION_JSON)
+    public Response  REST_getVideoContent(@PathParam("userName") String userName, @PathParam("idFile") Long idFile, @Context SecurityContext sc){
+	    LOG.info(LOG_PRE + "[getNotebookFileInfo]" + userName + " " + idFile);
+		try {
+			
+			SecurityManager.secureBasic(userName, sc);
+		    
+			File file = db.getFileDB().findByIdSecured(idFile, userName);
+			FileReader reader = new FileReader(file.getPath());
+			System.out.println("Got file reader " + file.getPath());
+			JSONParser parser = new JSONParser();
+			JSONObject jsonObject = (JSONObject) parser.parse(reader);
+			
+			
+			JSONObject structure = (JSONObject) jsonObject.get("metadata");
+			String typeConsole = (String) structure.get("typeConsole");
+			
+			if(typeConsole == null){
+				typeConsole = "python";
+			}
+			
+            NotebookFileDT0 ret = new NotebookFileDT0();
+            ret.absolutePath = file.getPath();
+            ret.typeConsole = typeConsole;
+            return Response.status(Response.Status.OK).entity(ret).build();
+			
+		}
+		catch (Exception e) {
+			System.out.println(e.getMessage());
+			LOG.severe("Error reading notebook file : " +  idFile  + " from user: "+ userName);
+			return Response.status(Response.Status.NOT_FOUND).build();
+		}
+    }
+	
+	public static class NotebookFileDT0 {
+		public Long id;
+		public String name;
+		public Long dir;
+		public String type;
+		public File.Sharing sharingState;
+		public FileShared.Permission permission;	// Only for FileShared purposes
+		public String userNameOwner;
+		public String absolutePath;
+		public String typeConsole;
+		
+		
+		public NotebookFileDT0() {}
+				
+	}
+	
+	public static class MetaData{
+		public String name;
+		public String typeConsole;
+	}
 	
 
 }

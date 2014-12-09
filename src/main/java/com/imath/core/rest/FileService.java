@@ -232,6 +232,7 @@ public class FileService {
                     filedto.id = file.getId();
                     filedto.name=file.getName();
                     filedto.type = file.getIMR_Type();
+                    filedto.absolutePath = file.getPath();
                     filedto.dir = null;
                     if(file.getDir()!=null) {
                             filedto.dir = file.getDir().getId();

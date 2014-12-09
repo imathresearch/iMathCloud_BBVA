@@ -147,7 +147,8 @@ function assignEvents() {
 	});
 	
 	$("#imath-id-new-console").click(function() { 
-		newNotebook();    		
+		chooseConsole();
+		//newNotebook();    		
 	});
 }
 
@@ -267,6 +268,37 @@ function showDialog(content, title, buttons) {
 }
 
 
+function chooseConsole(){
+	var title = "Choose a console type";
+	
+	var content = ""
+		+ "<div align='center'>"
+		+ "<button id='imath-id-buton-new-console-python' type='button' class='consolePythonButton' onclick='runConsole(\"python\")'>"
+		+ "<i>  New Python Console</i>"
+		+ "</button>"
+		+ "<button id='imath-id-buton-new-console-r' type='button' class='consoleRButton' onclick='runConsole(\"r\")'>"
+		+ "<i>  New R Console</i>"
+		+ "</button>"
+		+ "</div>"
+	
+	var buttons = {
+			Cancel : function() {
+				$("#dialogPopup").modal('hide');
+			},
+			
+	};	
+	
+	showDialog(content, title, buttons);		
+
+}
+
+function runConsole(type){
+	setTimeout(function(){
+		$("#dialogPopup").modal('hide');
+		},350);
+	newNotebook(type);  
+	
+}
 
 window.addEventListener("beforeunload", function (e) {
 	  // Before closing the app, we call the logout servlet

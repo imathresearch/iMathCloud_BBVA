@@ -170,6 +170,37 @@
 		    overflow-y: auto;
     		overflow-x: auto;
 		}
+		
+		.consolePythonButton{
+			background-color: #FFFFFF;
+			background: url(css/images/python-icon.png) no-repeat 10px center;
+			border-color: #367fa9;
+			border-radius: 10px;
+			border-width: 5px;
+			margin: 0px 3px;
+			padding:  8px 12px;
+			padding-left: 30px;
+			color: #3c8dbc;
+			font-size: 18px;
+			font-style: normal;
+			margin-right: 50px
+		}
+		
+		.consoleRButton{
+			background-color: #FFFFFF;
+			background: url(css/images/r-icon.png) no-repeat 10px center;
+			border-color: #367fa9;
+			border-radius: 10px;
+			border-width: 5px;
+			margin: 0px 3px;
+			padding:  8px 12px;
+			padding-left: 30px;
+			color: #3c8dbc;
+			font-size: 18px;
+			font-style: normal;
+			margin-left: 50px;
+			width: 200px;
+		}
         </style>
         
     </head>

@@ -55,7 +55,7 @@ function executeMenu(key,id, fileName) {
 			pasteItem(id);
 			break;
 		case "openConsole":
-			openNotebook(id);
+			openNotebookFileAsConsole(id);
 			break;
 		default:
 			submitMathFunction(key,id);

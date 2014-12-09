@@ -42,7 +42,7 @@ function goToConsole(idConsole) {
     $("#" + divTabs.id + " a")[0].click(); // here we click to the first tab. We guess it is the console always.
 }
 
-function newConsole(notebookId, notebookName){
+function newConsole(notebookId, notebookName, type){
 	
 	
 	if(!isNotebookOpen(notebookId)){
@@ -61,7 +61,7 @@ function newConsole(notebookId, notebookName){
 			var tabTemplate = "<li><a href='#{href}'> <button class='close closeTabConsole'> x</button> #{label}</a></li>";
 		}
 		
-		var label = notebookName; 
+		var label = notebookName.split("/").pop();
 		var id = nameTab;
 		var li = $( tabTemplate.replace( /#\{href\}/g, "#" + id ).replace( /#\{label\}/g, label ) );
 		
@@ -75,7 +75,7 @@ function newConsole(notebookId, notebookName){
 		showTabConsole(id);
 		
 		
-		var callBE = 'http://' + host['url'] + ":" + IMATH_PORT+ '/iMathCloud/rest/notebook_service/getNotebook/' + userName + "/" + notebookId + "/" + host['port'];
+		var callBE = 'http://' + host['url'] + ":" + IMATH_PORT+ '/iMathCloud/rest/notebook_service/getNotebook/' + userName + "/" + notebookId + "/" + host['port'] + "/" + type;
 		$( "#interactive_math-" + idConsole).attr('src', callBE);
 		
 		var u = document.getElementById('tabsConsole');
@@ -176,7 +176,41 @@ function getActiveConsole(){
 }
 
 
-function openNotebook(idFile){	
+function openNotebookFileAsConsole(idFile){
+	$.ajax({
+	      url: "rest/notebook_service/getNotebookFileInfo/"+ userName + "/" + idFile ,
+	      type: "GET",
+	      async: false,
+	      success: function(notebookFileInfo) {    	
+	    	  var notebooks = getNotebookList();
+	    	  var len = notebooks.length;	    	  
+	      	  for (var i=0; i<len; i++) {      		  
+	      		  if( notebookFileInfo['absolutePath']   == notebooks[i].name){
+	      			  break;
+	      		  }      		  
+	      	  }
+	      	var notebookId = notebooks[i].notebook_id;
+      	  	var notebookName = notebooks[i].name;
+      	  	
+      	  	var typeConsole;
+      	  	if(notebookFileInfo['typeConsole'] == 'none'){
+      	  		typeConsole = "python"; 
+      	  	}
+      	  	else{
+      	  		typeConsole = notebookFileInfo['typeConsole'];
+      	  	}
+      	  	
+      	  	newConsole(notebookId, notebookName, typeConsole);  
+	      	  
+	      },
+	      error: function(){
+	    	  console.log("on error openNotebookFileAsConsole");       
+	      }
+	});
+	
+}
+
+/*function openNotebook(idFile){	
 	$.ajax({
         url: "rest/file_service/getFile/"+ userName + "/" + idFile ,
         cache: false,
@@ -190,7 +224,7 @@ function openNotebook(idFile){
         	var len = notebooks.length;
         	fileName = fileNameExt.substr(0, fileNameExt.lastIndexOf('.')) || fileNameExt;
       	  	for (var i=0; i<len; i++) {      		  
-      		  if( fileName == notebooks[i].name){
+      		  if( file['absolutePath']   == notebooks[i].name){
       			  break;
       		  }      		  
       	  	}  
@@ -203,7 +237,7 @@ function openNotebook(idFile){
             showFileErrorDialog("", cause);
         }
     });
-}
+}*/
 
 function getNotebookList(){	
 	host = window.hostGlobal; 
@@ -224,16 +258,21 @@ function getNotebookList(){
     return listNotebooks;
 }
 
-function createNotebook(){	
+function createNotebook(type){	
 	host = window.hostGlobal;	    
     var notebookId = null;
     
+    console.log("Creating new notebook");
+    console.log(type);
+    
     $.ajax({
-      url: "rest/notebook_service/newNotebook/"+host['url']+"/"+host['port'] ,
+      url: "rest/notebook_service/newNotebook/"+host['url']+"/"+host['port'] +"/"+ type,
       type: "GET",
       async: false,
       success: function(data) {    	   	  
     	  notebookId = data;
+    	  console.log("On succes new notebook");
+    	  console.log(notebookId);
       },
       error: function(){
     	  console.log("on error new notebook");    	  
@@ -244,8 +283,8 @@ function createNotebook(){
 }
 
 
-function newNotebook(){	
-	var notebookId = createNotebook();
+function newNotebook(type){	
+	var notebookId = createNotebook(type);
 	var listNotebooks = getNotebookList();
 		
 	var len = listNotebooks.length;	
@@ -256,12 +295,13 @@ function newNotebook(){
 	}  
 	  	
 	var notebookName = listNotebooks[i].name;
-	newConsole(notebookId, notebookName);		
+	newConsole(notebookId, notebookName, type);		
 }
 
 function newDefaultNotebook(){	
 	var defaultNotebookName = "iMathConsole";
-	
+	var type="python";
+		
 	// 1. Check if the default notebook exists
 	var listNotebooks = getNotebookList();
 	var len = listNotebooks.length;
@@ -269,7 +309,7 @@ function newDefaultNotebook(){
 	var notebookId;
 	var notebookName;
 	for(var i = 0; i < len; i++){
-		if(defaultNotebookName == listNotebooks[i].name){
+		if(listNotebooks[i].name.indexOf(defaultNotebookName) > -1){
 			found = true;
 			notebookId = listNotebooks[i].notebook_id;
 			notebookName = listNotebooks[i].name;
@@ -278,12 +318,13 @@ function newDefaultNotebook(){
 	}	
 		
 	if (found){ // 2. The default notebook exists, so a console is open using it
-		newConsole(notebookId, notebookName);
+		console.log("The notebook already exists");
+		newConsole(notebookId, notebookName, type);
 	}
 	else{ // 3. The default notebook does not exist
 		
 		// 3.1. Create a new notebook
-		notebookId = createNotebook();
+		notebookId = createNotebook(type);
 		
 		// 3.2 Get the list of notebook to get the name of the recently created notebook
 		listNotebooks = getNotebookList();
@@ -294,15 +335,19 @@ function newDefaultNotebook(){
 			}  
 		}
 		notebookName = listNotebooks[i].name;
-		notebookName = notebookName + ".ipynb";
+		//notebookName = notebookName + ".ipynb";
 		
 		// 3.3. Get the files associated with the user with the aim of obtaining the id of
 		// file of the notebook previously created.
 		// Once the file is located, it is renamed using the name of the default notebook
 		var listFiles = getFilesSyn();		
 		len = listFiles.length;
+		console.log("NotebookName");
+		console.log(notebookName);
 		for(var i = 0; i < len; i++){
-			if(notebookName == listFiles[i].name){
+			console.log("List of files");
+			console.log(listFiles[i].absolutePath);
+			if(notebookName == listFiles[i].absolutePath){
 				break;
 			}
 		}
@@ -315,15 +360,16 @@ function newDefaultNotebook(){
 		listNotebooks = getNotebookList();	
 		len = listNotebooks.length;
 		for(var i = 0; i < len; i++){
-			if( "iMathConsole" == listNotebooks[i].name){
+			if(listNotebooks[i].name.indexOf(defaultNotebookName)> -1){
 				  break;
 			}  
 		}
+				
 		notebookId = listNotebooks[i].notebook_id;
 		notebookName = listNotebooks[i].name;
 		
 		// 3.5 Finally the console is open with the new notebook
-		newConsole(notebookId, notebookName);
+		newConsole(notebookId, notebookName, type);
 		
 	}	
 }
