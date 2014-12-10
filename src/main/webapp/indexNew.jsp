@@ -273,24 +273,46 @@
                                 
                             </div>
  						</section> 
- 						<section class="col-sm-4 connectedSortable">
-                            <div id="id-imath-box-editor" class="nav-tabs-custom nav-tabs-color box-solid box-primary">
+ 						<section id="editor-section" class="col-sm-5 connectedSortable"> 						 					 						
+                            <div id="id-imath-box-editor" class="nav-tabs-custom nav-tabs-color box box-solid box-primary">
 	                            <ul id="id-imath-headTabsFile" class="nav nav-tabs pull-right">
-	                            	<li class="pull-left header header-color"><i class="fa fa-edit"></i>Editor</li>
+	                            	<li class="pull-left header header-color">
+	                            		<i class="fa fa-edit"></i>Editor	                            																			
+	                            	</li>
+	                            	<div id ="div-editor-resize-full" class="box-tools pull-right">
+											<div class="btn-group" data-toggle="btn-toggle">
+												<button id="editor-resize-full" type="button" style="border:0;box-shadow: none" class="btn btn-primary active"><i class="fa fa-expand"></i></button>
+											</div>
+									</div>
+									<div id ="div-editor-resize-small" class="box-tools pull-right" style="display:none">
+											<div class="btn-group" data-toggle="btn-toggle">
+												<button id="editor-resize-small" type="button" style="border:0;box-shadow:none" class="btn btn-primary active"><i class="fa fa-compress"></i></button>
+											</div>
+									</div>
     	                        </ul>
                                 <div id="tabsFile" class="tab-content span4">
                                 </div>
                             </div>
  						</section>
- 						<section class="col-sm-6 connectedSortable"> 
+ 						<section id="console-section" class="col-sm-5 connectedSortable"> 
                             <div id="id-imath-box-console" class="nav-tabs-custom nav-tabs-color box-solid box-primary">
 								<ul id="id-imath-headTabsConsole" class="nav nav-tabs pull-right">
                             		<li class="pull-left header header-color">
                             			<i class="fa fa-desktop"></i>Console 
                             			<div class="btn-group" data-toggle="btn-toggle">
-											<button id="imath-id-new-console" type="button" class="btn btn-primary active"><i class="fa fa-plus"></i> </button>
+											<button id="imath-id-new-console" type="button" style="border:0;box-shadow: none" class="btn btn-primary active"><i class="fa fa-plus"></i> </button>
 										</div>
                             		</li>
+                            		<div id ="div-console-resize-full"  class="box-tools pull-right">
+											<div class="btn-group" data-toggle="btn-toggle">
+												<button id="console-resize-full" type="button" style="border:0;box-shadow: none" class="btn btn-primary active"><i class="fa fa-expand"></i></button>
+											</div>
+									</div>
+									<div id ="div-console-resize-small"  class="box-tools pull-right" style="display:none">
+											<div class="btn-group" data-toggle="btn-toggle">
+												<button id="console-resize-small" type="button" style="border:0;box-shadow: none" class="btn btn-primary active"><i class="fa fa-compress"></i></button>
+											</div>
+									</div>	
    	                        	</ul>
                                	<div id="tabsConsole" class="tab-content span4">
                                	</div>

@@ -150,6 +150,54 @@ function assignEvents() {
 		chooseConsole();
 		//newNotebook();    		
 	});
+	
+	$("#editor-resize-full").click(function(){
+		increaseEditorSize();
+	});
+	
+	$("#editor-resize-small").click(function(){
+		displayInitialLayout("editor");
+	});
+	
+	$("#console-resize-full").click(function(){
+		increaseConsoleSize();
+	});
+	
+	$("#console-resize-small").click(function(){
+		displayInitialLayout("console");
+	});
+		
+}
+
+function increaseEditorSize(){
+	$("#editor-section").switchClass( "col-sm-5", "col-sm-10");
+	$("#console-section").hide();
+	$("#div-editor-resize-full").hide();
+	$("#div-editor-resize-small").show();
+}
+
+function increaseConsoleSize(){
+	$("#editor-section").hide();
+	$("#console-section").switchClass( "col-sm-5", "col-sm-10");	
+	$("#div-console-resize-full").hide();
+	$("#div-console-resize-small").show();
+}
+
+function displayInitialLayout(from){
+	
+	if(from == "editor"){
+		$("#editor-section").switchClass( "col-sm-10", "col-sm-5");
+		$("#console-section").show();
+		$("#div-editor-resize-full").show();
+		$("#div-editor-resize-small").hide();
+	}
+	else{
+		$("#console-section").switchClass( "col-sm-10", "col-sm-5");
+		$("#editor-section").show();
+		$("#div-console-resize-full").show();
+		$("#div-console-resize-small").hide();
+	}
+	
 }
 
 function placeWaiting(classid) {
