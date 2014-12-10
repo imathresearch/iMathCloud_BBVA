@@ -93,7 +93,7 @@ public class NotebookService {
             		line = line + "iMathCloud/rest/notebook_service/"+port+"/";
             	}
             	
-            	//print option
+            	//print option            	
             	if(line.startsWith("<li id=\"print_notebook\">")){
             		String addon = "href=\"http://" + Constants.IMATH_HOST + ":" + Constants.IMATH_PORT + "/iMathCloud/rest/notebook_service/" + port + "/";
             		line = line.replaceAll("href=\"/", addon);
@@ -115,6 +115,16 @@ public class NotebookService {
             	if(line.startsWith("var typeConsole")){
             		line = line + "=\"" + type + "\"";
             		System.out.println(line);
+            	}
+            	
+            	//console image
+            	if(line.startsWith("<img id=\"img_console\"")){
+            		if(type.equals("python")){
+            			line = line.replaceAll("(src|href)=\"\"", replacement + "python-icon.png\"");
+            		}
+            		else{
+            			line = line.replaceAll("(src|href)=\"\"", replacement + "r-icon.png\"");
+            		}            		
             	}
             	            	
             	sb.append(line + '\n');            	               
