@@ -44,8 +44,8 @@ function goToConsole(idConsole) {
 
 function newConsole(notebookId, notebookName, type){
 	
-	
-	if(!isNotebookOpen(notebookId)){
+	var isOpen = isNotebookOpen(notebookId); 
+	if(isOpen == -1){
 		var idConsole = globalIdConsole;	
 		consolesIdOpenTabIndex[idConsole] = globalTabCountConsole;
 		openTabIndexIdNotebook[globalTabCountConsole] = notebookId;
@@ -71,7 +71,7 @@ function newConsole(notebookId, notebookName, type){
 		
 		$('#id-imath-headTabsConsole').append(li);
 		$('#tabsConsole').append("<div id='" +nameTab + "' class='tab-pane' style='padding: 0;'><iframe id='interactive_math-" + idConsole + "' class='interactive_math' width='100%' frameborder='0' scrolling='no'></iframe></div>");
-		registerCloseEventConsole();
+		registerCloseEventConsole();		
 		showTabConsole(id);
 		
 		
@@ -93,6 +93,12 @@ function newConsole(notebookId, notebookName, type){
 			setPORTConsole(idConsole);
 		});*/
 				
+	}
+	else{		
+		var idConsole = consolesIdOpenTabIndex.indexOf(isOpen);
+		var nameTab = buildNotebookName(idConsole);		
+		showTabConsole(nameTab);
+		
 	}
 }
 
@@ -148,11 +154,12 @@ function closeOpenConsole(idConsole){
 
 function isNotebookOpen(idNotebook){	
 	var index = openTabIndexIdNotebook.indexOf(idNotebook);
-		
-	if (index == -1){
+	
+	return index;
+	/*if (index == -1){
 		return false;
 	}
-	return true;	
+	return true;*/	
 }
 
 function getActiveConsole(){	
