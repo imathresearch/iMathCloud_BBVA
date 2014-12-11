@@ -7,7 +7,7 @@
       <javaee:url-pattern>/indexNew.jsp</javaee:url-pattern>
       <javaee:url-pattern>/bigcloud.jsp</javaee:url-pattern>
       <javaee:url-pattern>/rest/file_service/*</javaee:url-pattern>
-      <javaee:url-pattern>/rest/jobpython_service/*</javaee:url-pattern>
+      <javaee:url-pattern>/rest/joblang_service/*</javaee:url-pattern>
       <javaee:url-pattern>/rest/job_service/*</javaee:url-pattern>
       <javaee:url-pattern>/rest/plugin_service/*</javaee:url-pattern>
       <javaee:url-pattern>/rest/public/job_service/*</javaee:url-pattern>

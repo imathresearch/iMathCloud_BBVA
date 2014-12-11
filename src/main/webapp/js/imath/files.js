@@ -39,6 +39,9 @@ function fillRemoteFiles(files, treeView, shareZone) {
 				case 'ipynb':
 					aux = "<li><span class='file_ipynb'>";
 					break;
+				case 'r':
+					aux = "<li><span class='file_r'>";
+					break;
 				default:
 					aux = "<li><span class='file'>";
 			}
@@ -1059,12 +1062,12 @@ function executeFileInConsole(idFile){
 	        	for(var i=0; i<fileDTO['content'].length;i++) {
 	        		code = code + fileDTO['content'][i] + '\n';
 	        	}
-	        	if (fileDTO['type'] == 'r') { 
-	        		executeInConsoleR(code);
-	        	} else {
+	        	//if (fileDTO['type'] == 'r') { 
+	        	//	executeInConsoleR(code);
+	        	//} else {
 	        		var idConsole = getActiveConsole();
 	        		executeInConsole(code, idConsole);
-	        	};
+	        	//};
 	        },
 	        error: function(error) {
 	            console.log("error opening file -" + error.status);
@@ -1273,7 +1276,7 @@ function openCodeFile(data, modeStr) {
 	htmlButtons = generateHTMLToolBarFile(data['id']);
 	$("#tabsFile").append("<div id='" + id + "' class='tab-pane' style='position: relative; padding: 0;'><p>" + htmlButtons + htmlCode + "</p></div>");
 	//tabs.append( "<div id='" + id + "' style='position: relative; width: 100%; height:100%; padding: 0;'><p>" + htmlButtons + htmlCode + "</p></div>" );
-	generateToolBarFile(data['id']);
+	generateToolBarFile(data['id'], data['name']);
 	//var u = document.getElementById("codeDIV_"+nameTab);
 	var u = document.getElementById('tabsFile');
 	

@@ -1,7 +1,7 @@
-function runJob(idFile){
+function runJob(idFile, jobType){
 	
 	$.ajax({
-        url: "rest/jobpython_service/submitJob/" + userName + "/" + idFile ,
+        url: "rest/joblang_service/submitJob/" + userName + "/" + idFile  + "/" + jobType,
         cache: false,
         dataType: "json",
         type: "POST",

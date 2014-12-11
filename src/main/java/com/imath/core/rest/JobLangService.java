@@ -75,11 +75,11 @@ import java.util.logging.Logger;
 * 
 * @author ammartinez
 */
-@Path("/jobpython_service")
+@Path("/joblang_service")
 @RequestScoped
 @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 @Stateful
-public class JobPythonService {
+public class JobLangService {
 	
 	@Inject private MainServiceDB db;
 	@Inject private Logger LOG;
@@ -88,10 +88,12 @@ public class JobPythonService {
 	@Inject private JobPythonController jpc;
 	@Inject private PluginController pc;
 	
-	private static String LOG_PRE = Constants.LOG_PREFIX_SYSTEM + "[JobPythonService]";
+	private static String LOG_PRE = Constants.LOG_PREFIX_SYSTEM + "[JobLangService]";
+	
+	enum AllowedLanguages{r, py};
 	
 	@GET
-    @Path("/python/exec/{idJob}/{result}")//{result}
+    @Path("/resultJob/exec/{idJob}/{result}")//{result}
     @Produces(MediaType.APPLICATION_JSON)
     public void REST_placeOutputPythonJob(@PathParam("idJob") Long idJob,  @PathParam("result") String result) {		
 	    LOG.info(LOG_PRE + "[python/exec]" + idJob.toString() + " " + result);
@@ -115,12 +117,13 @@ public class JobPythonService {
 	
 	
 	@POST
-    @Path("/submitJob/{userName}/{idFile}")
+    @Path("/submitJob/{userName}/{idFile}/{jobType}")
 	//@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-    public JobDTO REST_submitJob(@PathParam("userName") String userName, @PathParam("idFile") Long idFile, @Context SecurityContext sc) {		
+    public JobDTO REST_submitJob(@PathParam("userName") String userName, @PathParam("idFile") Long idFile, @PathParam("jobType") String jobType, @Context SecurityContext sc) {		
 	    LOG.info(LOG_PRE + "[submitJob]" +userName + " " + idFile.toString());
 		Set<File> files = new HashSet<File>(); 
+		
 		
 		try {
 		    SecurityManager.secureBasic(userName, sc);
@@ -135,9 +138,15 @@ public class JobPythonService {
 	        Param p2 = new Param();
 	        p2.setKey(Constants.HPC2_REST_SUBMITJOB_KEY_DIRECTORY);
 	        p2.setValue(file.getDir().getUrl());
+	        Param p3 = new Param();
+	        p3.setKey(Constants.HPC2_REST_PLUGIN_KEY_JOBTYPE);
+	        // If the language is not allowed an exception arise
+	        p3.setValue(AllowedLanguages.valueOf(jobType).toString());
+	        
 	        
 	        params.add(p1);
             params.add(p2);
+            params.add(p3);
 			
 			String paramsString = generateExtraParams(params);
             //System.out.println("Extra params " + paramsString);

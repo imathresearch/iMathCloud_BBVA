@@ -45,6 +45,8 @@ public class Constants {
     static public final String HPC2_REST_PLUGIN_KEY_FILENAME = "fileName";
     static public final String HPC2_REST_PLUGIN_KEY_DIRECTORY = "directory";
     static public final String HPC2_REST_PLUGIN_KEY_PARAMETER = "parameter";
+    static public final String HPC2_REST_PLUGIN_KEY_JOBTYPE = "jobType";
+    
     
     static public final String HPC2_REST_SUBMITJOB_KEY_FILENAME = "fileName";
     static public final String HPC2_REST_SUBMITJOB_KEY_DIRECTORY = "directory";

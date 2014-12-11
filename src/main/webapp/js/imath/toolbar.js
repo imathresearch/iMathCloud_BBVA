@@ -13,7 +13,8 @@ function executeMenu(key,id, fileName) {
 			executeFileInConsole(id);
 			break;
 		case "job":
-			runJob(id);
+			var jobType = fileName.split('.').pop();
+			runJob(id, jobType);
 			break;
 		case "share":
 			shareFile(id, fileName);
@@ -225,7 +226,7 @@ function generateHTMLToolBarFile(idFile) {
 	return html;
 }
 
-function generateToolBarFile(idFile) {
+function generateToolBarFile(idFile, fileName) {
 	$("#saveFileButton_"+idFile).click(function() { 
 		var content = new Array();
 		var nameTab = buildTabName(idFile);
@@ -246,8 +247,9 @@ function generateToolBarFile(idFile) {
 		executeInConsole(str, idConsole);
 	});
 	
-	$("#executeJobFileButton_"+idFile).click(function() { 				
-		runJob(idFile);
+	$("#executeJobFileButton_"+idFile).click(function() {
+		var jobType = fileName.split('.').pop();
+		runJob(idFile, jobType);
 	});
 }
 
