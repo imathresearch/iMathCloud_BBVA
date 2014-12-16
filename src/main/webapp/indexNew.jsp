@@ -273,8 +273,11 @@
                                 
                             </div>
  						</section> 
+
  						<section id="editor-section" class="col-sm-5 connectedSortable"> 						 					 						
                             <div id="id-imath-box-editor" class="nav-tabs-custom nav-tabs-color box box-solid box-primary">
+
+ 						
 	                            <ul id="id-imath-headTabsFile" class="nav nav-tabs pull-right">
 	                            	<li class="pull-left header header-color">
 	                            		<i class="fa fa-edit"></i>Editor	                            																			
@@ -294,7 +297,9 @@
                                 </div>
                             </div>
  						</section>
+
  						<section id="console-section" class="col-sm-5 connectedSortable"> 
+
                             <div id="id-imath-box-console" class="nav-tabs-custom nav-tabs-color box-solid box-primary">
 								<ul id="id-imath-headTabsConsole" class="nav nav-tabs pull-right">
                             		<li class="pull-left header header-color">
