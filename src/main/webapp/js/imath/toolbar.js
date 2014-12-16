@@ -58,6 +58,14 @@ function executeMenu(key,id, fileName) {
 		case "openConsole":
 			openNotebookFileAsConsole(id);
 			break;
+		case "view":
+			break;
+		case "block":
+			blockFile(id);
+			break;
+		case "unblock":
+			unBlockFile(id);
+			break;
 		default:
 			submitMathFunction(key,id);
 	}	
@@ -108,7 +116,7 @@ function getContextMenuJobs() {
     });
 }
 
-function genContextMenu(type, shareZone, sharingState, isRoot) {
+function genContextMenu(file, shareZone, sharingState, isRoot) {
 	// shareZone= 0-> own files. shareZone=1-> other users files. 
 	// sharingState = {'YES' | 'NO'}
 	var stdFileOperations = '';	
@@ -127,25 +135,42 @@ function genContextMenu(type, shareZone, sharingState, isRoot) {
 	stdDirOperations += ' "sep2": "---------", ';	
 	stdDirOperations +=' "addFiles": {"name": "Upload files", "icon": "ui-icon-play"},';
 	
-	var out;
-	switch(type) {
-		case "csv":
-			out = '{ "edit": {"name": "Edit", "icon": "edit"}, ';
+	var out;	
+	if(file['openByUser'] == null){
+		out = '{ "view": {"name": "View", "icon": "ui-icon-play"}, ';
+		out +=' "edit": {"name": "Edit", "icon": "edit"},';
+		out +=' "block": {"name": "Block", "icon": "ui-icon-play"},';
+		out +=' "unblock": {"name": "Unblock", "icon": "ui-icon-play", "disable":"true"},';
+		out +=' "sep1": "---------", ';
+	}
+	else{
+		if(file['openByUser'] == iMathConnectUser){
+			out = '{ "view": {"name": "View", "icon": "ui-icon-play"}, ';
+			out +=' "edit": {"name": "Edit", "icon": "edit"},';
+			out +=' "block": {"name": "Block", "icon": "ui-icon-play", "disable":"true"},';
+			out +=' "unblock": {"name": "Unblock", "icon": "ui-icon-play"},';
+			out +=' "sep1": "---------", ';			
+		}
+		else{
+			out = '{ "view": {"name": "View", "icon": "ui-icon-play"}, ';
+			out +=' "edit": {"name": "Edit", "icon": "edit",  "disable":"true"},';
+			out +=' "block": {"name": "Block", "icon": "ui-icon-play", "disable":"true"},';
+			out +=' "unblock": {"name": "Unblock", "icon": "ui-icon-play", "disable":"true"},';
+			out +=' "sep1": "---------", ';	
+		}
+	}
+	
+	console.log("File type");
+	console.log(file['type']);
+	switch(file['type']) {
+		case "csv":	
 			out += stdFileOperations;
-			out += ' "download": {"name": "Download as zip", "icon": "ui-icon-play"},';
-			//out += '"plot": {';
-			//out += '    "name": "Plot",'; 
-			//out += '	"items": {';
-			//out += '		"descstats": {"name": "Descriptive Statistics", "icon": "ui-icon-cancel"}';
-			//out += '		"linreg": {"name": "Linear Regression", "icon": "ui-icon-image"}';
-			//out += '	}';
-			//out += '},';
+			out += ' "download": {"name": "Download as zip", "icon": "ui-icon-play"},';			
 		    out +=' "sep1": "---------", ';
 		    out += mathFunc + '}';	
 			break;
 		case "py":
 		case "r":
-			out = '{ "edit": {"name": "Edit", "icon": "edit"}, ';
 			out += stdFileOperations;
 			out += ' "download": {"name": "Download as zip", "icon": "ui-icon-play"},';
 			out +=' "sep1": "---------", ';

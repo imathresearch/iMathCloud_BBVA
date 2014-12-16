@@ -66,7 +66,7 @@ function fillRemoteFiles(files, treeView, shareZone) {
 		        	executeMenu(key,b[1], b[2]);
 		        },
 		        
-		        items: genContextMenu(file['type'], shareZone, file['sharingState'], true) 
+		        items: genContextMenu(file, shareZone, file['sharingState'], true) 
 		    });
 		} else {						
 			var trig = 'right'; 
@@ -82,7 +82,7 @@ function fillRemoteFiles(files, treeView, shareZone) {
 					var b = a.split("__");
 		        	executeMenu(key,b[1], b[2]);
 		        },
-		        items: genContextMenu(file['type'], shareZone, file['sharingState']) 
+		        items: genContextMenu(file, shareZone, file['sharingState']) 
 		    });
 			trig = 'left';
 			if (file['type'] != "dir") {
@@ -95,7 +95,7 @@ function fillRemoteFiles(files, treeView, shareZone) {
 						var b = a.split("__");
 			        	executeMenu(key,b[1], b[2]);
 			        },
-			        items: genContextMenu(file['type'], shareZone, file['sharingState']) 
+			        items: genContextMenu(file, shareZone, file['sharingState']) 
 			    });
 			}
 			$( "#filedir_" + file['dir'] ).append(aux);
@@ -646,6 +646,38 @@ function ajaxGetFiles() {
         error: function(error) {
         	unplaceWaiting("imath-waiting-files");
             console.log("error loading files - " + error.status);
+        }
+    });
+}
+
+function blockFile(id){
+	$.ajax({
+        url: "rest/file_service/blockFile/"+ id + "/" + userName + "/" + iMathConnectUser,
+        cache: false,
+        dataType: "json",
+        type: "POST",
+        success: function() {
+        	ajaxGetFiles();
+        },
+        error: function(error) {
+        	unplaceWaiting("imath-waiting-files");
+            console.log("error blocking file - " + error.status);
+        }
+    });
+}
+
+function unBlockFile(id){
+	$.ajax({
+        url: "rest/file_service/unBlockFile/"+ id + "/" + userName + "/" + iMathConnectUser,
+        cache: false,
+        dataType: "json",
+        type: "POST",
+        success: function() {
+        	ajaxGetFiles();
+        },
+        error: function(error) {
+        	unplaceWaiting("imath-waiting-files");
+            console.log("error blocking file - " + error.status);
         }
     });
 }

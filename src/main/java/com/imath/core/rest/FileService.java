@@ -231,13 +231,14 @@ public class FileService {
                     File file = it.next();
                     filedto.id = file.getId();
                     filedto.name=file.getName();
-                    filedto.type = file.getIMR_Type();
+                    filedto.type = file.getIMR_Type();                    
                     filedto.absolutePath = file.getPath();
                     filedto.dir = null;
                     if(file.getDir()!=null) {
                             filedto.dir = file.getDir().getId();
                     }
                     filedto.sharingState = file.getSharingState();
+                    filedto.openbyUser = file.getOpenByUser();
                     out.add(filedto);
             }
             return out;
@@ -415,6 +416,51 @@ public class FileService {
 		}
     }
 	
+	@POST
+    @Path("/blockFile/{id}/{userName}/{iMathUser}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response REST_blockFile(@PathParam("id") Long idFile, @PathParam("userName") String userName, @PathParam("iMathUser") String blockByUser, @Context SecurityContext sc) {
+	    LOG.info(LOG_PRE + "[blockFile]" + idFile + " " + blockByUser);
+	    try { 
+		    SecurityManager.secureBasic(userName, sc);
+		    
+			File file = db.getFileDB().findByIdSecured(idFile, userName);
+			if(file.getOpenByUser() == null){
+				file.setOpenByUser(blockByUser);
+				db.makePersistent(file);
+				return Response.status(Response.Status.OK).build();
+			}
+			else{
+				return Response.status(Response.Status.BAD_REQUEST).build();
+			}
+		}
+		catch (Exception e) {
+			LOG.severe("Error blocking file id: " + idFile + " by iMathConnectUser: "+ blockByUser);
+			return Response.status(Response.Status.BAD_REQUEST).build();
+		}
+    }
+	
+	@POST
+    @Path("/unBlockFile/{id}/{userName}/{iMathUser}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response REST_unBlockFile(@PathParam("id") Long idFile, @PathParam("userName") String userName, @PathParam("iMathUser") String blockByUser, @Context SecurityContext sc) {
+	    LOG.info(LOG_PRE + "[unBlockFile]" + idFile + " " + blockByUser);
+	    try { 
+		    SecurityManager.secureBasic(userName, sc);
+		    
+			File file = db.getFileDB().findByIdSecured(idFile, userName);
+			if(file.getOpenByUser().equals(blockByUser)){
+				file.setOpenByUser(null);			
+				return Response.status(Response.Status.OK).build();		
+			}
+			return Response.status(Response.Status.BAD_REQUEST).build();
+				
+		}
+		catch (Exception e) {
+			LOG.severe("Error blocking file id: " + idFile + " by iMathConnectUser: "+ blockByUser);
+			return Response.status(Response.Status.BAD_REQUEST).build();
+		}
+    }
 	
 	
 	
@@ -450,6 +496,7 @@ public class FileService {
 		public FileShared.Permission permission;	// Only for FileShared purposes
 		public String userNameOwner;
 		public String absolutePath;
+		public String openbyUser;
 		
 		
 		public FileDTO() {}

@@ -432,6 +432,9 @@
         
 		<script type="text/javascript">
 			var userName = "<%= request.getUserPrincipal().getName() %>";
+			var iMathConnectUser = "<%=request.getParameter("iMathConnectUser")%>"
+			console.log("iMathConnectUser");
+			console.log(iMathConnectUser);
 		</script>
     </body>
 	

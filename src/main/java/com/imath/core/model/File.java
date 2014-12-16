@@ -51,6 +51,9 @@ public class File implements Serializable, SecurityOwner {
     @ManyToMany(mappedBy="sourceFiles")
     private Set<Job> sourceJobs;
     
+    @Column(name="openbyUser")
+    private String openbyUser = null;
+    
     
     private Sharing sharingState;	// Only for folders. It indicates the sharing state: NO, YES. for the future, it may indicate that the folder is shared by only a group of people, or to everybody in the group etc...
     
@@ -75,6 +78,10 @@ public class File implements Serializable, SecurityOwner {
 	}   
 	public String getUrl() {
 		return this.url;
+	}
+	
+	public String getOpenByUser(){
+		return this.openbyUser;
 	}
 
 	public void setUrl(String url) {
@@ -119,6 +126,10 @@ public class File implements Serializable, SecurityOwner {
 	
 	public Set<Job> sourceJobs() {
 		return this.sourceJobs;
+	}
+	
+	public void setOpenByUser(String user){
+		this.openbyUser = user;
 	}
 	
 	//included by amartinez
