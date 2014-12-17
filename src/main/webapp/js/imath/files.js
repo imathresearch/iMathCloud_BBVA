@@ -1,3 +1,5 @@
+var filesBlock = new Array();
+
 function fillRemoteFiles(files, treeView, shareZone) {
 	
 	clearFileTree(shareZone);
@@ -7,6 +9,8 @@ function fillRemoteFiles(files, treeView, shareZone) {
 		var file = files[i];
 		var userName = "";
 		var aux;
+		filesBlock[file['id'].toString()] = file['openByUser'];
+		
 		if (file['type']=='dir') {
 			// The case we find a directory
 			var classSharing = "folder";
@@ -631,6 +635,7 @@ function getFilesInfo(b, id) {
 
 
 function ajaxGetFiles() {
+	console.log("On ajaxGetFiles");
 	placeWaiting("imath-waiting-files");
 	$.ajax({
         url: "rest/file_service/getFiles/"+userName,
@@ -656,7 +661,8 @@ function blockFile(id){
         cache: false,
         dataType: "json",
         type: "POST",
-        success: function() {
+        success: function(data) {
+        	console.log("Success block file");
         	ajaxGetFiles();
         },
         error: function(error) {

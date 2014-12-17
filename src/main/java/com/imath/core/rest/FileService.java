@@ -238,7 +238,8 @@ public class FileService {
                             filedto.dir = file.getDir().getId();
                     }
                     filedto.sharingState = file.getSharingState();
-                    filedto.openbyUser = file.getOpenByUser();
+                    filedto.openByUser = file.getOpenByUser();
+                    System.out.println("FileName " + filedto.name + " open by " + filedto.openByUser);
                     out.add(filedto);
             }
             return out;
@@ -425,10 +426,16 @@ public class FileService {
 		    SecurityManager.secureBasic(userName, sc);
 		    
 			File file = db.getFileDB().findByIdSecured(idFile, userName);
+			System.out.println(file.getId());
 			if(file.getOpenByUser() == null){
 				file.setOpenByUser(blockByUser);
 				db.makePersistent(file);
-				return Response.status(Response.Status.OK).build();
+				FileDTO filedto = new FileDTO();
+				filedto.id = file.getId();
+				filedto.userNameOwner = file.getOwner().getUserName();
+				filedto.name = file.getName();
+				filedto.type = file.getIMR_Type();
+				return Response.status(Response.Status.OK).entity(filedto).build();
 			}
 			else{
 				return Response.status(Response.Status.BAD_REQUEST).build();
@@ -450,8 +457,13 @@ public class FileService {
 		    
 			File file = db.getFileDB().findByIdSecured(idFile, userName);
 			if(file.getOpenByUser().equals(blockByUser)){
-				file.setOpenByUser(null);			
-				return Response.status(Response.Status.OK).build();		
+				file.setOpenByUser(null);
+				FileDTO filedto = new FileDTO();
+				filedto.id = file.getId();
+				filedto.userNameOwner = file.getOwner().getUserName();
+				filedto.name = file.getName();
+				filedto.type = file.getIMR_Type();
+				return Response.status(Response.Status.OK).entity(filedto).build();
 			}
 			return Response.status(Response.Status.BAD_REQUEST).build();
 				
@@ -496,7 +508,7 @@ public class FileService {
 		public FileShared.Permission permission;	// Only for FileShared purposes
 		public String userNameOwner;
 		public String absolutePath;
-		public String openbyUser;
+		public String openByUser;
 		
 		
 		public FileDTO() {}

@@ -120,6 +120,11 @@ function genContextMenu(file, shareZone, sharingState, isRoot) {
 	// shareZone= 0-> own files. shareZone=1-> other users files. 
 	// sharingState = {'YES' | 'NO'}
 	var stdFileOperations = '';	
+	stdFileOperations += '{ "view": {"name": "View", "icon": "ui-icon-play"}, ';
+	stdFileOperations +=' "edit": {"name": "Edit", "icon": "edit"},';
+	stdFileOperations +=' "block": {"name": "Block", "icon": "ui-icon-play"},';
+	stdFileOperations +=' "unblock": {"name": "Unblock", "icon": "ui-icon-play"},';
+	stdFileOperations +=' "sep1": "---------", ';	
 	stdFileOperations +=' "rename": {"name": "Rename", "icon": "ui-icon-play"},';
 	stdFileOperations +=' "delete": {"name": "Delete", "icon": "ui-icon-play"},';
 	stdFileOperations +=' "copy": {"name": "Copy", "icon": "ui-icon-play"},';
@@ -135,33 +140,7 @@ function genContextMenu(file, shareZone, sharingState, isRoot) {
 	stdDirOperations += ' "sep2": "---------", ';	
 	stdDirOperations +=' "addFiles": {"name": "Upload files", "icon": "ui-icon-play"},';
 	
-	var out;	
-	if(file['openByUser'] == null){
-		out = '{ "view": {"name": "View", "icon": "ui-icon-play"}, ';
-		out +=' "edit": {"name": "Edit", "icon": "edit"},';
-		out +=' "block": {"name": "Block", "icon": "ui-icon-play"},';
-		out +=' "unblock": {"name": "Unblock", "icon": "ui-icon-play", "disable":"true"},';
-		out +=' "sep1": "---------", ';
-	}
-	else{
-		if(file['openByUser'] == iMathConnectUser){
-			out = '{ "view": {"name": "View", "icon": "ui-icon-play"}, ';
-			out +=' "edit": {"name": "Edit", "icon": "edit"},';
-			out +=' "block": {"name": "Block", "icon": "ui-icon-play", "disable":"true"},';
-			out +=' "unblock": {"name": "Unblock", "icon": "ui-icon-play"},';
-			out +=' "sep1": "---------", ';			
-		}
-		else{
-			out = '{ "view": {"name": "View", "icon": "ui-icon-play"}, ';
-			out +=' "edit": {"name": "Edit", "icon": "edit",  "disable":"true"},';
-			out +=' "block": {"name": "Block", "icon": "ui-icon-play", "disable":"true"},';
-			out +=' "unblock": {"name": "Unblock", "icon": "ui-icon-play", "disable":"true"},';
-			out +=' "sep1": "---------", ';	
-		}
-	}
-	
-	console.log("File type");
-	console.log(file['type']);
+	var out = '';	
 	switch(file['type']) {
 		case "csv":	
 			out += stdFileOperations;
@@ -173,15 +152,29 @@ function genContextMenu(file, shareZone, sharingState, isRoot) {
 		case "r":
 			out += stdFileOperations;
 			out += ' "download": {"name": "Download as zip", "icon": "ui-icon-play"},';
-			out +=' "sep1": "---------", ';
+			out +=' "sep2": "---------", ';
 		    out +=' "con": {"name": "Run on Console", "icon": "ui-icon-circle-triangle-e"},';
 		    out +=' "job": {"name": "Run as Job", "icon": "ui-icon-play"} }';
 			break;
 		case "svg":
-			out = '{ "descstats": {"name": "Plot", "icon": "ui-icon-image"},';
 			out += stdFileOperations;
-			out += ' "download": {"name": "Download as zip", "icon": "ui-icon-play"},';
+			out += ' "descstats": {"name": "Plot", "icon": "ui-icon-image"},';
+			out += ' "download": {"name": "Download as zip", "icon": "ui-icon-play"}}';
 			break;
+		case "ipynb":
+			if(file['name'] == 'iMathConsole.ipynb'){
+				out +=' { "edit": {"name": "Edit", "icon": "edit"},';
+				out +=' "sep1": "---------", ';	
+				out +=' "copy": {"name": "Copy", "icon": "ui-icon-play"},';
+				out += ' "download": {"name": "Download as zip", "icon": "ui-icon-play"}}';
+			}
+			else{
+				out += stdFileOperations;
+				out += ' "download": {"name": "Download as zip", "icon": "ui-icon-play"},';
+				out +=' "sep2": "---------", ';
+				out += ' "openConsole": {"name": "Open console", "icon": "ui-icon-play"}}';
+			}
+			break;	
 		case "dir":
 			if (shareZone==0 && sharingState == 'NO') {
 				//out = '{ "share": {"name": "Share Folder", "icon": "ui-icon-image"}, ';
@@ -193,7 +186,9 @@ function genContextMenu(file, shareZone, sharingState, isRoot) {
 								
 				}
 				else{
-					out += stdFileOperations;
+					out +=' "rename": {"name": "Rename", "icon": "ui-icon-play"},';
+					out +=' "delete": {"name": "Delete", "icon": "ui-icon-play"},';
+					out +=' "copy": {"name": "Copy", "icon": "ui-icon-play"},';
 					out += stdDirOperations;
 					out +=' "download": {"name": "Download as zip", "icon": "ui-icon-play"}}';
 									
@@ -212,13 +207,7 @@ function genContextMenu(file, shareZone, sharingState, isRoot) {
 				out = '{ "shareopt": {"name": "Sharing Options", "icon": "ui-icon-image"}}';
 			}
 			break;
-		case "ipynb":
-			out = '{ "edit": {"name": "Edit", "icon": "edit"}, ';
-			out += stdFileOperations;
-			out += ' "download": {"name": "Download as zip", "icon": "ui-icon-play"},';
-			out +=' "sep1": "---------", ';
-			out += ' "openConsole": {"name": "Open console", "icon": "ui-icon-play"}}';
-			break;			
+				
 		default:
 			out = '{ "edit": {"name": "Edit", "icon": "edit"}, ';			
 			out +=' "rename": {"name": "Rename", "icon": "ui-icon-play"},';
@@ -227,7 +216,40 @@ function genContextMenu(file, shareZone, sharingState, isRoot) {
 			out +=' "download": {"name": "Download as zip", "icon": "ui-icon-play"}}';
 			
 	} 
-    return JSON.parse(out);
+	
+    var out_obj = JSON.parse(out);
+    
+    if(file['type'] == 'csv' || file['type'] == 'py'  || file['type'] == 'r' || (file['type'] == 'ipynb' && file['name'] != 'iMathConsole.ipynb')){
+	   
+			out_obj.unblock.disabled = function (key,options){
+				var a = options.$trigger.attr("id");
+		        var id_file = a.split("__")[1];		
+				if (filesBlock[id_file.toString()] == null || filesBlock[id_file.toString()] != iMathConnectUser){
+					return true;
+				}
+				return false;
+			};
+				
+			out_obj.block.disabled = function (key,options){
+				var a = options.$trigger.attr("id");
+		        var id_file = a.split("__")[1];
+		        if (filesBlock[id_file.toString()] == null){ 
+					return false;
+				}
+				return true;};
+			
+			out_obj.edit.disabled = function (key,options){
+				var a = options.$trigger.attr("id");
+		        var id_file = a.split("__")[1];
+		        if (filesBlock[id_file.toString()] == null || filesBlock[id_file.toString()] == iMathConnectUser){
+		        	return false;
+		        }	      
+	
+				return true;};
+	
+    }
+        
+    return out_obj;
 }
 
 function generateHTMLToolBarFile(idFile) {
