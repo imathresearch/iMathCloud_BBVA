@@ -220,7 +220,7 @@
                                     <h3 class="box-title"><i class="fa fa-folder-o"></i>&nbsp;&nbsp;&nbsp; Files</h3>
                                     <div class="box-tools pull-right">
 										<div class="btn-group" data-toggle="btn-toggle">
-											<button id="imath-id-refresh-files" type="button" class="btn btn-primary active"><i class="fa fa-refresh"></i></button>
+											<button id="imath-id-refresh-files" type="button" title="Refresh files" class="btn btn-primary active"><i class="fa fa-refresh"></i></button>
 										</div>
 									</div>
                                 </div><!-- /.box-header -->
@@ -238,7 +238,7 @@
                                     <h3 class="box-title"><i class="fa fa-bar-chart-o"></i>&nbsp;&nbsp;&nbsp; Jobs</h3>
                                     <div class="box-tools pull-right">
 	                                    <div class="btn-group" data-toggle="btn-toggle">
-											<button id="imath-id-refresh-jobs" type="button" class="btn btn-primary active"><i class="fa fa-refresh"></i></button>
+											<button id="imath-id-refresh-jobs" type="button" title="Refresh jobs" class="btn btn-primary active"><i class="fa fa-refresh"></i></button>
 										</div>
 									</div>
                                 </div><!-- /.box-header -->
@@ -284,12 +284,12 @@
 	                            	</li>
 	                            	<div id ="div-editor-resize-full" class="box-tools pull-right">
 											<div class="btn-group" data-toggle="btn-toggle">
-												<button id="editor-resize-full" type="button" style="border:0;box-shadow: none" class="btn btn-primary active"><i class="fa fa-expand"></i></button>
+												<button id="editor-resize-full" type="button" title="Resize full" style="border:0;box-shadow: none" class="btn btn-primary active"><i class="fa fa-expand"></i></button>
 											</div>
 									</div>
 									<div id ="div-editor-resize-small" class="box-tools pull-right" style="display:none">
 											<div class="btn-group" data-toggle="btn-toggle">
-												<button id="editor-resize-small" type="button" style="border:0;box-shadow:none" class="btn btn-primary active"><i class="fa fa-compress"></i></button>
+												<button id="editor-resize-small" type="button" title="Resize small" style="border:0;box-shadow:none" class="btn btn-primary active"><i class="fa fa-compress"></i></button>
 											</div>
 									</div>
     	                        </ul>
@@ -305,17 +305,17 @@
                             		<li class="pull-left header header-color">
                             			<i class="fa fa-desktop"></i>Console 
                             			<div class="btn-group" data-toggle="btn-toggle">
-											<button id="imath-id-new-console" type="button" style="border:0;box-shadow: none" class="btn btn-primary active"><i class="fa fa-plus"></i> </button>
+											<button id="imath-id-new-console" type="button" title="New console" style="border:0;box-shadow: none" class="btn btn-primary active"><i class="fa fa-plus"></i> </button>
 										</div>
                             		</li>
                             		<div id ="div-console-resize-full"  class="box-tools pull-right">
 											<div class="btn-group" data-toggle="btn-toggle">
-												<button id="console-resize-full" type="button" style="border:0;box-shadow: none" class="btn btn-primary active"><i class="fa fa-expand"></i></button>
+												<button id="console-resize-full" type="button" title="Resize full" style="border:0;box-shadow: none" class="btn btn-primary active"><i class="fa fa-expand"></i></button>
 											</div>
 									</div>
 									<div id ="div-console-resize-small"  class="box-tools pull-right" style="display:none">
 											<div class="btn-group" data-toggle="btn-toggle">
-												<button id="console-resize-small" type="button" style="border:0;box-shadow: none" class="btn btn-primary active"><i class="fa fa-compress"></i></button>
+												<button id="console-resize-small" type="button" title="Resize small" style="border:0;box-shadow: none" class="btn btn-primary active"><i class="fa fa-compress"></i></button>
 											</div>
 									</div>	
    	                        	</ul>
