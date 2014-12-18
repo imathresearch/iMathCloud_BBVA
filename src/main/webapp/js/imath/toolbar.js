@@ -258,6 +258,24 @@ function genContextMenu(file, shareZone, sharingState, isRoot) {
 		
 					return true;};
 			}
+			
+			out_obj.rename.disabled = function (key,options){
+				var a = options.$trigger.attr("id");
+		        var id_file = a.split("__")[1];		
+				if (filesBlock[id_file.toString()] == null || filesBlock[id_file.toString()] == iMathConnectUser){
+					return false;
+				}
+				return true;
+			};
+			
+			out_obj.delete.disabled = function (key,options){
+				var a = options.$trigger.attr("id");
+		        var id_file = a.split("__")[1];		
+				if (filesBlock[id_file.toString()] == null || filesBlock[id_file.toString()] == iMathConnectUser){
+					return false;
+				}
+				return true;
+			};
 	
     }
         
