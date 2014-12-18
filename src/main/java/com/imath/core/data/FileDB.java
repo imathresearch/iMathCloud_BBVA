@@ -2,6 +2,7 @@
 
 package com.imath.core.data;
 
+import com.imath.core.util.Constants;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -81,6 +82,32 @@ public class FileDB {
             throw new Exception ("Critical: More than one ROOT file found for user: " + userId);
         }
         return out.get(0);      // only one file is expected
+    }
+    
+    /**
+     * Returns the file which url contains
+     * @param fileName The file name
+     * @param userId The user id  
+     * @author iMath
+     */
+    public File findByPath(String path, String userId) throws Exception{
+    	
+    	String uriFile = Constants.URI_HEAD + Constants.IMATH_HOST + path;
+    	CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<File> criteria = cb.createQuery(File.class);
+        Root<File> file = criteria.from(File.class);
+        Predicate p1 = cb.equal(file.get("owner").get("userName"), userId);
+        Predicate p2 = cb.equal(file.get("url"), uriFile);
+        Predicate pAND = cb.and(p1,p2);
+        criteria.select(file).where(pAND);
+        List<File> out = em.createQuery(criteria).getResultList();
+        
+        if(out.size() > 1){
+        	throw new Exception();
+        }
+        
+        return out.get(0);
+    	
     }
     
     /**

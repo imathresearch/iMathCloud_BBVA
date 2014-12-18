@@ -656,21 +656,26 @@ function ajaxGetFiles() {
 }
 
 function blockFile(id){
+	var success = true;
 	$.ajax({
         url: "rest/file_service/blockFile/"+ id + "/" + userName + "/" + iMathConnectUser,
         cache: false,
         dataType: "json",
         type: "POST",
+        async: false,
         success: function(data) {
         	console.log("Success block file");
         	ajaxGetFiles();
+        	success = true;
         },
         error: function(error) {
         	showMessageAlreadyBlocked();
         	ajaxGetFiles();
             console.log("error blocking file - " + error.status);
+            success = false;
         }
     });
+	return success;
 }
 
 function unBlockFile(id){
@@ -679,12 +684,12 @@ function unBlockFile(id){
         cache: false,
         dataType: "json",
         type: "POST",
+        async: false,
         success: function() {
         	ajaxGetFiles();
         },
-        error: function(error) {
-        	
-            console.log("error blocking file - " + error.status);
+        error: function(error) {        	
+            console.log("error unblocking file - " + error.status);
         }
     });
 }
@@ -707,6 +712,25 @@ function showMessageAlreadyBlocked(){
 	};	
 	
 	showDialog(content, title, buttons);		
+}
+
+function getFileIdByPath(pathFile){
+	var idFile;
+	$.ajax({
+        url: "rest/file_service/getIdFile/" + userName + "/" + pathFile,
+        cache: false,
+        dataType: "json",
+        type: "GET",
+        async: false,
+        success: function(file) {       
+        	idFile= file['id'];             	
+        },
+        error: function(error) {
+            console.log("error getting id file by path - " + error.status);
+        }
+    });
+	return idFile;
+	
 }
 
 // for legacy
