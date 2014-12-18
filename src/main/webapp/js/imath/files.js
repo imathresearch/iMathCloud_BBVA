@@ -666,7 +666,8 @@ function blockFile(id){
         	ajaxGetFiles();
         },
         error: function(error) {
-        	unplaceWaiting("imath-waiting-files");
+        	showMessageAlreadyBlocked();
+        	ajaxGetFiles();
             console.log("error blocking file - " + error.status);
         }
     });
@@ -682,12 +683,31 @@ function unBlockFile(id){
         	ajaxGetFiles();
         },
         error: function(error) {
-        	unplaceWaiting("imath-waiting-files");
+        	
             console.log("error blocking file - " + error.status);
         }
     });
 }
 
+function showMessageAlreadyBlocked(){
+	var title = "Information";
+	
+	var content = ""
+		+ "<div align='left'>"
+		+ "<p style='font-size:18px'>" 
+		+ "The file has already been blocked by another user"
+		+ "<p>"
+		+ "</div>";
+	
+	var buttons = {
+			OK : function() {
+				$("#dialogPopup").modal('hide');
+			},
+			
+	};	
+	
+	showDialog(content, title, buttons);		
+}
 
 // for legacy
 function getFiles() {

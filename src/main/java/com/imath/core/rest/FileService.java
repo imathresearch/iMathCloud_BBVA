@@ -443,7 +443,7 @@ public class FileService {
 		}
 		catch (Exception e) {
 			LOG.severe("Error blocking file id: " + idFile + " by iMathConnectUser: "+ blockByUser);
-			return Response.status(Response.Status.BAD_REQUEST).build();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
 		}
     }
 	
@@ -470,7 +470,7 @@ public class FileService {
 		}
 		catch (Exception e) {
 			LOG.severe("Error blocking file id: " + idFile + " by iMathConnectUser: "+ blockByUser);
-			return Response.status(Response.Status.BAD_REQUEST).build();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
 		}
     }
 	
