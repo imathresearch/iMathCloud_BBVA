@@ -108,10 +108,10 @@ public class FileService {
     }
 	
 	@POST
-    @Path("/saveFileContent/{userName}/{id}")
+    @Path("/saveFileContent/{userName}/{id}/{iMathConnectUser}")
 	@Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response REST_saveFileContent(@PathParam("userName") String userName, @PathParam("id") Long id, List<String> content, @Context SecurityContext sc) {
+    public Response REST_saveFileContent(@PathParam("userName") String userName, @PathParam("id") Long id, @PathParam("iMathConnectUser") String iMathConnectUser, List<String> content, @Context SecurityContext sc) {
 	    LOG.info(LOG_PRE + "[saveFileContent]" + userName + " " + id.toString());
 		Map<String, String> responseObj = new HashMap<String, String>();
 		responseObj.put("ok","200");
@@ -119,39 +119,49 @@ public class FileService {
 		try {
 		    SecurityManager.secureBasic(userName, sc);
 			File file = db.getFileDB().findById(id);
-			fc.saveFileContent(userName, file, content);
+			if (file.getOpenByUser() == null || file.getOpenByUser().equals(iMathConnectUser)){
+				fc.saveFileContent(userName, file, content);
+			}
+			else{
+				builder = Response.status(Response.Status.BAD_REQUEST).entity(responseObj);
+			}
 		}
 		catch (Exception e) {
 			LOG.severe("Error saving file id: " + id + " from user: "+ userName);
 			responseObj = new HashMap<String, String>();
 			responseObj.put("error", e.getMessage());
-            builder = Response.status(Response.Status.BAD_REQUEST).entity(responseObj);
+            builder = Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(responseObj);
 		}
 		//return new Long(1);
 		return builder.build();
     }
 	
 	@POST
-	@Path("/saveFileContentPage/{userName}/{id}/{page}")
+	@Path("/saveFileContentPage/{userName}/{id}/{page}/{iMathConnectUser}")
 	@Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response REST_saveFileContent(@PathParam("userName") String userName, @PathParam("id") Long id, @PathParam("page") Long page, List<String> content, @Context SecurityContext sc) {
+    public Response REST_saveFileContent(@PathParam("userName") String userName, @PathParam("id") Long id, @PathParam("page") Long page, @PathParam("iMathConnectUser") String iMathConnectUser,List<String> content, @Context SecurityContext sc) {
 	    LOG.info(LOG_PRE + "[saveFileContent]" + userName + " " + id.toString() + " " + page.toString());
         Map<String, String> responseObj = new HashMap<String, String>();
         Response.ResponseBuilder builder = null;
         try {
             SecurityManager.secureBasic(userName, sc);
             File file = db.getFileDB().findById(id);
-            fc.saveFileContent(userName, file, content, page);
-            int upToPage = (int) Math.ceil((double)content.size()/fc.getPagination());
-            responseObj.put("upToPage", ""+upToPage);
-            builder = Response.ok().entity(responseObj);
+            if (file.getOpenByUser() == null || file.getOpenByUser().equals(iMathConnectUser)){
+            	fc.saveFileContent(userName, file, content, page);
+            	int upToPage = (int) Math.ceil((double)content.size()/fc.getPagination());
+            	responseObj.put("upToPage", ""+upToPage);
+            	builder = Response.ok().entity(responseObj);
+            }
+            else{
+            	builder = Response.status(Response.Status.BAD_REQUEST).entity(responseObj);
+            }
         }
         catch (Exception e) {
             LOG.severe("Error saving file id: " + id + " from user: "+ userName);
             responseObj = new HashMap<String, String>();
             responseObj.put("error", e.getMessage());
-            builder = Response.status(Response.Status.BAD_REQUEST).entity(responseObj);
+            builder = Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(responseObj);
         }
         //return new Long(1);
         return builder.build();

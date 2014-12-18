@@ -980,10 +980,10 @@ function decreaseTabIndex(pivot) {
 
 function saveFile(idFile, content){
 	var pagination = getPaginationFileId(idFile);
-	var url = "rest/file_service/saveFileContent/" + userName + "/" +idFile;
+	var url = "rest/file_service/saveFileContent/" + userName + "/" +idFile + "/" + iMathConnectUser;
 	if (pagination > 0) {
 		url = "rest/file_service/saveFileContentPage/" + userName + "/" +idFile;
-		url = url + "/" + pagination;
+		url = url + "/" + pagination + "/" + iMathConnectUser;
 	} 
 	
 	$.ajax({
@@ -1027,6 +1027,10 @@ function saveFile(idFile, content){
             cm.setCursor(cursorAux);
 		},
 		error: function(error) {
+			if (error.status == 400){
+				showMessageAlreadyBlocked();
+	        	ajaxGetFiles();
+			}
 			console.log("error saving file -" + error.responseText);
 		}
 	});
