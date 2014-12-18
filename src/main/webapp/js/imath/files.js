@@ -50,7 +50,7 @@ function fillRemoteFiles(files, treeView, shareZone) {
 					aux = "<li><span class='file'>";
 			}
 						
-			aux = aux + "<a id = '" + genIdFileContextMenu(file['id'], file['name']) + "' class='" + genClassFileContextMenu(file['id']) + " " + genClassFileContextMenu(file['id']) + "_l" + "' href='#'>" +file['name']+ "</a>";
+			aux = aux + "<a id = '" + genIdFileContextMenu(file['id'], file['name']) + "' class='" + genClassFileContextMenu(file['id']) + " " + genClassFileContextMenu(file['id']) + "_l" + "' href='#'>" +file['name'] + blockingFile(file['openByUser']) + "</a>";
 			aux = aux + "</span></li>";
 		}
 		
@@ -107,6 +107,17 @@ function fillRemoteFiles(files, treeView, shareZone) {
 	}
 	if(shareZone==0) getStorage();
 	
+}
+
+function blockingFile(openByUser) {
+	var ret = "<span>";
+	if (openByUser==null) return "";
+	if (openByUser== iMathConnectUser) {
+		ret = ret + "<i title='blocked by you' class='text-green fa fa-fw fa-ban'></i>";
+	} else {
+		ret = ret + "<i title='blocked by " + openByUser + "' class='text-red fa fa-fw fa-ban'></i>";
+	}
+	return ret + "</span>";
 }
 
 function getStorage() {
