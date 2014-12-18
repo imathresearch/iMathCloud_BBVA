@@ -1035,7 +1035,7 @@ function getTabIdByIndex(index, selector) {
 	return tabId.substring(1);
 }
 
-function loadFile(idFile){
+function loadFile(idFile, mode){
 	if(isFileOpen(idFile)) {
 		//showTab(idFile);
 		var index = getTabIndex(idFile);
@@ -1053,7 +1053,7 @@ function loadFile(idFile){
 		        type: "GET",
 		        success: function(fileDTO) {
 		        	addOpenFile(idFile);
-		        	openFile(fileDTO);
+		        	openFile(fileDTO, mode);
 		        },
 		        error: function(error) {
 		            console.log("error opening file -" + error.status);
@@ -1169,20 +1169,20 @@ function csvToTable(header,content) {
 			"</table>";
 };
 
-function openFile(fileDTO) {
+function openFile(fileDTO, mode) {
 		switch(fileDTO['type']) {
 			case 'csv':
 				//openCSV(fileDTO);
-				openCodeFile(fileDTO,"");
+				openCodeFile(fileDTO,"", mode);
 				break;
 			case 'py':
-				openCodeFile(fileDTO,"python");
+				openCodeFile(fileDTO,"python", mode);
 				break;
 			case 'r':
-				openCodeFile(fileDTO,"r");
+				openCodeFile(fileDTO,"r", mode);
 				break;
 			default:
-				openCodeFile(fileDTO,"");
+				openCodeFile(fileDTO,"", mode);
 				break;
 		}	
 }
@@ -1283,7 +1283,7 @@ function attachNewData(data, cm) {
 	}
 }
 
-function openCodeFile(data, modeStr) {
+function openCodeFile(data, modeStr, mode) {
 	var nameTab = buildTabName(data['id']);
 	var tabTemplate = "<li class='tab-File'><a href='#{href}'> <button class='close closeTab'> x</button> #{label}</a></li>";
 	var label = data['name']; 
@@ -1311,7 +1311,7 @@ function openCodeFile(data, modeStr) {
 	}
 	
 	htmlCode = "<div id=\"codeDIV_" + nameTab + "\"><textarea name=\"code_" + nameTab + "\">" + code + "</textarea></div>";
-	htmlButtons = generateHTMLToolBarFile(data['id']);
+	htmlButtons = generateHTMLToolBarFile(data['id'], mode);
 	$("#tabsFile").append("<div id='" + id + "' class='tab-pane' style='position: relative; padding: 0;'><p>" + htmlButtons + htmlCode + "</p></div>");
 	//tabs.append( "<div id='" + id + "' style='position: relative; width: 100%; height:100%; padding: 0;'><p>" + htmlButtons + htmlCode + "</p></div>" );
 	generateToolBarFile(data['id'], data['name']);
@@ -1321,7 +1321,13 @@ function openCodeFile(data, modeStr) {
 	//var he = getProperHeight(); //u.offsetHeight;
 	var x = document.getElementsByName('code_'+nameTab)[0];
 	
+	var readOnly = false;	
+	if(mode == 'view'){
+		readOnly = true;
+	}
+	
 	var conf = {
+			readOnly: readOnly,
 			mode: modeStr, 
 			lineNumbers: true, 
 			value: x.value, 

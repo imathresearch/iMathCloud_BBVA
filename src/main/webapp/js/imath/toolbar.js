@@ -1,7 +1,7 @@
 function executeMenu(key,id, fileName) {
 	switch(key) {
 		case "edit":
-			loadFile(id);
+			loadFile(id, "edit");
 			break;
 		case "descstats":
 			plotFile(id);
@@ -59,6 +59,7 @@ function executeMenu(key,id, fileName) {
 			openNotebookFileAsConsole(id);
 			break;
 		case "view":
+			loadFile(id, "view");
 			break;
 		case "block":
 			blockFile(id);
@@ -252,12 +253,26 @@ function genContextMenu(file, shareZone, sharingState, isRoot) {
     return out_obj;
 }
 
-function generateHTMLToolBarFile(idFile) {
-	var html = '<div id="toolbarFile_' + idFile + 'class="btn-group">';
-	html += '<button id="saveFileButton_' + idFile + '" type="button" class="btn btn-default"><i class="fa fa-save"></i></button>';
-	html += '<button id="executeConFileButton_' + idFile + '" type="button" class="btn btn-default"><i class="fa fa-play"></i></button>';
-    html += '<button id="executeJobFileButton_' + idFile + '" type="button" class="btn btn-default"><i class="fa fa-play-circle"></i></button>';
-    html += '<div id="saveNotification_' + idFile + '" class="notification ui-widget ui-widget-content ui-corner-all border-box-sizing" style="display: none;"></div>';
+function generateHTMLToolBarFile(idFile, mode) {
+	
+	var html = '<div id="toolbarFile_' + idFile + 'class="btn-group">';	
+	switch (mode){
+		case 'view':
+			html += '<button id="executeConFileButton_' + idFile + '" type="button" class="btn btn-default"><i class="fa fa-play"></i></button>';
+		    html += '<button id="executeJobFileButton_' + idFile + '" type="button" class="btn btn-default"><i class="fa fa-play-circle"></i></button>';
+			break;
+		case 'edit':
+			html += '<button id="saveFileButton_' + idFile + '" type="button" class="btn btn-default"><i class="fa fa-save"></i></button>';
+			html += '<button id="executeConFileButton_' + idFile + '" type="button" class="btn btn-default"><i class="fa fa-play"></i></button>';
+		    html += '<button id="executeJobFileButton_' + idFile + '" type="button" class="btn btn-default"><i class="fa fa-play-circle"></i></button>';
+		    html += '<div id="saveNotification_' + idFile + '" class="notification ui-widget ui-widget-content ui-corner-all border-box-sizing" style="display: none;"></div>';
+			break;
+		default:
+			html += '<button id="saveFileButton_' + idFile + '" type="button" class="btn btn-default"><i class="fa fa-save"></i></button>';
+			html += '<button id="executeConFileButton_' + idFile + '" type="button" class="btn btn-default"><i class="fa fa-play"></i></button>';
+			html += '<button id="executeJobFileButton_' + idFile + '" type="button" class="btn btn-default"><i class="fa fa-play-circle"></i></button>';
+			html += '<div id="saveNotification_' + idFile + '" class="notification ui-widget ui-widget-content ui-corner-all border-box-sizing" style="display: none;"></div>';		
+	}	
     html += '</div>';
 
     /*
