@@ -182,8 +182,9 @@
 			padding-left: 30px;
 			color: #3c8dbc;
 			font-size: 18px;
-			font-style: normal;
-			margin-right: 50px
+			font-style: normal;			
+			width: 205px;
+			margin-bottom:8px;
 		}
 		
 		.consoleRButton{
@@ -197,9 +198,43 @@
 			padding-left: 30px;
 			color: #3c8dbc;
 			font-size: 18px;
-			font-style: normal;
-			margin-left: 50px;
-			width: 200px;
+			font-style: normal;			
+			width: 205px;
+			margin-bottom:8px;
+		}
+		
+		.consoleOctaveButton{
+			background-color: #FFFFFF;
+			background: url(css/images/octave-icon.png) no-repeat 10px center;
+			border-color: #367fa9;
+			border-radius: 10px;
+			border-width: 5px;
+			margin: 0px 3px;
+			padding:  8px 12px;
+			padding-left: 30px;
+			color: #3c8dbc;
+			font-size: 18px;
+			font-style: normal;			
+			width: 205px;
+			margin-bottom:8px;
+		}
+		
+		.block {			    
+		    text-align: center;			    
+		}
+		
+		.block:before {
+		    content:'';
+		    display: inline-block;
+		    height: 100%;
+		    vertical-align: middle;
+		    margin-right: -0.25em; /* Adjusts for spacing */
+		}
+		
+		.centered {
+		    display: inline-block;
+		    vertical-align: middle;
+		    width: 400px;
 		}
         </style>
         

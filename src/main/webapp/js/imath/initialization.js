@@ -321,13 +321,18 @@ function chooseConsole(){
 	var title = "Choose a console type";
 	
 	var content = ""
-		+ "<div align='center'>"
+		+ "<div class='block'>"
+		+ "<div class='centered'>"
 		+ "<button id='imath-id-buton-new-console-python' type='button' class='consolePythonButton' onclick='runConsole(\"python\")'>"
 		+ "<i>  New Python Console</i>"
 		+ "</button>"
 		+ "<button id='imath-id-buton-new-console-r' type='button' class='consoleRButton' onclick='runConsole(\"r\")'>"
 		+ "<i>  New R Console</i>"
 		+ "</button>"
+		+ "<button id='imath-id-buton-new-console-octave' type='button' class='consoleOctaveButton' onclick='runConsole(\"octave\")'>"
+		+ "<i>  New Octave Console</i>"
+		+ "</button>"
+		+ "</div>"
 		+ "</div>"
 	
 	var buttons = {
