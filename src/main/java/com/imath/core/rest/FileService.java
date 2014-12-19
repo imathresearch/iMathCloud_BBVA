@@ -475,8 +475,8 @@ public class FileService {
 		    SecurityManager.secureBasic(userName, sc);
 		    
 			File file = db.getFileDB().findByIdSecured(idFile, userName);
-			System.out.println(file.getId());
-			if(file.getOpenByUser() == null){
+			System.out.println(file.getId());			
+			if(file.getOpenByUser() == null || file.getOpenByUser().equals(blockByUser)){
 				file.setOpenByUser(blockByUser);
 				db.makePersistent(file);
 				FileDTO filedto = new FileDTO();
@@ -518,7 +518,29 @@ public class FileService {
 				
 		}
 		catch (Exception e) {
-			LOG.severe("Error blocking file id: " + idFile + " by iMathConnectUser: "+ blockByUser);
+			LOG.severe("Error unblocking file id: " + idFile + " by iMathConnectUser: "+ blockByUser);
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+		}
+    }
+	
+	@GET
+    @Path("/getIdFile/{userName}/{path: .+}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response REST_getIdFile( @PathParam("userName") String userName, @PathParam("path") String pathFile, @Context SecurityContext sc) {
+	    LOG.info(LOG_PRE + "[getIdFile]" + userName + " " + pathFile);
+	    try { 
+		    SecurityManager.secureBasic(userName, sc);
+		    
+			File file = db.getFileDB().findByPath(pathFile, userName);				
+			FileDTO filedto = new FileDTO();
+			filedto.id = file.getId();
+			filedto.userNameOwner = file.getOwner().getUserName();
+			filedto.name = file.getName();
+			filedto.type = file.getIMR_Type();
+			return Response.status(Response.Status.OK).entity(filedto).build();								
+		}
+		catch (Exception e) {
+			LOG.severe("Error getting file id: " + pathFile + " by user: "+ userName);
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
 		}
     }

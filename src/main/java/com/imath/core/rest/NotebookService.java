@@ -119,12 +119,17 @@ public class NotebookService {
             	
             	//console image
             	if(line.startsWith("<img id=\"img_console\"")){
-            		if(type.equals("python")){
-            			line = line.replaceAll("(src|href)=\"\"", replacement + "python-icon.png\"");
-            		}
-            		else{
-            			line = line.replaceAll("(src|href)=\"\"", replacement + "r-icon.png\"");
-            		}            		
+            		switch(type){
+            			case "python":
+            				line = line.replaceAll("(src|href)=\"\"", replacement + "python-icon.png\"");
+            				break;
+            			case "r":
+            				line = line.replaceAll("(src|href)=\"\"", replacement + "r-icon.png\"");
+            				break;
+            			case "octave":
+            				line = line.replaceAll("(src|href)=\"\"", replacement + "octave-icon.png\"");
+            				break;
+            		}            		        		
             	}
             	            	
             	sb.append(line + '\n');            	               

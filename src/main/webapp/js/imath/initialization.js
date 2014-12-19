@@ -74,6 +74,7 @@ var globalTabCountConsole = 0; 		// The global counting tab for indexing console
 var globalIdConsole = 0; 			// The id associated to a new console, it must be incremented
 var consolesIdOpenTabIndex = new Array();
 var openTabIndexIdNotebook = new Array();
+var mapNotebookIdFileId = new Array();
 
 var projectName;
 var currentTabConsole = null;
@@ -320,13 +321,18 @@ function chooseConsole(){
 	var title = "Choose a console type";
 	
 	var content = ""
-		+ "<div align='center'>"
+		+ "<div class='block'>"
+		+ "<div class='centered'>"
 		+ "<button id='imath-id-buton-new-console-python' type='button' class='consolePythonButton' onclick='runConsole(\"python\")'>"
 		+ "<i>  New Python Console</i>"
 		+ "</button>"
 		+ "<button id='imath-id-buton-new-console-r' type='button' class='consoleRButton' onclick='runConsole(\"r\")'>"
 		+ "<i>  New R Console</i>"
 		+ "</button>"
+		+ "<button id='imath-id-buton-new-console-octave' type='button' class='consoleOctaveButton' onclick='runConsole(\"octave\")'>"
+		+ "<i>  New Octave Console</i>"
+		+ "</button>"
+		+ "</div>"
 		+ "</div>"
 	
 	var buttons = {

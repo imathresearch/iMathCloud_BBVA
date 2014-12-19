@@ -182,8 +182,9 @@
 			padding-left: 30px;
 			color: #3c8dbc;
 			font-size: 18px;
-			font-style: normal;
-			margin-right: 50px
+			font-style: normal;			
+			width: 205px;
+			margin-bottom:8px;
 		}
 		
 		.consoleRButton{
@@ -197,9 +198,43 @@
 			padding-left: 30px;
 			color: #3c8dbc;
 			font-size: 18px;
-			font-style: normal;
-			margin-left: 50px;
-			width: 200px;
+			font-style: normal;			
+			width: 205px;
+			margin-bottom:8px;
+		}
+		
+		.consoleOctaveButton{
+			background-color: #FFFFFF;
+			background: url(css/images/octave-icon.png) no-repeat 10px center;
+			border-color: #367fa9;
+			border-radius: 10px;
+			border-width: 5px;
+			margin: 0px 3px;
+			padding:  8px 12px;
+			padding-left: 30px;
+			color: #3c8dbc;
+			font-size: 18px;
+			font-style: normal;			
+			width: 205px;
+			margin-bottom:8px;
+		}
+		
+		.block {			    
+		    text-align: center;			    
+		}
+		
+		.block:before {
+		    content:'';
+		    display: inline-block;
+		    height: 100%;
+		    vertical-align: middle;
+		    margin-right: -0.25em; /* Adjusts for spacing */
+		}
+		
+		.centered {
+		    display: inline-block;
+		    vertical-align: middle;
+		    width: 400px;
 		}
         </style>
         
@@ -220,7 +255,7 @@
                                     <h3 class="box-title"><i class="fa fa-folder-o"></i>&nbsp;&nbsp;&nbsp; Files</h3>
                                     <div class="box-tools pull-right">
 										<div class="btn-group" data-toggle="btn-toggle">
-											<button id="imath-id-refresh-files" type="button" class="btn btn-primary active"><i class="fa fa-refresh"></i></button>
+											<button id="imath-id-refresh-files" type="button" title="Refresh files" class="btn btn-primary active"><i class="fa fa-refresh"></i></button>
 										</div>
 									</div>
                                 </div><!-- /.box-header -->
@@ -238,7 +273,7 @@
                                     <h3 class="box-title"><i class="fa fa-bar-chart-o"></i>&nbsp;&nbsp;&nbsp; Jobs</h3>
                                     <div class="box-tools pull-right">
 	                                    <div class="btn-group" data-toggle="btn-toggle">
-											<button id="imath-id-refresh-jobs" type="button" class="btn btn-primary active"><i class="fa fa-refresh"></i></button>
+											<button id="imath-id-refresh-jobs" type="button" title="Refresh jobs" class="btn btn-primary active"><i class="fa fa-refresh"></i></button>
 										</div>
 									</div>
                                 </div><!-- /.box-header -->
@@ -284,12 +319,12 @@
 	                            	</li>
 	                            	<div id ="div-editor-resize-full" class="box-tools pull-right">
 											<div class="btn-group" data-toggle="btn-toggle">
-												<button id="editor-resize-full" type="button" style="border:0;box-shadow: none" class="btn btn-primary active"><i class="fa fa-expand"></i></button>
+												<button id="editor-resize-full" type="button" title="Resize full" style="border:0;box-shadow: none" class="btn btn-primary active"><i class="fa fa-expand"></i></button>
 											</div>
 									</div>
 									<div id ="div-editor-resize-small" class="box-tools pull-right" style="display:none">
 											<div class="btn-group" data-toggle="btn-toggle">
-												<button id="editor-resize-small" type="button" style="border:0;box-shadow:none" class="btn btn-primary active"><i class="fa fa-compress"></i></button>
+												<button id="editor-resize-small" type="button" title="Resize small" style="border:0;box-shadow:none" class="btn btn-primary active"><i class="fa fa-compress"></i></button>
 											</div>
 									</div>
     	                        </ul>
@@ -305,17 +340,17 @@
                             		<li class="pull-left header header-color">
                             			<i class="fa fa-desktop"></i>Console 
                             			<div class="btn-group" data-toggle="btn-toggle">
-											<button id="imath-id-new-console" type="button" style="border:0;box-shadow: none" class="btn btn-primary active"><i class="fa fa-plus"></i> </button>
+											<button id="imath-id-new-console" type="button" title="New console" style="border:0;box-shadow: none" class="btn btn-primary active"><i class="fa fa-plus"></i> </button>
 										</div>
                             		</li>
                             		<div id ="div-console-resize-full"  class="box-tools pull-right">
 											<div class="btn-group" data-toggle="btn-toggle">
-												<button id="console-resize-full" type="button" style="border:0;box-shadow: none" class="btn btn-primary active"><i class="fa fa-expand"></i></button>
+												<button id="console-resize-full" type="button" title="Resize full" style="border:0;box-shadow: none" class="btn btn-primary active"><i class="fa fa-expand"></i></button>
 											</div>
 									</div>
 									<div id ="div-console-resize-small"  class="box-tools pull-right" style="display:none">
 											<div class="btn-group" data-toggle="btn-toggle">
-												<button id="console-resize-small" type="button" style="border:0;box-shadow: none" class="btn btn-primary active"><i class="fa fa-compress"></i></button>
+												<button id="console-resize-small" type="button" title="Resize small" style="border:0;box-shadow: none" class="btn btn-primary active"><i class="fa fa-compress"></i></button>
 											</div>
 									</div>	
    	                        	</ul>

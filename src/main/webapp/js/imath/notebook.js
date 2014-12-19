@@ -92,6 +92,7 @@ function newConsole(notebookId, notebookName, type){
 			setDefaultLanguage(mathLanguageCode, idConsole);
 			setPORTConsole(idConsole);
 		});*/
+		
 				
 	}
 	else{		
@@ -100,6 +101,8 @@ function newConsole(notebookId, notebookName, type){
 		showTabConsole(nameTab);
 		
 	}
+	
+	return idConsole;
 }
 
 function registerCloseEventConsole() {
@@ -147,6 +150,10 @@ function closeOpenConsole(idConsole){
 			consolesIdOpenTabIndex[i]--;
 		}
 	}
+	var notebookId = openTabIndexIdNotebook[associatedTab];
+	var idFile = mapNotebookIdFileId[notebookId];
+	unBlockFile(idFile);
+	delete mapNotebookIdFileId[notebookId];
 	delete openTabIndexIdNotebook[associatedTab];
 	delete consolesIdOpenTabIndex[idConsole];
 	globalTabCountConsole--;	
@@ -184,36 +191,42 @@ function getActiveConsole(){
 
 
 function openNotebookFileAsConsole(idFile){
-	$.ajax({
-	      url: "rest/notebook_service/getNotebookFileInfo/"+ userName + "/" + idFile ,
-	      type: "GET",
-	      async: false,
-	      success: function(notebookFileInfo) {    	
-	    	  var notebooks = getNotebookList();
-	    	  var len = notebooks.length;	    	  
-	      	  for (var i=0; i<len; i++) {      		  
-	      		  if( notebookFileInfo['absolutePath']   == notebooks[i].name){
-	      			  break;
-	      		  }      		  
-	      	  }
-	      	var notebookId = notebooks[i].notebook_id;
-      	  	var notebookName = notebooks[i].name;
-      	  	
-      	  	var typeConsole;
-      	  	if(notebookFileInfo['typeConsole'] == 'none'){
-      	  		typeConsole = "python"; 
-      	  	}
-      	  	else{
-      	  		typeConsole = notebookFileInfo['typeConsole'];
-      	  	}
-      	  	
-      	  	newConsole(notebookId, notebookName, typeConsole);  
-	      	  
-	      },
-	      error: function(){
-	    	  console.log("on error openNotebookFileAsConsole");       
-	      }
-	});
+	
+	var block = blockFile(idFile);
+	
+	if(block){
+		$.ajax({
+		      url: "rest/notebook_service/getNotebookFileInfo/"+ userName + "/" + idFile ,
+		      type: "GET",
+		      async: false,
+		      success: function(notebookFileInfo) {    	
+		    	  var notebooks = getNotebookList();
+		    	  var len = notebooks.length;	    	  
+		      	  for (var i=0; i<len; i++) {      		  
+		      		  if( notebookFileInfo['absolutePath']   == notebooks[i].name){
+		      			  break;
+		      		  }      		  
+		      	  }
+		      	var notebookId = notebooks[i].notebook_id;
+	      	  	var notebookName = notebooks[i].name;
+	      	  	
+	      	  	var typeConsole;
+	      	  	if(notebookFileInfo['typeConsole'] == 'none'){
+	      	  		typeConsole = "python"; 
+	      	  	}
+	      	  	else{
+	      	  		typeConsole = notebookFileInfo['typeConsole'];
+	      	  	}
+	      	  	
+	      	  	mapNotebookIdFileId[notebookId] = idFile;
+	      	  	newConsole(notebookId, notebookName, typeConsole);  
+		      	  
+		      },
+		      error: function(){
+		    	  console.log("on error openNotebookFileAsConsole");       
+		      }
+		});
+	}
 	
 }
 
@@ -302,7 +315,18 @@ function newNotebook(type){
 	}  
 	  	
 	var notebookName = listNotebooks[i].name;
-	newConsole(notebookId, notebookName, type);		
+		
+	var idConsole = newConsole(notebookId, notebookName, type);
+	console.log("Id console");
+	console.log(idConsole);
+	$('iframe#interactive_math-' + idConsole).load(function() {
+		var idFile = getFileIdByPath(notebookName);
+		console.log("Blocking console, file id");
+		console.log(idFile);
+		blockFile(idFile);
+		mapNotebookIdFileId[notebookId] = idFile;
+	});
+	
 }
 
 function newDefaultNotebook(){	
