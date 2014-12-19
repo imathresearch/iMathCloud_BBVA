@@ -107,6 +107,45 @@ public class FileService {
 		}
     }
 	
+	/**
+	 * Generates a new image file (png) from a base64 coded string. This is the back end for the drag&drop functionality.
+	 * @param userName
+	 * @param id       The directory id
+	 * @param iMathConnectUser
+	 * @param content
+	 * @param sc
+	 * @return
+	 */
+	@POST
+	@Path("/generateImageFile/{userName}/{id}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+	public Response REST_generateImageFile(@PathParam("userName") String userName, @PathParam("id") Long id, ImageDTO image, @Context SecurityContext sc) {
+	    // TODO: Test
+	    LOG.info(LOG_PRE + "[generateImageFile]" + userName);
+	    Response.ResponseBuilder builder = null;
+	    try {
+            SecurityManager.secureBasic(userName, sc);
+        }
+        catch (Exception e) {
+            LOG.severe("Not enough provileges:" + userName);
+            builder = Response.status(Response.Status.UNAUTHORIZED);
+            return builder.build();
+        }
+	    try {
+	        String [] c = image.data.split("image/png;base64,");
+	        if (c.length==2) {
+	            fc.createImage(id, "png", "base64", c[1]);
+	        }         
+	    } catch (Exception e) {
+	        LOG.severe("Internal error: " + userName);
+            builder = Response.status(Response.Status.INTERNAL_SERVER_ERROR);
+            return builder.build();
+	    }
+	    builder = Response.ok();
+        return builder.build();
+	}
+	
 	@POST
     @Path("/saveFileContent/{userName}/{id}/{iMathConnectUser}")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -533,6 +572,10 @@ public class FileService {
 		
 		}
 		
+	}
+	
+	public static class ImageDTO {
+	    public String data;
 	}
 	
 	public static class FilePath{

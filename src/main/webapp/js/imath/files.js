@@ -25,7 +25,7 @@ function fillRemoteFiles(files, treeView, shareZone) {
 			}
 			
 			if(file['dir'] == null){ //ROOT
-				aux = "<li><span id='" + genIdFileContextMenu(file['id'], file['name']) + "' class='" + classSharing + " "+ genClassFileContextMenu(file['id'])  + "'>" + projectName + " <i>" + userName + "</i> </span>";
+				aux = "<li><span ondragover='allowDrop(event)' ondrop='drop(event," + file['id'] + ")' id='" + genIdFileContextMenu(file['id'], file['name']) + "' class='" + classSharing + " "+ genClassFileContextMenu(file['id'])  + "'>" + projectName + " <i>" + userName + "</i> </span>";
 			}
 			else{
 				aux = "<li><span id='" + genIdFileContextMenu(file['id'], file['name']) + "' class='" + classSharing + " "+ genClassFileContextMenu(file['id'])  + "'>" + file['name'] + " <i>" + userName + "</i> </span>";
@@ -107,6 +107,16 @@ function fillRemoteFiles(files, treeView, shareZone) {
 	}
 	if(shareZone==0) getStorage();
 	
+}
+
+function allowDrop(ev) {
+	ev.preventDefault();
+}
+
+function drop(ev, dirId) {
+    ev.preventDefault();
+    var data = ev.dataTransfer.getData("text");
+    alert(data);
 }
 
 function blockingFile(openByUser) {
