@@ -90,7 +90,7 @@ public class JobLangService {
 	
 	private static String LOG_PRE = Constants.LOG_PREFIX_SYSTEM + "[JobLangService]";
 	
-	enum AllowedLanguages{r, py};
+	enum AllowedLanguages{r, py, m};
 	
 	@GET
     @Path("/resultJob/exec/{idJob}/{result}")//{result}
@@ -121,7 +121,7 @@ public class JobLangService {
 	//@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
     public JobDTO REST_submitJob(@PathParam("userName") String userName, @PathParam("idFile") Long idFile, @PathParam("jobType") String jobType, @Context SecurityContext sc) {		
-	    LOG.info(LOG_PRE + "[submitJob]" +userName + " " + idFile.toString());
+	    LOG.info(LOG_PRE + "[submitJob]" +userName + " " + idFile.toString() + " " + jobType);
 		Set<File> files = new HashSet<File>(); 
 		
 		
