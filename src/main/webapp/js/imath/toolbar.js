@@ -151,6 +151,7 @@ function genContextMenu(file, shareZone, sharingState, isRoot) {
 			break;
 		case "py":
 		case "r":
+		case "m":
 			out += stdFileOperations;
 			out += ' "download": {"name": "Download as zip", "icon": "ui-icon-play"},';
 			out +=' "sep2": "---------", ';
@@ -220,7 +221,7 @@ function genContextMenu(file, shareZone, sharingState, isRoot) {
 	
     var out_obj = JSON.parse(out);
     
-    if(file['type'] == 'csv' || file['type'] == 'py'  || file['type'] == 'r' || (file['type'] == 'ipynb' && file['name'] != 'iMathConsole.ipynb')){
+    if(file['type'] == 'csv' || file['type'] == 'py'  || file['type'] == 'r' || file['type'] == 'm' || (file['type'] == 'ipynb' && file['name'] != 'iMathConsole.ipynb')){
 	   
 			out_obj.unblock.disabled = function (key,options){
 				var a = options.$trigger.attr("id");

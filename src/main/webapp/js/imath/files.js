@@ -46,6 +46,9 @@ function fillRemoteFiles(files, treeView, shareZone) {
 				case 'r':
 					aux = "<li><span class='file_r'>";
 					break;
+				case 'm':
+					aux = "<li><span class='file_m'>";
+					break;
 				default:
 					aux = "<li><span class='file'>";
 			}
