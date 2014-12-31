@@ -136,7 +136,9 @@ public class FileService {
 	        String [] c = image.data.split("image/png;base64,");
 	        if (c.length==2) {
 	            fc.createImage(id, "png", "base64", c[1]);
-	        }         
+	        } else {
+	        	LOG.info("Not base64 png image. Impossible to save image");
+	        }
 	    } catch (Exception e) {
 	        LOG.severe("Internal error: " + userName);
             builder = Response.status(Response.Status.INTERNAL_SERVER_ERROR);

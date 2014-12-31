@@ -28,7 +28,7 @@ function fillRemoteFiles(files, treeView, shareZone) {
 				aux = "<li><span ondragover='allowDrop(event)' ondrop='drop(event," + file['id'] + ")' id='" + genIdFileContextMenu(file['id'], file['name']) + "' class='" + classSharing + " "+ genClassFileContextMenu(file['id'])  + "'>" + projectName + " <i>" + userName + "</i> </span>";
 			}
 			else{
-				aux = "<li><span id='" + genIdFileContextMenu(file['id'], file['name']) + "' class='" + classSharing + " "+ genClassFileContextMenu(file['id'])  + "'>" + file['name'] + " <i>" + userName + "</i> </span>";
+				aux = "<li><span ondragover='allowDrop(event)' ondrop='drop(event," + file['id'] + ")' id='" + genIdFileContextMenu(file['id'], file['name']) + "' class='" + classSharing + " "+ genClassFileContextMenu(file['id'])  + "'>" + file['name'] + " <i>" + userName + "</i> </span>";
 			
 			}
 			aux = aux + "<ul id='filedir_" + file['id'] + "'></ul>";
@@ -119,7 +119,35 @@ function allowDrop(ev) {
 function drop(ev, dirId) {
     ev.preventDefault();
     var data = ev.dataTransfer.getData("text");
-    alert(data);
+    // we only accept base64 png images 
+    var key = "data:image/png;base64,";
+    var parts = data.split(key);
+    if (parts.length==2) {
+    	// It is a base64 png image, so, we do the call back
+    	ajaxCreateImage(dirId, "image/png;base64," + parts[1]);
+    } else {
+    	showMessageDropNotAllowed();
+    }
+}
+
+function ajaxCreateImage(dirId, content) {
+	placeWaiting("imath-waiting-files");
+	$.ajax({
+		url : "rest/file_service/generateImageFile/"+userName+"/"+dirId, 
+		cache : false,
+		data : JSON.stringify({"data":content}),
+		type : "POST",
+		contentType: "application/json; charset=utf-8",
+		success : function() {
+			unplaceWaiting("imath-waiting-files");
+			refreshFilesTree();
+		},
+		error: function(error) {
+			unplaceWaiting("imath-waiting-files");
+        	var cause = "Error saving image";
+        	console.log(cause + " - " + error.status);
+        }
+	});
 }
 
 function blockingFile(openByUser) {
@@ -725,6 +753,26 @@ function showMessageAlreadyBlocked(){
 		+ "<div align='left'>"
 		+ "<p style='font-size:18px'>" 
 		+ "The file has already been blocked by another user"
+		+ "<p>"
+		+ "</div>";
+	
+	var buttons = {
+			OK : function() {
+				$("#dialogPopup").modal('hide');
+			},
+			
+	};	
+	
+	showDialog(content, title, buttons);		
+}
+
+function showMessageDropNotAllowed(){
+	var title = "Information";
+	
+	var content = ""
+		+ "<div align='left'>"
+		+ "<p style='font-size:18px'>" 
+		+ "Only base64 png images are dropable"
 		+ "<p>"
 		+ "</div>";
 	
