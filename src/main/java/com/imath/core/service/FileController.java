@@ -36,6 +36,8 @@ import com.imath.core.data.MainServiceDB;
 import com.imath.core.exception.IMathException;
 
 import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -54,6 +56,7 @@ import javax.persistence.EntityExistsException;
 import javax.persistence.EntityTransaction;
 
 import org.hibernate.exception.ConstraintViolationException;
+import org.apache.commons.codec.binary.Base64;
 
 
 /**
@@ -193,6 +196,42 @@ public class FileController extends AbstractController {
     		LOG.severe("Error opening the file id: " + file.getId());
     		throw e;
     	}
+    }
+    
+    /**
+     * Creates an image from a base64 codified string
+     * @param id    // Id of the base directory
+     * @param type
+     * @param base
+     * @param content
+     * @param name
+     */
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    public void createImage(Long id, String type, String base, String content) throws Exception {
+        // Assume always base64 decoder and png type
+        File file = db.getFileDB().findById(id);
+        byte[] bytes = Base64.decodeBase64(content.getBytes());
+        String uri = file.getUrl();
+        URI u = URI.create(uri);
+        Path path = Paths.get(u.getPath());
+        String fullName= getFullNamePNG(path.toString());
+        DataOutputStream os = new DataOutputStream(new FileOutputStream(fullName));
+        os.write(bytes);
+        os.close();
+    }
+    
+    private String getFullNamePNG(String baseName) {
+        
+        int i = 0;
+        String baseNameout = baseName + "/img_";
+        String fullNameOut = baseNameout + i + ".png";
+        java.io.File f = new java.io.File(fullNameOut);
+        while (f.exists()) {
+            i++;
+            fullNameOut = baseNameout + i+ ".png";
+            f = new java.io.File(fullNameOut);
+        }
+        return fullNameOut;
     }
     
     /**
