@@ -74,7 +74,7 @@ var globalTabCountConsole = 0; 		// The global counting tab for indexing console
 var globalIdConsole = 0; 			// The id associated to a new console, it must be incremented
 var consolesIdOpenTabIndex = new Array();
 var openTabIndexIdNotebook = new Array();
-var mapNotebookIdFileId = new Array();
+var mapNotebookIdFileId = {};
 
 var projectName;
 var currentTabConsole = null;

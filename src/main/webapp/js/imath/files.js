@@ -693,19 +693,66 @@ function blockFile(id){
 }
 
 function unBlockFile(id){
-	$.ajax({
-        url: "rest/file_service/unBlockFile/"+ id + "/" + userName + "/" + iMathConnectUser,
-        cache: false,
-        dataType: "json",
-        type: "POST",
-        async: false,
-        success: function() {
-        	ajaxGetFiles();
-        },
-        error: function(error) {        	
-            console.log("error unblocking file - " + error.status);
+	
+	console.log("UNblocking file");
+	console.log(id);
+	
+	//Check if the file is an open console
+	console.log(mapNotebookIdFileId);
+	var isOpen = getKeyByValue(mapNotebookIdFileId,id);
+	console.log(isOpen);
+	
+	if(isOpen == -1){
+		$.ajax({
+	        url: "rest/file_service/unBlockFile/"+ id + "/" + userName + "/" + iMathConnectUser,
+	        cache: false,
+	        dataType: "json",
+	        type: "POST",
+	        async: false,
+	        success: function() {
+	        	ajaxGetFiles();
+	        },
+	        error: function(error) {        	
+	            console.log("error unblocking file - " + error.status);
+	        }
+	    });
+	}
+	else{
+		showMessageConsoleOpen();
+	}
+}
+
+
+// Util map function that returns a key given a value
+// If the value does not exist returns -1
+function getKeyByValue( map, value ) {
+    for( var prop in map ) {
+        if( map.hasOwnProperty( prop ) ) {
+             if( map[ prop ] === value )
+                 return prop;
         }
-    });
+    }
+    return -1;
+}
+
+function showMessageConsoleOpen(){
+var title = "Information";
+	
+	var content = ""
+		+ "<div align='left'>"
+		+ "<p style='font-size:18px'>" 
+		+ "The console is open, so it cannot be unblocked. To unblock the console, close its tab"
+		+ "<p>"
+		+ "</div>";
+	
+	var buttons = {
+			OK : function() {
+				$("#dialogPopup").modal('hide');
+			},
+			
+	};	
+	
+	showDialog(content, title, buttons);	
 }
 
 function showMessageAlreadyBlocked(){

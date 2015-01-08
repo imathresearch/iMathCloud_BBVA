@@ -152,8 +152,8 @@ function closeOpenConsole(idConsole){
 	}
 	var notebookId = openTabIndexIdNotebook[associatedTab];
 	var idFile = mapNotebookIdFileId[notebookId];
-	unBlockFile(idFile);
 	delete mapNotebookIdFileId[notebookId];
+	unBlockFile(idFile);	
 	delete openTabIndexIdNotebook[associatedTab];
 	delete consolesIdOpenTabIndex[idConsole];
 	globalTabCountConsole--;	
