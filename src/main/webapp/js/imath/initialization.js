@@ -81,12 +81,19 @@ var currentTabConsole = null;
 
 function resizeFileEditor(tab) {
 	var id = tab.attr("href");
-    var he = getWindowHeight() - getTopOffset(id) - getOffsetBottom()-37;
-    var idFile=getIdFromTabName(id.substr(1));
-    var myCodeMirror = getCodeMirrorInstance(idFile);
-	myCodeMirror.setSize(null,(he)+"px");
-	myCodeMirror.getScrollerElement().style.heigth = he+"px";
-	myCodeMirror.refresh();	
+    var he = getWindowHeight() - getTopOffset(id) - getOffsetBottom()-37;    
+    var idFile;
+    if (id.substring(1,5)==='plot'){
+    	idFile=getIdFromTabPlotName(id.substr(1));
+    }
+    else{
+    	idFile=getIdFromTabName(id.substr(1));
+        var myCodeMirror = getCodeMirrorInstance(idFile);
+    	myCodeMirror.setSize(null,(he)+"px");
+    	myCodeMirror.getScrollerElement().style.heigth = he+"px";
+    	myCodeMirror.refresh();	
+    }   
+    
 }
 
 function resizeConsoleTab(tab) {

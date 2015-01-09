@@ -159,6 +159,8 @@ function genContextMenu(file, shareZone, sharingState, isRoot) {
 		    out +=' "job": {"name": "Run as Job", "icon": "ui-icon-play"} }';
 			break;
 		case "svg":
+		case "png":
+		case "jpg":
 			out += stdFileOperations;
 			out += ' "descstats": {"name": "Plot", "icon": "ui-icon-image"},';
 			out += ' "download": {"name": "Download as zip", "icon": "ui-icon-play"}}';

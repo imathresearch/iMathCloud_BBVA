@@ -2,6 +2,8 @@
 
 package com.imath.core.rest;
 
+import java.net.URL;
+
 import javax.ejb.Stateful;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -544,6 +546,26 @@ public class FileService {
 		catch (Exception e) {
 			LOG.severe("Error getting file id: " + pathFile + " by user: "+ userName);
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+		}
+    }
+	
+	@GET
+    @Path("/getByteContentFile/{userName}/{id}")	
+    @Produces(MediaType.TEXT_PLAIN)
+    public Response REST_getByteContentFile(@PathParam("userName") String userName, @PathParam("id") Long id, @Context SecurityContext sc){
+	    LOG.info(LOG_PRE + "[getByteContentFile]" + userName + " " + id.toString() );
+		try { 
+		    SecurityManager.secureBasic(userName, sc);			
+			File file = db.getFileDB().findById(id);
+			
+			java.io.File f = org.apache.commons.io.FileUtils.toFile(new URL(file.getUrl()));
+			byte [] out = org.apache.commons.io.FileUtils.readFileToByteArray(f);
+			
+			return Response.ok(out).build();						
+		}
+		catch (Exception e) {
+			LOG.severe("Error reading file id: " + id + " from user: "+ userName);
+			throw new WebApplicationException(Response.Status.NOT_FOUND);
 		}
     }
 	

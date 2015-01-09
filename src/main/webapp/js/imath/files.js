@@ -1095,8 +1095,10 @@ function closeOpenFilePlot(idFile) {
 		decreaseTabIndex(pivot);
 	}
 	globalTabCounting--;
-	
-	var numOpenTabs = $('.tab-File').length;	
+	if (globalTabCounting==0) {
+		addFakeTab();
+	}
+	//var numOpenTabs = $('.tab-File').length;	
 	/*
 	if(numOpenTabs == 0){		
 		var tabs = $( "#tabsFile" ).tabs();
@@ -1296,7 +1298,9 @@ function plotFile(idFile){
 	        success: function(fileDTO) {
 	        	switch(fileDTO['type']){
 	        		case "csv":
+	        		case "jpg":
 	        		case "svg":
+	        		case "png":
 	        			addOpenFilePlot(idFile);
 	    	        	plotInTab(fileDTO);
 	        			break;
@@ -1366,6 +1370,7 @@ function plotInTab(data){
 	var label = 'plot_'+data['name']; 
 	var id = nameTab;
 	var li = $( tabTemplate.replace( /#\{href\}/g, "#" + id ).replace( /#\{label\}/g, label ) );
+	removeFakeTab();
 	
 	var numOpenTabs = $('.tab-File').length;	
 	//if(numOpenTabs == 0){
@@ -1388,7 +1393,7 @@ function plotInTab(data){
 	//tabs.append( "<div id='" + id + "' style='position: relative; width: 100%; height:100%; padding: 0;'><p>" + htmlCode + "</p></div>" );
 	
 	he = 400;
-	htmlCode = "<div class=\"flot-container\" style=\"width:" + wi + "px;height:" + he + "px;\">";
+	htmlCode = "<div class=\"flot-container\" id=\"container_plotDIV_" + nameTab + "\" style=\"width:" + wi + "px;height:" + he + "px;\">";
 	htmlCode += "<div class=\"flot-placeholder\" id=\"plotDIV_" + nameTab + "\" style=\"width:" + wi + "px;height:" + he + "px;\"></div>";
 	htmlCode += "<div id=\"options_plotDIV_" + nameTab + "\"></div></div>";
 	
@@ -1400,14 +1405,25 @@ function plotInTab(data){
 			csvplot = new csvPlot(jQuery.csv()(content),"plotDIV_" + nameTab,'col');
 			csvplot.addRadioOptions("lines","col");
 			plotMap["plotDIV_" + nameTab] = csvplot;
-			break;
-			
+			break;			
 		case "svg":
 			$('#plotDIV_' + nameTab).html(content);
+			break;
+		case "jpg":		
+		case "png":										
+			var htmlImage = "<img src=\"rest/file_service/getByteContentFile/" + userName + "/"+data['id'] + "\" />";
+			$('#plotDIV_' + nameTab).html(htmlImage);
+			break;					
 	}
 	
 	
 	addTabInstancePlot(data['id'],globalTabCounting);
+	//he = getWindowHeight() - getTopOffset("#container_plotDIV_" + nameTab) - getOffsetBottom()-37;
+	//console.log("plot in tab");
+	//console.log(he);
+	//console.log(id);
+	//$("#container_plotDIV_" + nameTab).height(he);
+	//$("#plotDIV_" + nameTab).height(he);
 	showTab(id);
     registerCloseEvent();
 	globalTabCounting++;
@@ -1521,8 +1537,7 @@ function openCodeFile(data, modeStr, mode) {
 	
 	showTab(id);
 	// -37 for the htmlButtons
-	var he = getWindowHeight() - getTopOffset("#"+id) - getOffsetBottom()-37;
-
+	var he = getWindowHeight() - getTopOffset("#"+id) - getOffsetBottom()-37;	
     registerCloseEvent();
     
 	var myCodeMirror = CodeMirror.fromTextArea(x,conf);
@@ -1551,9 +1566,9 @@ function registerCloseEvent() {
         	currentTab=$('#id-imath-headTabsFile a:last');
         	resizeFileEditor($('#id-imath-headTabsFile a:last'));
         }
-        
-        $(tabContentId).remove(); //remove respective tab content
+              
         var id = tabContentId.substring(1);
+        $(tabContentId).remove(); //remove respective tab content
         if (id.substring(0,4)==='plot') {
 			closeOpenFilePlot(getIdFromTabPlotName(id));
 		}
