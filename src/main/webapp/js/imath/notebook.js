@@ -282,8 +282,8 @@ function createNotebook(type){
 	host = window.hostGlobal;	    
     var notebookId = null;
     
-    console.log("Creating new notebook");
-    console.log(type);
+    //console.log("Creating new notebook");
+    //console.log(type);
     
     $.ajax({
       url: "rest/notebook_service/newNotebook/"+host['url']+"/"+host['port'] +"/"+ type,
@@ -291,8 +291,8 @@ function createNotebook(type){
       async: false,
       success: function(data) {    	   	  
     	  notebookId = data;
-    	  console.log("On succes new notebook");
-    	  console.log(notebookId);
+    	  //console.log("On succes new notebook");
+    	  //console.log(notebookId);
       },
       error: function(){
     	  console.log("on error new notebook");    	  
@@ -317,12 +317,12 @@ function newNotebook(type){
 	var notebookName = listNotebooks[i].name;
 		
 	var idConsole = newConsole(notebookId, notebookName, type);
-	console.log("Id console");
-	console.log(idConsole);
+	//console.log("Id console");
+	//console.log(idConsole);
 	$('iframe#interactive_math-' + idConsole).load(function() {
 		var idFile = getFileIdByPath(notebookName);
-		console.log("Blocking console, file id");
-		console.log(idFile);
+		//console.log("Blocking console, file id");
+		//console.log(idFile);
 		blockFile(idFile);
 		mapNotebookIdFileId[notebookId] = idFile;
 	});
@@ -349,7 +349,7 @@ function newDefaultNotebook(){
 	}	
 		
 	if (found){ // 2. The default notebook exists, so a console is open using it
-		console.log("The notebook already exists");
+		//console.log("The notebook already exists");
 		newConsole(notebookId, notebookName, type);
 	}
 	else{ // 3. The default notebook does not exist
@@ -373,11 +373,11 @@ function newDefaultNotebook(){
 		// Once the file is located, it is renamed using the name of the default notebook
 		var listFiles = getFilesSyn();		
 		len = listFiles.length;
-		console.log("NotebookName");
-		console.log(notebookName);
+		//console.log("NotebookName");
+		//console.log(notebookName);
 		for(var i = 0; i < len; i++){
-			console.log("List of files");
-			console.log(listFiles[i].absolutePath);
+			//console.log("List of files");
+			//console.log(listFiles[i].absolutePath);
 			if(notebookName == listFiles[i].absolutePath){
 				break;
 			}

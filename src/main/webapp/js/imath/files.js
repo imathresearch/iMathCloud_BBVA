@@ -687,7 +687,7 @@ function getFilesInfo(b, id) {
 
 
 function ajaxGetFiles() {
-	console.log("On ajaxGetFiles");
+	//console.log("On ajaxGetFiles");
 	placeWaiting("imath-waiting-files");
 	$.ajax({
         url: "rest/file_service/getFiles/"+userName,
@@ -716,7 +716,7 @@ function blockFile(id){
         type: "POST",
         async: false,
         success: function(data) {
-        	console.log("Success block file");
+        	//console.log("Success block file");
         	ajaxGetFiles();
         	success = true;
         },
@@ -732,13 +732,13 @@ function blockFile(id){
 
 function unBlockFile(id){
 	
-	console.log("UNblocking file");
-	console.log(id);
+	//console.log("UNblocking file");
+	//console.log(id);
 	
 	//Check if the file is an open console
-	console.log(mapNotebookIdFileId);
+	//console.log(mapNotebookIdFileId);
 	var isOpen = getKeyByValue(mapNotebookIdFileId,id);
-	console.log(isOpen);
+	//console.log(isOpen);
 	
 	if(isOpen == -1){
 		$.ajax({
@@ -766,8 +766,9 @@ function unBlockFile(id){
 function getKeyByValue( map, value ) {
     for( var prop in map ) {
         if( map.hasOwnProperty( prop ) ) {
-             if( map[ prop ] === value )
+             if( map[ prop ] == value ){
                  return prop;
+             }
         }
     }
     return -1;
@@ -927,7 +928,7 @@ function addTabInstancePlot(idFile,tabNum) {
 		yes = (filesIdOpenPlot[j]==idFile);
 		j++; 
 	}
-	if (yes) {
+	if (yes) {		
 		filesIdOpenTabPlot[j-1] = tabNum;
 	}
 }
@@ -987,10 +988,10 @@ function isFileOpen(idFile) {
 }
 
 function isFileOpenPlot(idFile) {
-//Just to avoid calling to the server when doubleclick in a directory
+	//Just to avoid calling to the server when doubleclick in a directory
 	var yes = false;
 	var cc = filesIdOpenPlot.length;
-	var j = 0;
+	var j = 0;	
 	while (j<cc && !yes) {
 		yes = (filesIdOpenPlot[j]==idFile);
 		j++; 
@@ -1206,11 +1207,9 @@ function getTabIdByIndex(index, selector) {
 
 function loadFile(idFile, mode){
 	if(isFileOpen(idFile)) {
-		//showTab(idFile);
 		var index = getTabIndex(idFile);
 		var tabId = getTabIdByIndex(index, '.tab-File a');
 		showTab(tabId);
-		//$( "#tabsFile" ).tabs("option", "active", index );
 	}
 	else {
 		if(isFile(idFile)){
@@ -1285,9 +1284,10 @@ function executeFileInConsole(idFile){
 
 
 function plotFile(idFile){
-	if(isFileOpenPlot(idFile)) {
+	if(isFileOpenPlot(idFile)) {			
 		var index = getTabIndexPlot(idFile);
-		$( "#tabsFile" ).tabs("option", "active", index );
+		var tabId = getTabIdByIndex(index, '.tab-File a');
+		showTab(tabId);
 	}
 	else {
 		$.ajax({
@@ -1393,8 +1393,8 @@ function plotInTab(data){
 	//tabs.append( "<div id='" + id + "' style='position: relative; width: 100%; height:100%; padding: 0;'><p>" + htmlCode + "</p></div>" );
 	
 	he = 400;
-	htmlCode = "<div class=\"flot-container\" id=\"container_plotDIV_" + nameTab + "\" style=\"width:" + wi + "px;height:" + he + "px;\">";
-	htmlCode += "<div class=\"flot-placeholder\" id=\"plotDIV_" + nameTab + "\" style=\"width:" + wi + "px;height:" + he + "px;\"></div>";
+	htmlCode = "<div class=\"flot-container\" id=\"container_plotDIV_" + nameTab + "\" style=\"width:100%;height:" + he + "px;overflow:auto\">";
+	htmlCode += "<div class=\"flot-placeholder\" id=\"plotDIV_" + nameTab + "\" style=\"width:100%;height:" + he + "px;\"></div>";
 	htmlCode += "<div id=\"options_plotDIV_" + nameTab + "\"></div></div>";
 	
 	$("#tabsFile").append( "<div id='" + id + "' class='tab-pane' style='padding: 0;'><p>" + htmlCode + "</p></div>" );
@@ -1410,25 +1410,25 @@ function plotInTab(data){
 			$('#plotDIV_' + nameTab).html(content);
 			break;
 		case "jpg":		
-		case "png":										
-			var htmlImage = "<img src=\"rest/file_service/getByteContentFile/" + userName + "/"+data['id'] + "\" />";
+		case "png":		
+			//style=\"max-width: none !important;\" <-- It is important to show the real size of the image
+			var htmlImage = "<img src=\"rest/file_service/getByteContentFile/" + userName + "/"+data['id'] + "\" style=\"max-width: none !important;\" />";
 			$('#plotDIV_' + nameTab).html(htmlImage);
 			break;					
 	}
 	
 	
 	addTabInstancePlot(data['id'],globalTabCounting);
-	//he = getWindowHeight() - getTopOffset("#container_plotDIV_" + nameTab) - getOffsetBottom()-37;
-	//console.log("plot in tab");
-	//console.log(he);
-	//console.log(id);
-	//$("#container_plotDIV_" + nameTab).height(he);
-	//$("#plotDIV_" + nameTab).height(he);
 	showTab(id);
+	he = getWindowHeight() - getTopOffset("#" + id) - getOffsetBottom();	
+	$("#container_plotDIV_" + nameTab).height(he);
+	$("#plotDIV_" + nameTab).height(he);
+	$("#" + id).height(he);
+	
     registerCloseEvent();
 	globalTabCounting++;
 	//tabs.tabs( "refresh" );
-	var index = getTabIndexPlot(data['id']);
+	//var index = getTabIndexPlot(data['id']);
 	//$( "#tabsFile" ).tabs("option", "active", index);
 	//tabs.tabs( "refresh" );
 	
@@ -1539,6 +1539,10 @@ function openCodeFile(data, modeStr, mode) {
 	// -37 for the htmlButtons
 	var he = getWindowHeight() - getTopOffset("#"+id) - getOffsetBottom()-37;	
     registerCloseEvent();
+    console.log("open code file");
+	console.log(getWindowHeight());
+	console.log(getTopOffset("#" + id));
+	console.log(getOffsetBottom());
     
 	var myCodeMirror = CodeMirror.fromTextArea(x,conf);
 	myCodeMirror.setSize(null,(he)+"px");
