@@ -216,7 +216,7 @@ public class FileUtils {
         java.nio.file.Path path = Paths.get(u.getPath());
         Map<File,File> treeFile = new HashMap<File,File>();
         File file = new File(path.toString());
-        dirFilesRec(file, treeFile);
+        dirFilesRec(file, treeFile);        
         return treeFile;
     }
     

@@ -206,13 +206,17 @@ public class FileDB {
         Root<File> file = criteria.from(File.class);
         Predicate p1 = cb.equal(file.get("dir").get("id"), fileId);
         criteria.select(file).where(p1);
+        // Order the files by name
+        criteria.orderBy(cb.asc(file.get("name")));        
         List<File> out = em.createQuery(criteria).getResultList();
+        
         Iterator<File> it = out.iterator();
         List<File> globalOutput = new ArrayList<File>();
         if (includeRoot) {
         	File root = this.findById(fileId);
         	globalOutput.add(root);    
-        }
+        }                
+        
         globalOutput.addAll(out);
         while (it.hasNext()) {
         	File fileAux = it.next();

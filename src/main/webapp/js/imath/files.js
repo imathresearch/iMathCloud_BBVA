@@ -8,7 +8,7 @@ function fillRemoteFiles(files, treeView, shareZone) {
 	for(var i=0; i<files.length;i++) {
 		var file = files[i];
 		var userName = "";
-		var aux;
+		var aux;		
 		filesBlock[file['id'].toString()] = file['openByUser'];
 		
 		if (file['type']=='dir') {
