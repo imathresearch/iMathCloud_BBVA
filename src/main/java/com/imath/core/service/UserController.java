@@ -92,7 +92,8 @@ public class UserController extends AbstractController {
 		// And we add the initial files
 		
 		// we add the user to the jboss system
-		security.createSystemUser(userName, password, Constants.SYSTEM_ROLE);
+		//security.createSystemUser(userName, password, Constants.SYSTEM_ROLE);
+		security.createSystemUserDB(userName, password, Constants.SYSTEM_ROLE);
 
 		// And we add the initial files
 		addInitialFiles(root, userName);

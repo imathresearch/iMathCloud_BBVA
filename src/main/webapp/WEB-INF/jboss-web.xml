@@ -1,5 +1,5 @@
 <jboss-web>
-	<security-domain>java:/jaas/other</security-domain>
+	<security-domain>java:/jaas/cloud</security-domain>
 	<context-root>/iMathCloud</context-root>
 	<enable-websockets>true</enable-websockets>
 </jboss-web>

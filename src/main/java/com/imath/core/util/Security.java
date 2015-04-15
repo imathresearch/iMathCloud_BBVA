@@ -16,6 +16,11 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Properties;
 
+import javax.inject.Inject;
+
+import com.imath.core.service.UserJBossController;
+import com.imath.core.service.UserJBossRolesController;
+
 
 
 /**
@@ -26,6 +31,10 @@ import java.util.Properties;
 
 public class Security {
     
+	@Inject UserJBossController ujbc;
+    @Inject UserJBossRolesController ujbrc;
+	
+	private static Object lock = new Object();
     /**
      * Change or set parameters user=password in JBOSS authentication files.
      * The generic format for these key - values is:
@@ -78,6 +87,24 @@ public class Security {
         return hexPass.toString();
     }
     
+    public String encryptHexMd5Password(String password) throws Exception {
+        
+        // To generate md5 of password stored in JBOSS' files
+        MessageDigest md = MessageDigest.getInstance("MD5");
+        String concatPass = password;
+        byte[] md5Pass = md.digest(concatPass.getBytes());
+        
+        //convert the md5 byte to hex format method 1
+        StringBuffer hexPass = new StringBuffer();
+        for (int i=0;i<md5Pass.length;i++) {
+            String hex=Integer.toHexString(0xff & md5Pass[i]);
+            if(hex.length()==1) hexPass.append('0');
+            hexPass.append(hex);
+        }
+        
+        return hexPass.toString();
+    }
+    
     private void updateProperty(String key, String value, String propertiesPath) {
         try {
             // Get property of userName in JBOSS' file
@@ -109,29 +136,7 @@ public class Security {
         
     }
     
-    public void createSystemUser(String userName, String password, String role) throws Exception {
-        // We add the system user
-        //Process p = Runtime.getRuntime().exec(Constants.ADD_USER_CLI + " -a " + userName + " " + password + " > /dev/tty");
-        //ProcessBuilder pb = new ProcessBuilder(Constants.ADD_USER_CLI, "-a",  userName, password);
-               
-        
-        /*
-        pb.redirectInput(Redirect.INHERIT);
-        pb.redirectOutput(Redirect.INHERIT);
-        pb.redirectError(Redirect.INHERIT);
-        
-        
-        
-        //String error  = loadStream(p.getErrorStream());
-        //String output = loadStream(p.getInputStream());
-        
-        //System.out.println("STDERROR: add-uset.sh--------------:" + error);
-        //System.out.println("STDOUTPUT: add-user.sh-------------:" + output);
-        Process p = pb.start();
-        int signal = p.waitFor();
-        
-        System.out.println("SIGNAL " + signal);
-        */
+    public void createSystemUser(String userName, String password, String role) throws Exception {        
     	
     	String hexPass = generateHexMd5Password(userName, password);
         
@@ -148,6 +153,17 @@ public class Security {
         }
     }
     
+    
+    public void createSystemUserDB(String userName, String password, String role) throws Exception {
+    	// We add the system user
+        synchronized(lock) {
+        	String hexPass = encryptHexMd5Password(password);
+        	ujbc.newUserJBoss(userName, hexPass);
+            ujbrc.newUserJBossRoles(userName, role);
+            	
+        }
+    }
+    
 	public synchronized void removeSystemUser(String userName) throws Exception {
 	  	ProcessBuilder pb = new ProcessBuilder(Constants.REMOVE_USER_CLI, userName);
 	    pb.redirectInput(Redirect.INHERIT);
@@ -156,6 +172,9 @@ public class Security {
 	    
 	    Process p = pb.start();
         p.waitFor();
+        
+        ujbc.removeUserJBoss(userName);
+        ujbrc.removeUserJBossRoles(userName);
         
 	}
 }

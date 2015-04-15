@@ -11,6 +11,9 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
+import com.imath.core.model.UserJBoss;
+import com.imath.core.model.UserJBossRoles;
+
 
 @RequestScoped
 public class UserJBossRolesDB {
@@ -18,6 +21,13 @@ public class UserJBossRolesDB {
 	 
 	@Inject private EntityManager em;
 	 
-	 
+	public UserJBossRoles findByUserName(String name) {
+        em.flush();
+        try {
+            return em.find(UserJBossRoles.class, name);
+        } catch (Exception e) {
+            return null;
+        }
+    }
 
 }

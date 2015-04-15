@@ -40,7 +40,7 @@ public class MainServiceDB {
 	@Inject private MathFunctionDB mathFunctionDB;
 	@Inject private FileSharedDB fileSharedDB;
 	@Inject private UserJBossDB userJBossDB;
-	
+	@Inject private UserJBossRolesDB userJBossRolesDB;
 	
 	//@Inject private UserTransaction userTransaction;
   //  private static SessionFactory sessionFactory;
@@ -84,6 +84,10 @@ public class MainServiceDB {
     
     public UserJBossDB getUserJBossDB(){
 		return this.userJBossDB;
+	}
+    
+    public UserJBossRolesDB getUserJBossRolesDB(){
+		return this.userJBossRolesDB;
 	}
     
     //private static SessionFactory getSessionFactory() {
