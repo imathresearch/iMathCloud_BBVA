@@ -12,6 +12,8 @@ import javax.persistence.EntityManager;
 //import javax.transaction.UserTransaction;
 import javax.persistence.EntityTransaction;
 
+import com.imath.core.data.UserJBossDB;
+
 //import org.hibernate.SessionFactory;
 //import org.hibernate.service.ServiceRegistry;
 //import org.hibernate.service.ServiceRegistryBuilder;
@@ -37,6 +39,8 @@ public class MainServiceDB {
 	@Inject private FileDB fileDB;
 	@Inject private MathFunctionDB mathFunctionDB;
 	@Inject private FileSharedDB fileSharedDB;
+	@Inject private UserJBossDB userJBossDB;
+	
 	
 	//@Inject private UserTransaction userTransaction;
   //  private static SessionFactory sessionFactory;
@@ -77,6 +81,10 @@ public class MainServiceDB {
     public MathFunctionDB getMathFunctionDB() {
     	return this.mathFunctionDB;
     }
+    
+    public UserJBossDB getUserJBossDB(){
+		return this.userJBossDB;
+	}
     
     //private static SessionFactory getSessionFactory() {
     //    return configureSessionFactory();
