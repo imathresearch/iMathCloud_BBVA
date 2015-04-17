@@ -3,8 +3,8 @@
 
 package com.imath.core.service;
 
+import com.imath.core.config.AppConfig;
 import com.imath.core.util.Constants;
-
 
 import java.util.List;
 import java.util.Iterator;
@@ -25,6 +25,8 @@ import org.codehaus.jackson.map.ObjectMapper;
 
 
 
+
+
 //import com.imath.core.service.PluginController.Pair;
 //import org.apache.xalan.xsltc.compiler.Constants;
 import com.imath.core.util.Constants;
@@ -39,6 +41,7 @@ import com.imath.core.service.JobController.Pair;
 import java.net.URL;
 import java.net.URLConnection;
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 
 //import com.imath.core.util.Constants;
@@ -139,7 +142,7 @@ public class JobPythonController extends AbstractController{
           
                 
                 //IMPORTANT !!! URI PATTER --> URI_HEAD + LOCALHOST_STRING + ROOT_SYSTEM_FILE + USERNAME
-                description = description.replaceAll(Constants.URI_HEAD+Constants.HOST_STORAGE+Constants.ROOT_FILE_SYSTEM+"/"+session.getUser().getUserName(), "");
+                description = description.replaceAll(Constants.URI_HEAD+AppConfig.getProp(AppConfig.HOST_STORAGE)+Constants.ROOT_FILE_SYSTEM+"/"+session.getUser().getUserName(), "");
                
                 job.setDescription(description);
                 job.setStartDate(new Date());
@@ -166,10 +169,10 @@ public class JobPythonController extends AbstractController{
                 /*
                 String finalURL = Constants.HPC2_HTTP + 
                         host.getUrl() + 
-                        ":" + Constants.HPC2_PORT + 
+                        ":" + AppConfig.getProp(AppConfig.HPC2_PORT) + 
                         "/" + Constants.HPC2_PLUGIN_SERVICE + 
-                        ""  + "?host=" + Constants.IMATH_HOST + 
-                        "&" + "port=" + Constants.IMATH_PORT + 
+                        ""  + "?host=" + AppConfig.getProp(AppConfig.IMATH_HOST) + 
+                        "&" + "port=" + AppConfig.getProp(AppConfig.IMATH_PORT) + 
                         "&" + "plugin=" + namePlugin + 
                         "&" + "function=" + nameModule +
                         "&" + "id=" + idJob + 
@@ -230,10 +233,10 @@ public class JobPythonController extends AbstractController{
                 /*
                 String finalURL = Constants.HPC2_HTTP + 
                         host.getUrl() + 
-                        ":" + Constants.HPC2_PORT + 
+                        ":" + AppConfig.getProp(AppConfig.HPC2_PORT) + 
                         "/" + Constants.HPC2_PLUGIN_SERVICE + 
-                        ""  + "?host=" + Constants.IMATH_HOST + 
-                        "&" + "port=" + Constants.IMATH_PORT + 
+                        ""  + "?host=" + AppConfig.getProp(AppConfig.IMATH_HOST) + 
+                        "&" + "port=" + AppConfig.getProp(AppConfig.IMATH_PORT) + 
                         "&" + "plugin=" + namePlugin + 
                         "&" + "function=" + nameModule +
                         "&" + "id=" + idJob + 
@@ -250,13 +253,13 @@ public class JobPythonController extends AbstractController{
             }
     }
     
-    private String generateURLForHPC2PythonExec(String hostUrl, Long idJob, String urlParams) {
+    private String generateURLForHPC2PythonExec(String hostUrl, Long idJob, String urlParams) throws IOException{
         String finalURL = Constants.HPC2_HTTP + 
                 hostUrl +  
-                ":" + Constants.HPC2_PORT + 
+                ":" + AppConfig.getProp(AppConfig.HPC2_PORT) + 
                 "/" + Constants.HPC2_SUBMITJOB_SERVICE + 
-                ""  + "?host=" + Constants.IMATH_HOST + 
-                "&" + "port=" + Constants.IMATH_PORT + 
+                ""  + "?host=" + AppConfig.getProp(AppConfig.IMATH_HOST) + 
+                "&" + "port=" + AppConfig.getProp(AppConfig.IMATH_PORT) + 
                 "&" + "id=" + idJob + 
                 "&" + urlParams;
         return finalURL;

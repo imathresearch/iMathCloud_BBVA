@@ -18,16 +18,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.ws.rs.core.SecurityContext;
 
-
-
-
-
-
-
 import org.codehaus.jackson.map.ObjectMapper;
 
-
-
+import com.imath.core.config.AppConfig;
 //import org.apache.xalan.xsltc.compiler.Constants;
 import com.imath.core.util.Constants;
 import com.imath.core.model.File;
@@ -41,6 +34,7 @@ import com.imath.core.service.JobController.Pair;
 import java.net.URL;
 import java.net.URLConnection;
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 
 //import com.imath.core.util.Constants;
@@ -178,10 +172,10 @@ public class PluginController extends AbstractController{
     		/*
     		String finalURL = Constants.HPC2_HTTP + 
     		        host.getUrl() + 
-    		        ":" + Constants.HPC2_PORT + 
+    		        ":" + AppConfig.getProp(AppConfig.HPC2_PORT) + 
     		        "/" + Constants.HPC2_PLUGIN_SERVICE + 
-    		        ""  + "?host=" + Constants.IMATH_HOST + 
-    		        "&" + "port=" + Constants.IMATH_PORT + 
+    		        ""  + "?host=" + AppConfig.getProp(AppConfig.IMATH_HOST) + 
+    		        "&" + "port=" + AppConfig.getProp(AppConfig.IMATH_PORT) + 
     		        "&" + "plugin=" + mfunction.getMathGroup().getPlugin() + 
     		        "&" + "function=" + mfunction.getServiceName() +
     		        "&" + "id=" + idJob + 
@@ -291,10 +285,10 @@ public class PluginController extends AbstractController{
             /*
             String finalURL = Constants.HPC2_HTTP + 
                     host.getUrl() + 
-                    ":" + Constants.HPC2_PORT + 
+                    ":" + AppConfig.getProp(AppConfig.HPC2_PORT) + 
                     "/" + Constants.HPC2_PLUGIN_SERVICE + 
-                    ""  + "?host=" + Constants.IMATH_HOST + 
-                    "&" + "port=" + Constants.IMATH_PORT + 
+                    ""  + "?host=" + AppConfig.getProp(AppConfig.IMATH_HOST) + 
+                    "&" + "port=" + AppConfig.getProp(AppConfig.IMATH_PORT) + 
                     "&" + "plugin=" + namePlugin + 
                     "&" + "function=" + nameModule +
                     "&" + "id=" + idJob + 
@@ -311,13 +305,13 @@ public class PluginController extends AbstractController{
         }
     }
 
-    private String generateURLForHPC2(String hostUrl, String namePlugin, String nameModule, Long idJob, String urlParams) {
+    private String generateURLForHPC2(String hostUrl, String namePlugin, String nameModule, Long idJob, String urlParams) throws IOException {
         String finalURL = Constants.HPC2_HTTP + 
                 hostUrl +  
-                ":" + Constants.HPC2_PORT + 
+                ":" + AppConfig.getProp(AppConfig.HPC2_PORT) + 
                 "/" + Constants.HPC2_PLUGIN_SERVICE + 
-                ""  + "?host=" + Constants.IMATH_HOST + 
-                "&" + "port=" + Constants.IMATH_PORT + 
+                ""  + "?host=" + AppConfig.getProp(AppConfig.IMATH_HOST) + 
+                "&" + "port=" + AppConfig.getProp(AppConfig.IMATH_PORT) + 
                 "&" + "plugin=" + namePlugin + 
                 "&" + "function=" + nameModule +
                 "&" + "id=" + idJob + 
@@ -329,19 +323,19 @@ public class PluginController extends AbstractController{
     private String generateURLForHPC2PythonExec(String hostUrl, Long idJob, String urlParams) {
         String finalURL = Constants.HPC2_HTTP + 
                 hostUrl +  
-                ":" + Constants.HPC2_PORT + 
+                ":" + AppConfig.getProp(AppConfig.HPC2_PORT) + 
                 "/" + Constants.HPC2_SUBMITJOB_SERVICE + 
-                ""  + "?host=" + Constants.IMATH_HOST + 
-                "&" + "port=" + Constants.IMATH_PORT + 
+                ""  + "?host=" + AppConfig.getProp(AppConfig.IMATH_HOST) + 
+                "&" + "port=" + AppConfig.getProp(AppConfig.IMATH_PORT) + 
                 "&" + "id=" + idJob + 
                 "&" + urlParams;
         return finalURL;
     }*/
     
-    private String generateURLForHPC2Generic(String hostUrl, String service, Long idJob, String urlParams) {
+    private String generateURLForHPC2Generic(String hostUrl, String service, Long idJob, String urlParams) throws IOException {
         String finalURL = Constants.HPC2_HTTP + 
                 hostUrl +  
-                ":" + Constants.HPC2_PORT + 
+                ":" + AppConfig.getProp(AppConfig.HPC2_PORT) + 
                 "/" + service + 
                 ""  + "?id=" + idJob;
                 if (!urlParams.equals("")) {

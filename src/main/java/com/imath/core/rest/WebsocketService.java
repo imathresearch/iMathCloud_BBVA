@@ -31,7 +31,7 @@ public class WebsocketService {
 	private static String LOG_PRE = Constants.LOG_PREFIX_SYSTEM + "[WebsocketService]";
 			
 	@OnOpen
-    public void onOpen(Session session, @PathParam("kernel-id") String kernelId, @PathParam("opt") String opt, @PathParam("ipython-port") String portIpython) {
+    public void onOpen(Session session, @PathParam("kernel-id") String kernelId, @PathParam("opt") String opt, @PathParam("ipython-port") String portIpython) throws IOException {
 		LOG.info(LOG_PRE + "[onOpen]" + opt);
         //System.out.println("OPEN WEBSOCKET");
         //System.out.println("Connected from: " + session.getRequestURI());

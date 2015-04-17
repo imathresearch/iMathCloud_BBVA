@@ -1,0 +1,20 @@
+-- Lines started with -- are ignored
+-- This is the configuration file for initial files once a user is registered
+-- The fields are: type, filename, Parent directory, full path
+-- type is dir (directory), py|r|csv|txt... (the extension)
+-- If type == zip, with only two fields, it'll be the zip file containing all the physical files
+-- Each zip file will be copied to the users root and unzip there
+-- IMPORTANT: No space should be placed between ','!!! 
+dir,EXAMPLES,-,EXAMPLES
+dir,basic,EXAMPLES,EXAMPLES/basic
+dir,fileAccess,EXAMPLES,EXAMPLES/fileAccess
+py,colossusBasic.py,EXAMPLES/basic,EXAMPLES/basic/colossusBasic.py
+py,multiPlot.py,EXAMPLES/basic,EXAMPLES/basic/multiPlot.py
+py,pythonBars.py,EXAMPLES/basic,EXAMPLES/basic/pythonBars.py
+txt,readme.txt,EXAMPLES/basic,EXAMPLES/basic/readme.txt
+csv,iris_data.csv,EXAMPLES/fileAccess,EXAMPLES/fileAccess/iris_data.csv
+csv,iris_target.csv,EXAMPLES/fileAccess,EXAMPLES/fileAccess/iris_target.csv
+py,irisPlot.py,EXAMPLES/fileAccess,EXAMPLES/fileAccess/irisPlot.py
+txt,readme.txt,EXAMPLES/fileAccess,EXAMPLES/fileAccess/readme.txt
+zip,EXAMPLES.zip
+

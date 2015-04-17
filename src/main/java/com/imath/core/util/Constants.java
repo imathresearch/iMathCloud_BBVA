@@ -14,29 +14,22 @@ public class Constants {
     static public final String rootNAME = "ROOT";
     
     static public final Long MiB = 1048576L; // bytes: 2^20 
+   
     /*
      * HPC2 - iMath Cloud Connection constants
      */ 
-    
     static public final String LOCALHOST = "127.0.0.1";
     
     static public final String LOCALHOST_String = "localhost";
     
     static public final String URI_HEAD = "file://";
-    static public final String HOST_STORAGE = LOCALHOST;        // Now, storage is in LOCALHOST
     static public final String ROOT_FILE_SYSTEM = "/iMathCloud"; 
     static public final String ROOT_EXEC_DIR = ROOT_FILE_SYSTEM + "/exec_dir"; 
     static public final String iMathTRASH = ROOT_FILE_SYSTEM + "/trash";
     
     static public final String IMATH_HTTP = "http://";
     static public final String HPC2_HTTP = "http://";
-    static public final String HPC2_PORT = "8887";
-    static public final String IMATH_PORT = "8080";     // In Development 
-    //static public final String IMATH_PORT = "80";       // In Production
-    static public final int CONSOLE_PORT = 8888;        // ipython notebook initial value
     
-    static public final String IMATH_HOST = LOCALHOST;         // In Development
-    //static public final String IMATH_HOST = "158.109.125.112"; // In Production
     static public final String HPC2_PLUGIN_SERVICE = "plugin";
     static public final String HPC2_PCTS_SERVICE = "getpct";
     static public final String HPC2_SUBMITJOB_SERVICE = "core/submit";

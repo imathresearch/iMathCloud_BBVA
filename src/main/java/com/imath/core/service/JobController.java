@@ -39,6 +39,7 @@ import com.imath.core.model.Session;
 import com.imath.core.service.PluginController.PercDTO;
 import com.imath.core.util.Constants;
 import com.imath.core.util.FileUtils;
+import com.imath.core.config.AppConfig;
 import com.imath.core.data.MainServiceDB;
 import com.imath.core.exception.IMathException;
 
@@ -478,10 +479,10 @@ public class JobController extends AbstractController{
     
     // REPLICATED from PluginController:
     // TODO: Refactor as soon as possible
-    private String generateURLForHPC2Generic(String hostUrl, String service, Long idJob, String urlParams) {
+    private String generateURLForHPC2Generic(String hostUrl, String service, Long idJob, String urlParams) throws IOException {
         String finalURL = Constants.HPC2_HTTP + 
                 hostUrl +  
-                ":" + Constants.HPC2_PORT + 
+                ":" + AppConfig.getProp(AppConfig.HPC2_PORT) + 
                 "/" + service + 
                 ""  + "?id=" + idJob;
                 if (!urlParams.equals("")) {

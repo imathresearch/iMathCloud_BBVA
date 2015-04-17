@@ -5,6 +5,7 @@ import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.FileReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
@@ -42,6 +43,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
+import com.imath.core.config.AppConfig;
 import com.imath.core.data.MainServiceDB;
 import com.imath.core.model.File;
 import com.imath.core.model.FileShared;
@@ -65,10 +67,10 @@ public class NotebookService {
 	@GET
     @Path("/getNotebook/{userName}/{id}/{port}/{type}")
     @Produces(MediaType.TEXT_HTML)
-    public Response REST_getNotebookHTML(@PathParam("userName") String userName, @PathParam("id") String idNotebook, @PathParam("port") String port, @PathParam("type") String type, @Context SecurityContext sec){
+    public Response REST_getNotebookHTML(@PathParam("userName") String userName, @PathParam("id") String idNotebook, @PathParam("port") String port, @PathParam("type") String type, @Context SecurityContext sec) throws IOException{
 		LOG.info(LOG_PRE + "[getNotebookHTML]" + idNotebook);
 		//System.out.println("Getting notebook");
-		String urlString = "http://" + Constants.IMATH_HOST + ":" + port + "/" + idNotebook;
+		String urlString = "http://" + AppConfig.getProp(AppConfig.IMATH_HOST) + ":" + port + "/" + idNotebook;
 		try {
             URL url = new URL(urlString);
             URLConnection urlConn = url.openConnection();
@@ -83,7 +85,7 @@ public class NotebookService {
             rd  = new BufferedReader(new InputStreamReader(urlConn.getInputStream()));
             sb = new StringBuilder();
             String line = new String();
-            String replacement = "$1=\"http://" + Constants.IMATH_HOST + ":" + Constants.IMATH_PORT + "/iMathCloud/rest/notebook_service/files/" + port + "/static/";    	    	
+            String replacement = "$1=\"http://" + AppConfig.getProp(AppConfig.IMATH_HOST) + ":" + AppConfig.getProp(AppConfig.IMATH_PORT) + "/iMathCloud/rest/notebook_service/files/" + port + "/static/";    	    	
             while ((line = rd.readLine()) != null){            	
             	//For .js and .css files
             	line = line.replaceAll("(src|href)=\"/static/", replacement);
@@ -95,7 +97,7 @@ public class NotebookService {
             	
             	//print option            	
             	if(line.startsWith("<li id=\"print_notebook\">")){
-            		String addon = "href=\"http://" + Constants.IMATH_HOST + ":" + Constants.IMATH_PORT + "/iMathCloud/rest/notebook_service/" + port + "/";
+            		String addon = "href=\"http://" + AppConfig.getProp(AppConfig.IMATH_HOST) + ":" + AppConfig.getProp(AppConfig.IMATH_PORT) + "/iMathCloud/rest/notebook_service/" + port + "/";
             		line = line.replaceAll("href=\"/", addon);
             	}
             	
@@ -146,9 +148,9 @@ public class NotebookService {
 	@GET
     @Path("/files/{port}/{path: .+}")
     @Produces({"text/html; charset=UTF-8", "text/css", "application/javascript", "image/png"})
-    public Response REST_getNotebookFile(@PathParam("port") String port, @PathParam("path") String path, @Context SecurityContext sec){
+    public Response REST_getNotebookFile(@PathParam("port") String port, @PathParam("path") String path, @Context SecurityContext sec) throws IOException{
 		LOG.info(LOG_PRE + "[getNotebookFile] " + path);
-		String urlString = "http://" + Constants.IMATH_HOST + ":" + port + "/" + path;
+		String urlString = "http://" + AppConfig.getProp(AppConfig.IMATH_HOST) + ":" + port + "/" + path;
 		
 		try {
             URL url = new URL(urlString);
@@ -197,16 +199,16 @@ public class NotebookService {
 	@GET	
     @Path("/{port}/notebooks/{id}")
     @Produces({MediaType.APPLICATION_JSON, "application/x-python"})
-    public Response REST_getNotebook(@PathParam("port") String port, @PathParam("id") String id, @QueryParam("format") String format, @Context SecurityContext sec){
+    public Response REST_getNotebook(@PathParam("port") String port, @PathParam("id") String id, @QueryParam("format") String format, @Context SecurityContext sec) throws IOException{
 		LOG.info(LOG_PRE + "[getNotebook] " + id);
 		
 		String urlString = new String(); 
 		if(format == null){
-			urlString = "http://" + Constants.IMATH_HOST + ":" + port + "/" + "notebooks/" + id;
+			urlString = "http://" + AppConfig.getProp(AppConfig.IMATH_HOST) + ":" + port + "/" + "notebooks/" + id;
 		}
 		else{
 			// case in which the notebook can be downloaded 
-			urlString = "http://" + Constants.IMATH_HOST + ":" + port + "/" + "notebooks/" + id + "?format=" + format;
+			urlString = "http://" + AppConfig.getProp(AppConfig.IMATH_HOST) + ":" + port + "/" + "notebooks/" + id + "?format=" + format;
 		}
 		
 		try {
@@ -255,9 +257,9 @@ public class NotebookService {
     @Path("/{port}/save_notebooks/{id}")
 	@Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response REST_saveNotebook(@PathParam("port") String port, @PathParam("id") String id, String content, @Context SecurityContext sec){
+    public Response REST_saveNotebook(@PathParam("port") String port, @PathParam("id") String id, String content, @Context SecurityContext sec) throws IOException{
 		LOG.info(LOG_PRE + "[saveNotebook] " + id);
-		String urlString = "http://" + Constants.IMATH_HOST + ":" + port + "/" + "notebooks/" + id;
+		String urlString = "http://" + AppConfig.getProp(AppConfig.IMATH_HOST) + ":" + port + "/" + "notebooks/" + id;
 		
 		try {
             URL url = new URL(urlString);
@@ -293,9 +295,9 @@ public class NotebookService {
 	@POST
     @Path("/{port}/kernels")
     @Produces(MediaType.TEXT_HTML)
-    public Response REST_startNotebookKernel(@PathParam("port") String port, @QueryParam("notebook") String id, @Context SecurityContext sec){
+    public Response REST_startNotebookKernel(@PathParam("port") String port, @QueryParam("notebook") String id, @Context SecurityContext sec) throws IOException{
 		LOG.info(LOG_PRE + "[startNotebookKernel] " + id);
-		String urlString = "http://" + Constants.IMATH_HOST + ":" + port + "/" + "kernels?notebook=" + id;		
+		String urlString = "http://" + AppConfig.getProp(AppConfig.IMATH_HOST) + ":" + port + "/" + "kernels?notebook=" + id;		
 		
 		try {
             URL url = new URL(urlString);
@@ -329,9 +331,9 @@ public class NotebookService {
 	@POST
     @Path("/{port}/kernels/{idKernel}/{action}")
     @Produces(MediaType.TEXT_HTML)
-    public Response REST_interruptrestartKernel(@PathParam("port") String port, @PathParam("idKernel") String id, @PathParam("action") String action, @Context SecurityContext sec){
+    public Response REST_interruptrestartKernel(@PathParam("port") String port, @PathParam("idKernel") String id, @PathParam("action") String action, @Context SecurityContext sec) throws IOException{
 		LOG.info(LOG_PRE + "[interruptrestartKernel] " + id + " " + action);
-		String urlString = "http://" + Constants.IMATH_HOST + ":" + port + "/" + "kernels/" + id + "/" + action;
+		String urlString = "http://" + AppConfig.getProp(AppConfig.IMATH_HOST) + ":" + port + "/" + "kernels/" + id + "/" + action;
 		
 		try {
             URL url = new URL(urlString);
@@ -363,9 +365,9 @@ public class NotebookService {
 	@GET
     @Path("/{port}/{notebook}/print")
     @Produces(MediaType.TEXT_HTML)
-    public Response REST_printNotebook(@PathParam("port") String port, @PathParam("notebook") String id, @Context SecurityContext sec){
+    public Response REST_printNotebook(@PathParam("port") String port, @PathParam("notebook") String id, @Context SecurityContext sec) throws IOException{
 		LOG.info(LOG_PRE + "[printNotebook] " + id);
-		String urlString = "http://" + Constants.IMATH_HOST + ":" + port + "/" + id + "/print";
+		String urlString = "http://" + AppConfig.getProp(AppConfig.IMATH_HOST) + ":" + port + "/" + id + "/print";
 		
 		try {
             URL url = new URL(urlString);
@@ -385,7 +387,7 @@ public class NotebookService {
             rd  = new BufferedReader(new InputStreamReader(urlConn.getInputStream()));
             sb = new StringBuilder();
             String line = new String();
-            String replacement = "$1=\"http://" + Constants.IMATH_HOST + ":" + Constants.IMATH_PORT + "/iMathCloud/rest/notebook_service/files/" + port + "/static/";
+            String replacement = "$1=\"http://" + AppConfig.getProp(AppConfig.IMATH_HOST) + ":" + AppConfig.getProp(AppConfig.IMATH_PORT) + "/iMathCloud/rest/notebook_service/files/" + port + "/static/";
             while ((line = rd.readLine()) != null){
             	//For .js and .css files
             	line = line.replaceAll("(src|href)=\"/static/", replacement);

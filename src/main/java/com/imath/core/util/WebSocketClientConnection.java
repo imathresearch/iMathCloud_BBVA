@@ -9,6 +9,8 @@ import javax.websocket.DeploymentException;
 import javax.websocket.Session;
 import javax.websocket.WebSocketContainer;
 
+import com.imath.core.config.AppConfig;
+
 
 public class WebSocketClientConnection {
 	public Session session;
@@ -18,10 +20,10 @@ public class WebSocketClientConnection {
 	
 	private static String LOG_PRE = Constants.LOG_PREFIX_SYSTEM + "[WebSocketClientConnection]";
  
-    public void start(String kernelId, String port, String opt){
+    public void start(String kernelId, String port, String opt) throws IOException{
     	LOG.info(LOG_PRE + "[start]" + opt);
         WebSocketContainer container = ContainerProvider.getWebSocketContainer();
-        String uri = "ws://" + Constants.IMATH_HOST + ":" + port + "/kernels/" + kernelId + "/" + opt;
+        String uri = "ws://" + AppConfig.getProp(AppConfig.IMATH_HOST) + ":" + port + "/kernels/" + kernelId + "/" + opt;
         LOG.info(LOG_PRE + "Connecting to " + uri);
         try {
         	WebSocketClient client = new WebSocketClient(sessionServer, opt);

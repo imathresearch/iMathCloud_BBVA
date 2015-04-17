@@ -2,9 +2,12 @@
 
 package com.imath.core.service;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 //import java.util.ArrayList;
+
+
 
 
 import javax.annotation.Resource;
@@ -20,6 +23,7 @@ import com.imath.core.model.Job;
 import com.imath.core.model.Session;
 import com.imath.core.model.IMR_User;
 import com.imath.core.model.Host;
+import com.imath.core.config.AppConfig;
 import com.imath.core.data.MainServiceDB;
 
 import java.util.logging.Logger;
@@ -161,10 +165,10 @@ public class SessionController extends AbstractController{
     }
     
     //TODO: Provisional
-    private int getPortConsole() {
+    private int getPortConsole() throws NumberFormatException, IOException {
         List<Session> openSessions = db.getSessionDB().getAllSessions();
-        if (openSessions == null) return Constants.CONSOLE_PORT;
-        if (openSessions.size()==0) return Constants.CONSOLE_PORT;
+        if (openSessions == null) return Integer.parseInt(AppConfig.getProp(AppConfig.CONSOLE_PORT));
+        if (openSessions.size()==0) return Integer.parseInt(AppConfig.getProp(AppConfig.CONSOLE_PORT));
         return openSessions.get(0).getPortConsole()+1;
     }
     /*

@@ -92,7 +92,7 @@ public class FileDB {
      */
     public File findByPath(String path, String userId) throws Exception{
     	
-    	String uriFile = Constants.URI_HEAD + Constants.IMATH_HOST + path;
+    	String uriFile = Constants.URI_HEAD + Constants.LOCALHOST + path;
     	CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<File> criteria = cb.createQuery(File.class);
         Root<File> file = criteria.from(File.class);

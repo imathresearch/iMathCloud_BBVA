@@ -14,6 +14,7 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 
+import com.imath.core.config.AppConfig;
 import com.imath.core.model.File;
 import com.imath.core.model.IMR_User;
 import com.imath.core.model.MathLanguage;
@@ -54,6 +55,8 @@ public class UserController extends AbstractController {
 	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 	public IMR_User createNewUser(String userName, String password, String firstName, String lastName, Role role, MathLanguage math, String eMail, String organization, String phone1, String phone2, String rootName) throws Exception {
 		LOG.info("[IMATH][CLOUD][newUser]:" + userName + ", " + eMail);
+		System.out.println(AppConfig.getProp(AppConfig.TEST));
+		
 		//Create the IMR_User Entity
 	    IMR_User user = new IMR_User();
 		user.setUserName(userName);
@@ -166,11 +169,11 @@ public class UserController extends AbstractController {
 	private String createBaseDirectories(String userName) throws Exception {
 	    
 	    // storage dir directory
-	    String urlDirectory = Constants.URI_HEAD + Constants.HOST_STORAGE + Constants.ROOT_FILE_SYSTEM + "/" + userName;
+	    String urlDirectory = Constants.URI_HEAD + AppConfig.getProp(AppConfig.HOST_STORAGE) + Constants.ROOT_FILE_SYSTEM + "/" + userName;
 	    fileUtils.createDirectory(urlDirectory);
 	    
 	    // The exec_dir directory
-	    String urlDirectoryExecDir = Constants.URI_HEAD + Constants.HOST_STORAGE + Constants.ROOT_EXEC_DIR + "/" + userName;
+	    String urlDirectoryExecDir = Constants.URI_HEAD + AppConfig.getProp(AppConfig.HOST_STORAGE) + Constants.ROOT_EXEC_DIR + "/" + userName;
 	    fileUtils.createDirectory(urlDirectoryExecDir);
 	    
 	    fileUtils.protectDirectory(urlDirectoryExecDir, userName);

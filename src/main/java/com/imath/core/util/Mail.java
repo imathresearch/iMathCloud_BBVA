@@ -17,6 +17,8 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
+import com.imath.core.config.AppConfig;
+
 
 public class Mail {
     // TODO: put this into protected external files
@@ -58,6 +60,7 @@ public class Mail {
     }
     
     public void sendWelcomeMail(String to, String username) throws Exception {
+    	    	
         String html="";
         InputStream in = this.getClass().getResourceAsStream(Constants.WELLCOME_TEMPLATE);
         BufferedReader br = new BufferedReader(new InputStreamReader(in));
@@ -67,9 +70,9 @@ public class Mail {
         }
         br.close();
         html = html.replace("[USERNAME]", username);
-        String url = Constants.IMATH_HTTP + Constants.IMATH_HOST;
-        if (!Constants.IMATH_PORT.equals("80")) {
-            url += ":" + Constants.IMATH_PORT;
+        String url = Constants.IMATH_HTTP + AppConfig.getProp(AppConfig.IMATH_HOST);
+        if (!AppConfig.getProp(AppConfig.IMATH_PORT).equals("80")) {
+            url += ":" + AppConfig.getProp(AppConfig.IMATH_PORT);
         }
         url += "/iMathCloud";
         html = html.replace("[URL_IMATHCLOUD]", url);
@@ -77,7 +80,9 @@ public class Mail {
     }
     
     public void sendRecoverPasswordMail(String to, String username, String newPassword) throws Exception {
-        String html="";
+     
+    	
+    	String html="";
         InputStream in = this.getClass().getResourceAsStream("recoverPassTemplate.html");
         BufferedReader br = new BufferedReader(new InputStreamReader(in));
         String line;
@@ -87,9 +92,9 @@ public class Mail {
         br.close();
         html = html.replace("[USERNAME]", username);
         html = html.replace("[PASSWORD]", newPassword);
-        String url = Constants.IMATH_HTTP + Constants.IMATH_HOST;;
-        if (!Constants.IMATH_PORT.equals("80")) {
-            url += ":" + Constants.IMATH_PORT;
+        String url = Constants.IMATH_HTTP + AppConfig.getProp(AppConfig.IMATH_HOST);
+        if (!AppConfig.getProp(AppConfig.IMATH_PORT).equals("80")) {
+            url += ":" + AppConfig.getProp(AppConfig.IMATH_PORT);
         }
         url += "/iMathCloud";
         html = html.replace("[URL_IMATHCLOUD]", url);
