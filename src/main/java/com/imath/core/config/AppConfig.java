@@ -15,7 +15,9 @@ public class AppConfig {
     
     public static String CONFIG_PROPERTIES_FILE = 					"config.properties";
     
-    private static Properties prop = new Properties();
+    private static PropertyParser prop = new PropertyParser();
+    
+    
     
     /**
      * Upload the configuration from config.properties files
@@ -50,5 +52,6 @@ public class AppConfig {
         }
         return prop.getProperty(key);
     }
-
+    
+   
 }
