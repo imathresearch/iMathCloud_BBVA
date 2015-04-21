@@ -142,7 +142,7 @@ public class JobPythonController extends AbstractController{
           
                 
                 //IMPORTANT !!! URI PATTER --> URI_HEAD + LOCALHOST_STRING + ROOT_SYSTEM_FILE + USERNAME
-                description = description.replaceAll(Constants.URI_HEAD+AppConfig.getProp(AppConfig.HOST_STORAGE)+Constants.ROOT_FILE_SYSTEM+"/"+session.getUser().getUserName(), "");
+                description = description.replaceAll(Constants.URI_HEAD+AppConfig.getProp(AppConfig.HOST_STORAGE)+AppConfig.getProp(AppConfig.IMATH_ROOT)+"/"+session.getUser().getUserName(), "");
                
                 job.setDescription(description);
                 job.setStartDate(new Date());
@@ -209,7 +209,7 @@ public class JobPythonController extends AbstractController{
                 
                 String description = f.getUrl();                       
                 //IMPORTANT !!! URI PATTER --> URI_HEAD + LOCALHOST_STRING + ROOT_SYSTEM_FILE + USERNAME
-                description = description.replaceAll(Constants.URI_HEAD+Constants.LOCALHOST_String+Constants.ROOT_FILE_SYSTEM+"/"+sc.getUserPrincipal().getName(), "");
+                description = description.replaceAll(Constants.URI_HEAD+Constants.LOCALHOST_String+AppConfig.getProp(AppConfig.IMATH_ROOT)+"/"+sc.getUserPrincipal().getName(), "");
                 
                 job.setDescription(description);
                 job.setStartDate(new Date());

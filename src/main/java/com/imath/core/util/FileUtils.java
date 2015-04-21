@@ -31,6 +31,7 @@ import java.util.zip.ZipOutputStream;
 import javax.ejb.Stateful;
 import javax.inject.Inject;
 
+import com.imath.core.config.AppConfig;
 import com.imath.core.exception.IMathException;
 import com.imath.core.rest.FileService.FileDTO;
 import com.sun.jna.Library;
@@ -228,9 +229,9 @@ public class FileUtils {
         }
     }
     
-    public String trashFile(com.imath.core.model.File file){
+    public String trashFile(com.imath.core.model.File file) throws IOException{
   		
-		File trashDirectory = new File(Constants.iMathTRASH);
+		File trashDirectory = new File(AppConfig.getProp(AppConfig.IMATH_TRASH));
 		String [] trashFiles = trashDirectory.list();
 		List <String> listTrashFiles = Arrays.asList(trashFiles);
 		
@@ -243,7 +244,7 @@ public class FileUtils {
 				fileName = fileName.concat(uid);
 			}
 			else{
-				trashlocation = Constants.iMathTRASH + "/" + fileName;				
+				trashlocation = AppConfig.getProp(AppConfig.IMATH_TRASH) + "/" + fileName;				
 				if(!this.moveFile(file.getUrl(), trashlocation)){
 					trashlocation = null;
 				}

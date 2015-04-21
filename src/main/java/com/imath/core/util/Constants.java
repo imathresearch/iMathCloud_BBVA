@@ -23,9 +23,9 @@ public class Constants {
     static public final String LOCALHOST_String = "localhost";
     
     static public final String URI_HEAD = "file://";
-    static public final String ROOT_FILE_SYSTEM = "/iMathCloud"; 
-    static public final String ROOT_EXEC_DIR = ROOT_FILE_SYSTEM + "/exec_dir"; 
-    static public final String iMathTRASH = ROOT_FILE_SYSTEM + "/trash";
+    //static public final String ROOT_FILE_SYSTEM = "/iMathCloud"; 
+    //static public final String ROOT_EXEC_DIR = ROOT_FILE_SYSTEM + "/exec_dir"; 
+    //static public final String iMathTRASH = ROOT_FILE_SYSTEM + "/trash";
     
     static public final String IMATH_HTTP = "http://";
     static public final String HPC2_HTTP = "http://";

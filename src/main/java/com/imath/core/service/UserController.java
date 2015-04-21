@@ -169,11 +169,11 @@ public class UserController extends AbstractController {
 	private String createBaseDirectories(String userName) throws Exception {
 	    
 	    // storage dir directory
-	    String urlDirectory = Constants.URI_HEAD + AppConfig.getProp(AppConfig.HOST_STORAGE) + Constants.ROOT_FILE_SYSTEM + "/" + userName;
+	    String urlDirectory = Constants.URI_HEAD + AppConfig.getProp(AppConfig.HOST_STORAGE) + AppConfig.getProp(AppConfig.IMATH_ROOT) + "/" + userName;
 	    fileUtils.createDirectory(urlDirectory);
 	    
 	    // The exec_dir directory
-	    String urlDirectoryExecDir = Constants.URI_HEAD + AppConfig.getProp(AppConfig.HOST_STORAGE) + Constants.ROOT_EXEC_DIR + "/" + userName;
+	    String urlDirectoryExecDir = Constants.URI_HEAD + AppConfig.getProp(AppConfig.HOST_STORAGE) + AppConfig.getProp(AppConfig.ROOT_EXEC_DIR) + "/" + userName;
 	    fileUtils.createDirectory(urlDirectoryExecDir);
 	    
 	    fileUtils.protectDirectory(urlDirectoryExecDir, userName);

@@ -6,11 +6,14 @@ import java.util.Properties;
 public class AppConfig {
 	
 	// iMath Port, iMath Host, HPC2 port, console port
+	static public String IMATH_ROOT = 								"imath.root";
     static public String IMATH_PORT = 								"imath.port";
     static public String IMATH_HOST = 								"imath.host";
     static public String HPC2_PORT = 								"hpc2.port";
     static public String CONSOLE_PORT = 							"console.port";
     static public String HOST_STORAGE = 							"host.storage";
+    static public String ROOT_EXEC_DIR	=							"root.exec.dir";
+    static public String IMATH_TRASH = 							"imath.trash";
     static public String TEST = 									"test.profile";
     
     public static String CONFIG_PROPERTIES_FILE = 					"config.properties";

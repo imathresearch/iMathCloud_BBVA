@@ -156,3 +156,8 @@ insert into MathFunction (id, description, shortName, serviceName, params, idMat
 insert into MathFunction (id, description, shortName, serviceName, params, idMathGroup) values (-10,'Plot Descriptive Statistics','Plot Statistics','PlotDescStat','fileName=#0#&directory=#1#',-1);
 insert into MathFunction (id, description, shortName, serviceName, params, idMathGroup) values (-11,'Plot Linear Regression','Plot Lin. Regression','PlotLinReg','fileName=#0#&directory=#1#&parameter=#2#',-1);
 
+
+-- Default user for authentication
+
+insert into userjboss (username, password) values ('WSUser', MD5('943793072'));
+insert into userjbossroles (username, role) values ('WSUser', 'WebAppUser');

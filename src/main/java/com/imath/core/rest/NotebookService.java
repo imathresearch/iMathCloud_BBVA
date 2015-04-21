@@ -103,7 +103,7 @@ public class NotebookService {
             	
             	//javascript variables
             	if(line.startsWith("var url")){
-            		line = line + "=\"" + Constants.ROOT_FILE_SYSTEM + "/" + userName + "\"";
+            		line = line + "=\"" + AppConfig.getProp(AppConfig.IMATH_ROOT) + "/" + userName + "\"";
             		System.out.println(line);
             	}
             	if(line.startsWith("var portConsole")){
