@@ -13,7 +13,7 @@
         <meta name="keywords" content="html5, css3, form, switch, animation, :target, pseudo-class" />
         <meta name="author" content="Codrops" />
         
-        <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>      
+        <script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>      
         <script src="js/loginInitialization.js" type="text/javascript"></script>
         
         <link rel="shortcut icon" href="../favicon.ico"> 
