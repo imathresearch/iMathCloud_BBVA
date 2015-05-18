@@ -32,7 +32,7 @@ function sendMessage(msgType, content, idConsole) {
 	iframeObj = document.getElementById("interactive_math-" + idConsole);
 	var win = iframeObj.contentWindow;
 	
-	var destination = 'http://' + host['url'] + ":" + IMATH_PORT;
+	var destination = 'https://' + host['url'] + ":" + IMATH_PORT;
 	win.postMessage(msgType + content, destination);
 }
 

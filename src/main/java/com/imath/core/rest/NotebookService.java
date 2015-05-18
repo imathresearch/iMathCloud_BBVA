@@ -85,7 +85,7 @@ public class NotebookService {
             rd  = new BufferedReader(new InputStreamReader(urlConn.getInputStream()));
             sb = new StringBuilder();
             String line = new String();
-            String replacement = "$1=\"http://" + AppConfig.getProp(AppConfig.IMATH_HOST) + ":" + AppConfig.getProp(AppConfig.IMATH_PORT) + "/iMathCloud/rest/notebook_service/files/" + port + "/static/";    	    	
+            String replacement = "$1=\"https://" + AppConfig.getProp(AppConfig.IMATH_HOST) + ":" + AppConfig.getProp(AppConfig.IMATH_PORT) + "/iMathCloud/rest/notebook_service/files/" + port + "/static/";    	    	
             while ((line = rd.readLine()) != null){            	
             	//For .js and .css files
             	line = line.replaceAll("(src|href)=\"/static/", replacement);
