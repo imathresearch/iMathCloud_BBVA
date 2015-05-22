@@ -3,7 +3,7 @@ var MSG_EXECUTE_CODE_R = "EXR";		// message to execute the sent code to R consol
 var MSG_DEFAULT_LANGUAGE = "LAN";
 var MSG_DEFAULT_USER_ENVIRONMENT = "ENV";
 var MSG_PORTCONSOLE = "PRT";
-var IMATH_PORT = "8443";
+var IMATH_PORT = "8080";
 
 function executeInConsole(str, idConsole) {
 	sendMessage(MSG_EXECUTE_CODE, str, idConsole);
@@ -32,7 +32,7 @@ function sendMessage(msgType, content, idConsole) {
 	iframeObj = document.getElementById("interactive_math-" + idConsole);
 	var win = iframeObj.contentWindow;
 	
-	var destination = 'https://' + host['url'] + ":" + IMATH_PORT;
+	var destination = 'http://' + host['url'] + ":" + IMATH_PORT;
 	win.postMessage(msgType + content, destination);
 }
 
@@ -75,7 +75,7 @@ function newConsole(notebookId, notebookName, type){
 		showTabConsole(id);
 		
 		
-		var callBE = 'https://' + host['url'] + ":" + IMATH_PORT+ '/iMathCloud/rest/notebook_service/getNotebook/' + userName + "/" + notebookId + "/" + host['port'] + "/" + type;
+		var callBE = 'http://' + host['url'] + ":" + IMATH_PORT+ '/iMathCloud/rest/notebook_service/getNotebook/' + userName + "/" + notebookId + "/" + host['port'] + "/" + type;
 		$( "#interactive_math-" + idConsole).attr('src', callBE);
 		
 		var u = document.getElementById('tabsConsole');
