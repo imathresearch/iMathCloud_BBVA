@@ -10,7 +10,7 @@ import javax.websocket.Session;
 import javax.websocket.WebSocketContainer;
 
 import com.imath.core.config.AppConfig;
-
+import com.imath.core.util.Constants;
 
 public class WebSocketClientConnection {
 	public Session session;
@@ -23,7 +23,7 @@ public class WebSocketClientConnection {
     public void start(String kernelId, String port, String opt) throws IOException{
     	LOG.info(LOG_PRE + "[start]" + opt);
         WebSocketContainer container = ContainerProvider.getWebSocketContainer();
-        String uri = "ws://" + AppConfig.getProp(AppConfig.IMATH_HOST) + ":" + port + "/kernels/" + kernelId + "/" + opt;
+        String uri = "ws://" + Constants.LOCALHOST + ":" + port + "/kernels/" + kernelId + "/" + opt;
         LOG.info(LOG_PRE + "Connecting to " + uri);
         try {
         	WebSocketClient client = new WebSocketClient(sessionServer, opt);

@@ -22,7 +22,8 @@ import com.imath.core.model.File;
 import com.imath.core.model.MathGroup;
 import com.imath.core.model.Job;
 import com.imath.core.model.Job.States;
-import com.imath.core.util.Constants;
+import com.imath.core.config.AppConfig;
+
 /**
  * The File repository. It provides access to {@link File} database and useful data queries
  * 
@@ -91,8 +92,9 @@ public class FileDB {
      * @author iMath
      */
     public File findByPath(String path, String userId) throws Exception{
-    	
-    	String uriFile = Constants.URI_HEAD + Constants.LOCALHOST + path;
+    
+	
+    	String uriFile = Constants.URI_HEAD + AppConfig.getProp(AppConfig.HOST_STORAGE) + path;
     	CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<File> criteria = cb.createQuery(File.class);
         Root<File> file = criteria.from(File.class);
