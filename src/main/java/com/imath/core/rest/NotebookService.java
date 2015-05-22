@@ -70,7 +70,7 @@ public class NotebookService {
     public Response REST_getNotebookHTML(@PathParam("userName") String userName, @PathParam("id") String idNotebook, @PathParam("port") String port, @PathParam("type") String type, @Context SecurityContext sec) throws IOException{
 		LOG.info(LOG_PRE + "[getNotebookHTML]" + idNotebook);
 		//System.out.println("Getting notebook");
-		String urlString = "http://" + AppConfig.getProp(AppConfig.IMATH_HOST) + ":" + port + "/" + idNotebook;
+		String urlString = "http://" + Constants.LOCALHOST + ":" + port + "/" + idNotebook;
 		try {
             URL url = new URL(urlString);
             URLConnection urlConn = url.openConnection();
@@ -150,7 +150,7 @@ public class NotebookService {
     @Produces({"text/html; charset=UTF-8", "text/css", "application/javascript", "image/png"})
     public Response REST_getNotebookFile(@PathParam("port") String port, @PathParam("path") String path, @Context SecurityContext sec) throws IOException{
 		LOG.info(LOG_PRE + "[getNotebookFile] " + path);
-		String urlString = "http://" + AppConfig.getProp(AppConfig.IMATH_HOST) + ":" + port + "/" + path;
+		String urlString = "http://" + Constants.LOCALHOST + ":" + port + "/" + path;
 		
 		try {
             URL url = new URL(urlString);
@@ -204,11 +204,11 @@ public class NotebookService {
 		
 		String urlString = new String(); 
 		if(format == null){
-			urlString = "http://" + AppConfig.getProp(AppConfig.IMATH_HOST) + ":" + port + "/" + "notebooks/" + id;
+			urlString = "http://" + Constants.LOCALHOST + ":" + port + "/" + "notebooks/" + id;
 		}
 		else{
 			// case in which the notebook can be downloaded 
-			urlString = "http://" + AppConfig.getProp(AppConfig.IMATH_HOST) + ":" + port + "/" + "notebooks/" + id + "?format=" + format;
+			urlString = "http://" + Constants.LOCALHOST + ":" + port + "/" + "notebooks/" + id + "?format=" + format;
 		}
 		
 		try {
@@ -259,7 +259,7 @@ public class NotebookService {
     @Produces(MediaType.APPLICATION_JSON)
     public Response REST_saveNotebook(@PathParam("port") String port, @PathParam("id") String id, String content, @Context SecurityContext sec) throws IOException{
 		LOG.info(LOG_PRE + "[saveNotebook] " + id);
-		String urlString = "http://" + AppConfig.getProp(AppConfig.IMATH_HOST) + ":" + port + "/" + "notebooks/" + id;
+		String urlString = "http://" + Constants.LOCALHOST + ":" + port + "/" + "notebooks/" + id;
 		
 		try {
             URL url = new URL(urlString);
@@ -297,7 +297,7 @@ public class NotebookService {
     @Produces(MediaType.TEXT_HTML)
     public Response REST_startNotebookKernel(@PathParam("port") String port, @QueryParam("notebook") String id, @Context SecurityContext sec) throws IOException{
 		LOG.info(LOG_PRE + "[startNotebookKernel] " + id);
-		String urlString = "http://" + AppConfig.getProp(AppConfig.IMATH_HOST) + ":" + port + "/" + "kernels?notebook=" + id;		
+		String urlString = "http://" + Constants.LOCALHOST + ":" + port + "/" + "kernels?notebook=" + id;		
 		
 		try {
             URL url = new URL(urlString);
@@ -333,7 +333,7 @@ public class NotebookService {
     @Produces(MediaType.TEXT_HTML)
     public Response REST_interruptrestartKernel(@PathParam("port") String port, @PathParam("idKernel") String id, @PathParam("action") String action, @Context SecurityContext sec) throws IOException{
 		LOG.info(LOG_PRE + "[interruptrestartKernel] " + id + " " + action);
-		String urlString = "http://" + AppConfig.getProp(AppConfig.IMATH_HOST) + ":" + port + "/" + "kernels/" + id + "/" + action;
+		String urlString = "http://" + Constants.LOCALHOST + ":" + port + "/" + "kernels/" + id + "/" + action;
 		
 		try {
             URL url = new URL(urlString);
@@ -367,7 +367,7 @@ public class NotebookService {
     @Produces(MediaType.TEXT_HTML)
     public Response REST_printNotebook(@PathParam("port") String port, @PathParam("notebook") String id, @Context SecurityContext sec) throws IOException{
 		LOG.info(LOG_PRE + "[printNotebook] " + id);
-		String urlString = "http://" + AppConfig.getProp(AppConfig.IMATH_HOST) + ":" + port + "/" + id + "/print";
+		String urlString = "http://" + Constants.LOCALHOST + ":" + port + "/" + id + "/print";
 		
 		try {
             URL url = new URL(urlString);
@@ -412,11 +412,11 @@ public class NotebookService {
 	
 	
 	@GET
-	@Path("/getNotebookList/{host}/{port}")
+	@Path("/getNotebookList/{port}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public String REST_getNotebookList(@PathParam("host") String host, @PathParam("port") String port){
-	    LOG.info(LOG_PRE + "[getNotebookList]" + host + " " + port);
-		String urlString = "http://" + host + ":" + port + "/notebooks";
+	public String REST_getNotebookList(@PathParam("port") String port){
+	    LOG.info(LOG_PRE + "[getNotebookList]" + Constants.LOCALHOST + " " + port);
+		String urlString = "http://" + Constants.LOCALHOST + ":" + port + "/notebooks";
 		try {
             URL url = new URL(urlString);
             URLConnection urlConn = url.openConnection();
@@ -449,11 +449,11 @@ public class NotebookService {
 	}
 	
 	@GET
-	@Path("/newNotebook/{host}/{port}/{type}")
+	@Path("/newNotebook/{port}/{type}")
 	@Produces(MediaType.TEXT_PLAIN)
-	public String REST_newNotebook(@PathParam("host") String host, @PathParam("port") String port, @PathParam("type") String type){
-	    LOG.info(LOG_PRE + "[newNotebook]" + host + " " + port);
-		String urlString = "http://" + host + ":" + port + "/new/" + type;
+	public String REST_newNotebook(@PathParam("port") String port, @PathParam("type") String type){
+	    LOG.info(LOG_PRE + "[newNotebook]" + Constants.LOCALHOST + " " + port);
+		String urlString = "http://" + Constants.LOCALHOST + ":" + port + "/new/" + type;
 		try {
             URL url = new URL(urlString);
             URLConnection urlConn = url.openConnection();

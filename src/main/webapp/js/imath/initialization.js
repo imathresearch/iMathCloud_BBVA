@@ -246,7 +246,7 @@ var id = setInterval(function() {
 	if (! (typeof window.hostGlobal=== 'undefined')) {
 		host = window.hostGlobal;
 		urlConsole = 'http://'+host['url']+':' + host['port'];		
-		if (isReady(host['url'], host['port'])) {
+		if (isReady(host['port'])) {
 			clearInterval(id);
 			newDefaultNotebook();
 		}
@@ -254,10 +254,10 @@ var id = setInterval(function() {
 }, 2000);
 
 // Check if a url is ready
-function isReady(host, port) {
+function isReady(port) {
     //var encodedURL = encodeURIComponent(url);
     var isValid = false;
-    var urlCall = "rest/session_service/isConsoleReady/"+host+"/"+port; 
+    var urlCall = "rest/session_service/isConsoleReady/"+port; 
     $.ajax({
       url: urlCall,
       type: "get",

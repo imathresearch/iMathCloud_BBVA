@@ -262,9 +262,8 @@ function openNotebookFileAsConsole(idFile){
 function getNotebookList(){	
 	host = window.hostGlobal; 
     var listNotebooks = null;
-    //alert("rest/notebook_service/getNotebookList/"+host['url']+"/"+host['port']);
     $.ajax({
-      url: "rest/notebook_service/getNotebookList/"+host['url']+"/"+host['port'],
+      url: "rest/notebook_service/getNotebookList/"+host['port'],
       type: "GET",
       async: false,
       success: function(notebooks) {    	
@@ -286,7 +285,7 @@ function createNotebook(type){
     //console.log(type);
     
     $.ajax({
-      url: "rest/notebook_service/newNotebook/"+host['url']+"/"+host['port'] +"/"+ type,
+      url: "rest/notebook_service/newNotebook/"+host['port'] +"/"+ type,
       type: "GET",
       async: false,
       success: function(data) {    	   	  

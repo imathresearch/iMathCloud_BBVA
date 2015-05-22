@@ -141,7 +141,7 @@ public class SessionController extends AbstractController{
     		//List<String> params = new ArrayList<String>();
     		//params.add("%2Fhome%2Fipinyol%2Ftest.csv");
     		//pc.callPlugin(new Long(1), session, params); // Just to test. PROVISIONAL
-    		Console.startConsole(userName, ""+session.getPortConsole(), newSession, session.getHostConsole().getUrl());
+    		Console.startConsole(userName, ""+session.getPortConsole(), newSession);
         	return session;
     	}
     	catch (Exception e) {

@@ -7,7 +7,7 @@ import java.net.URL;
 import java.net.URLConnection;
 
 public class Console {
-    public static void startConsole(String user, String port, boolean newSession, String host) {
+    public static void startConsole(String user, String port, boolean newSession) {
 
         // we close the interactive console if fore whatever reason it was open.
         // This is also a security measure!
@@ -18,9 +18,9 @@ public class Console {
         boolean start=true;
         try {
         	
-        	System.out.println("startConsole URL " + Constants.IMATH_HTTP + host+":"+ port);
+        	System.out.println("startConsole URL " + Constants.IMATH_HTTP + Constants.LOCALHOST +":"+ port);
         	
-            URL url = new URL(Constants.IMATH_HTTP + host+":"+ port);
+            URL url = new URL(Constants.IMATH_HTTP + Constants.LOCALHOST + ":"+ port);
             HttpURLConnection huc =  (HttpURLConnection) url.openConnection();
             //URLConnection urlConn = url.openConnection();
             //urlConn.setUseCaches(false);

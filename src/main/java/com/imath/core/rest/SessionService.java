@@ -87,11 +87,11 @@ public class SessionService {
     }
 	
 	@GET
-	@Path("/isConsoleReady/{host}/{port}") 
+	@Path("/isConsoleReady/{port}") 
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response REST_isConsoleReady(@PathParam("host") String host, @PathParam("port") String port) {
-	    LOG.info(LOG_PRE + "[isConsoleReady]" + host + " " + port);
-	    String urlString = "http://" + host + ":" + port;
+	public Response REST_isConsoleReady(@PathParam("port") String port) {
+	    LOG.info(LOG_PRE + "[isConsoleReady]" + Constants.LOCALHOST + " " + port);
+	    String urlString = "http://" + Constants.LOCALHOST + ":" + port;
 	    System.out.println("REST_isConsoleReady url " + urlString);
         try {
             URL url = new URL(urlString);
