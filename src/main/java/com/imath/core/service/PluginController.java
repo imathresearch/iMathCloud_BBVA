@@ -168,7 +168,7 @@ public class PluginController extends AbstractController{
     			urlParams = urlParams.replaceAll(tag, URLEncoder.encode(p, "UTF-8"));
     		}
     		LOG.info("CallPlugintToHost. URL Params: " + urlParams);
-    		String finalURL =  this.generateURLForHPC2(host.getUrl(), mfunction.getMathGroup().getPlugin(), mfunction.getServiceName(), idJob, urlParams);
+    		String finalURL =  this.generateURLForHPC2(Constants.LOCALHOST, mfunction.getMathGroup().getPlugin(), mfunction.getServiceName(), idJob, urlParams);
     		/*
     		String finalURL = Constants.HPC2_HTTP + 
     		        host.getUrl() + 
@@ -281,7 +281,7 @@ public class PluginController extends AbstractController{
             
             // We generate the AJAX call string
             String urlParams = params;
-            String finalURL =  this.generateURLForHPC2(host.getUrl(), namePlugin, nameModule, idJob, urlParams);
+            String finalURL =  this.generateURLForHPC2(Constants.LOCALHOST, namePlugin, nameModule, idJob, urlParams);
             /*
             String finalURL = Constants.HPC2_HTTP + 
                     host.getUrl() + 
@@ -363,7 +363,7 @@ public class PluginController extends AbstractController{
             }
             else {
                 Host host = hosts.get(0);
-                String finalURL = generateURLForHPC2Generic(host.getUrl(), Constants.HPC2_PCTS_SERVICE,idJob, "");
+                String finalURL = generateURLForHPC2Generic(Constants.LOCALHOST, Constants.HPC2_PCTS_SERVICE,idJob, "");
                 String json = this.makeAJAXCall_GET_ONE_INPUT(finalURL); 
                 //LOG.info("JSON: " + json);
                 // TODO. Refactor this!

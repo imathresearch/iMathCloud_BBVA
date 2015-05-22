@@ -165,7 +165,7 @@ public class JobPythonController extends AbstractController{
                 
                 // We generate the AJAX call string
                 String urlParams = params;
-                String finalURL =  this.generateURLForHPC2PythonExec(host.getUrl(), idJob, urlParams);
+                String finalURL =  this.generateURLForHPC2PythonExec(Constants.LOCALHOST, idJob, urlParams);
                 /*
                 String finalURL = Constants.HPC2_HTTP + 
                         host.getUrl() + 
@@ -229,7 +229,7 @@ public class JobPythonController extends AbstractController{
                 
                 // We generate the AJAX call string
                 String urlParams = params;
-                String finalURL =  this.generateURLForHPC2PythonExec(host.getUrl(), idJob, urlParams);
+                String finalURL =  this.generateURLForHPC2PythonExec(Constants.LOCALHOST, idJob, urlParams);
                 /*
                 String finalURL = Constants.HPC2_HTTP + 
                         host.getUrl() + 
